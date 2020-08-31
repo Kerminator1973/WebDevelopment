@@ -42,7 +42,11 @@
 
 Наиболее универсальный IDE со множеством plug-in-ов [Microsoft Visual Studio Code](https://code.visualstudio.com/).
 
-Популярный HTML/CSS редактор с поддержкой Zen-программирования - [Sublime Text 3](https://www.sublimetext.com/3).
+Популярный HTML/CSS редактор с поддержкой Zen-программирования - [Sublime Text 3](https://www.sublimetext.com/3). Под Zen-программированием подразумевается возможность частичного ввода информации и автоматической генерации html-тэгов при нажатии кнопки <Tab>. Например, для текста: `div.worker` при нажатии на кнопку <Tab> будет сформирован следующая html-разметка:
+
+```html
+<div class="worker"></div>
+```
 
 Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/).
 
