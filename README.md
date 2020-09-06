@@ -56,7 +56,7 @@
 
 На данный момент, доминирующими решениями являются:
 
-1. Библиотека [React](https://ru.reactjs.org/) от Facebook
+1. Библиотека [React](https://ru.reactjs.org/) от Facebook. [Пример](reactappsample.md) простейшего React-приложения
 2. Framework [Angular](https://angular.io/) от Google
 2. [Vue.js](https://vuejs.org/), особенно популярная у китайский товарищей
 
