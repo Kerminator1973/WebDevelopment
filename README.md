@@ -92,6 +92,8 @@
 2. Управление миграциями, т.е. создание скрипта обновления структуры таблицы в случае, если вышла новая версия приложения
 3. Кэширование результатов запрос на client-side
 
+Классические примером ORM является Entity Framework для Microsoft ASP.NET.
+
 # Инструментальные средства для web-разработки
 
 Наиболее универсальный IDE со множеством plug-in-ов [Microsoft Visual Studio Code](https://code.visualstudio.com/).
@@ -102,7 +104,7 @@
 <div class="worker"></div>
 ```
 
-Мета-язык Zen Codeing может быть достаточно комплексным и при наличии навыков, кратно ускорять разработку html-верстки. См. также [Emmet](https://packagecontrol.io/packages/Emmet).
+Мета-язык Zen Coding может быть достаточно комплексным и при наличии навыков, кратно ускорять разработку html-верстки. См. также [Emmet](https://packagecontrol.io/packages/Emmet).
 
 Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/).
 
