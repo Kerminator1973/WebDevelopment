@@ -147,5 +147,17 @@ function contactsApp( state, action ) {
 }
 ```
 
-Для асинхронного взаимодействия часто используется [Redux-Thunk](https://github.com/reduxjs/redux-thunk).
+Хорошей практикой считается комбинировать Reducer-ы каждый из которых обрабатывает только одну сущность, например, информацию об товарах, текущих приложениях, информацию о пользователе, и т.д. Пример объединения Reducer-ов:
 
+```javascript
+import {combineReducers} from 'redux';
+import currentUser from './currentUser';
+import messages from './messages';
+const rootReducer = combineReducers({
+	currentUser,
+	messages,
+});
+export default rootReducer;
+```
+
+Для асинхронного взаимодействия часто используется [Redux-Thunk](https://github.com/reduxjs/redux-thunk).
