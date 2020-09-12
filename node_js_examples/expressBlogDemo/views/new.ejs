@@ -1,0 +1,29 @@
+<% include partials/header.ejs %>
+
+<div class="container">
+	<h1>Добавить новое сообщение</h1>
+	<form method="POST" action="/posts">
+		<div class="form-group">
+			<label for="postTitle">Заголовок</label>
+			<input id="postTitle" class="form-control" type="text" name="title" 
+				placeholder="Заголовок">
+		</div>
+
+		<div class="form-group">
+			<label for="postImage">Изображение</label>
+			<input id="postImage" class="form-control" type="text" name="image" 
+				placeholder="Изображение">
+		</div>
+
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+		    <span class="input-group-text">Сообщение</span>
+		  </div>
+		  <textarea class="form-control" name="content" aria-label="Сообщение"></textarea>
+		</div>	
+
+		<button class="btn btn-primary">Добавить</button>
+	</form>
+</div>	
+
+<% include partials/footer.ejs %>

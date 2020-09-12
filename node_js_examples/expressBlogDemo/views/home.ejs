@@ -1,0 +1,23 @@
+<% include partials/header.ejs %>
+
+<div class="container">
+
+	<div class="row">
+	<% posts.forEach( function(post) { %>
+		<div class="col-lg-3">
+			<div class="card mt-2 mx-1">
+				<img class="card-img-top" src="<%= post.image %>" alt="Card image cap">
+	  			<div class="card-body">
+	    			<h5 class="card-title"><%= post.title %></h5>
+	    			<p class="card-text"><%- post.content %></p>
+	    			<h6><%= post.created.toDateString() %></h6>
+		    		<a href="/posts/<%= post._id %>/edit" class="btn btn-primary">Details...</a>
+	  			</div>
+			</div>
+		</div>
+	<% }); %>
+	</div>
+
+</div>
+
+<% include partials/footer.ejs %>
