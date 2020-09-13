@@ -135,7 +135,51 @@ export default App;
 
 Суть Redux состоит в том, что в web-приложении есть только одно место (*single source of truth*), в котором хранится его глобальное состояние (**Store**). Любой компонент может сформировать некоторое действие (**Action**), которое попадёт на обработку в **Reducer** - специальный тип объектов, осуществляющих изменение глобального состояния. Любой компонент может подписаться на уведомление об изменении глобального состояния. В определённом смысле, Redux реализует шаблон проектирование Publish/Subscribe, который позволяет связать между собой компоненты, удалённые друг от друга в иерархии очень далеко. Применение Redux значительно упрощает взаимодействие между компонентами в приложении.
 
-Простейший пример Reducer-а:
+Последовательность изменения состояния в Redux:
+
+1.	Переход в состояние осуществляется посредством вызова dispatch(action)
+2.	Вызывается reducer(currentState, action) и это приводит к созданию подмножества «текущее состояния для конкретного action» (newState)
+3.	Вызываются функции-слушатели, которые подписаны на изменения состояния и они осуществляют изменения в пользовательском интерфейсе (UI Changes)
+
+### Установка Redux и React-Redux
+
+Установка библиотеки: `npm install --save redux`.
+
+На уровне главного объекта приложения следует определить Store, главное хранилище состояния:
+
+```javascript
+const store = Redux.createStore(rootReducer);
+```
+
+**React-Redux** – это библиотека, которая отвечает за интеграцию React с Redux. Эта библиотека предоставляет компонент Provider и соответствующие функции для связывания.
+Handles – это функции-слушатели, передающие состояние в некоторый компонент.
+
+Установить package можно так: `npm install --save react-redux`
+
+Пример типового кода позволяющего включить Redux в React-приложение:
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import rootReducer from './reduceers';
+
+const store = createStore(rootReducer);
+
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById('root');
+);
+```
+
+Приведённый выше код осуществляет подготовку использования Redux в приложении. Библиотека React-Redux добавляет компонент **Provider**, который позволяет встраивать доступ к store в props. Достаточно обернуть главный компонент приложения (App) в компонент Provider.
+
+### Обработка действия в Reducer
+
+Со store следует связать Reducer - функцию обработки действия по изменению состояния. Простейший пример:
 
 ```javascript
 function contactsApp( state, action ) {
@@ -146,18 +190,71 @@ function contactsApp( state, action ) {
 	}
 }
 ```
+Обычной практикой является обработка в Reducer-е нескольких, связанных действий:
 
-Хорошей практикой считается комбинировать Reducer-ы каждый из которых обрабатывает только одну сущность, например, информацию об товарах, текущих приложениях, информацию о пользователе, и т.д. Пример объединения Reducer-ов:
+```javascript
+function rootReducer(state={}, action) {
+	switch(action.type) {
+	case "LOGOUT_USER":
+		return {...state, login: false}
+	case "LOGIN_USER":
+		return {...state, login: true}
+	default:
+		return state;
+	}
+}
+```
+
+Хорошей практикой считается комбинировать Reducer-ы, каждый из которых обрабатывает только одну сущность, например, информацию об товарах, текущих приложениях, информацию о пользователе, и т.д. Пример объединения Reducer-ов:
 
 ```javascript
 import {combineReducers} from 'redux';
 import currentUser from './currentUser';
 import messages from './messages';
+
 const rootReducer = combineReducers({
 	currentUser,
 	messages,
 });
+
 export default rootReducer;
 ```
 
+Действие (Action) - это объект, в котором должно быть определено поле с именем "type". Например:
+
+```json
+{
+	type: "LOGOUT_USER"
+}
+```
+
+Активировать действие можно используя функцию dispatch(), например:
+
+```javascript
+const store = Redux.createStore(rootReducer);
+...
+store.dispatch({
+	type: "LOGIN_USER"
+});
+```
+
+Подписать на изменение состояния можно в любом компоненте. В иллюстративных материалах это делается через объект store:
+
+```javascript
+const store = Redux.createStore(rootReducer);
+const changeCallback = () => {
+	console.log("State has changed", store.getState());
+}
+const unsubscribe = store.listen(changeCallback);
+```
+
+Функция unsubscribe() позволяет отменить подписку - это крайне важно, т.к. без этого может возникнуть утечка памяти.
+
+Например, если пользователь прошёл аутентификацию, изменяется текущее состояние и listener отвечающий за навигационную панель, выполняет rendering компонента, который формирует в NavBar ссылки на функции, доступные только после аутентификации пользователя.
+
+
 Для асинхронного взаимодействия часто используется [Redux-Thunk](https://github.com/reduxjs/redux-thunk).
+
+Статья: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0
+В 2019 году появилась приписка к статье, в которой Дэн Абрамов указывает, что React Hooks заменяет Redux и разделение компонентов на два типа уже не является принципиальным.
+
