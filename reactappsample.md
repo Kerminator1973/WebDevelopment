@@ -228,7 +228,7 @@ export default rootReducer;
 
 ```json
 {
-	type: "LOGOUT_USER"
+	"type": "LOGOUT_USER"
 }
 ```
 
