@@ -220,6 +220,10 @@ const rootReducer = combineReducers({
 export default rootReducer;
 ```
 
+Крайне важно, чтобы rootReducer был **pure function**.
+
+### Создание действия
+
 Действие (Action) - это объект, в котором должно быть определено поле с именем "type". Например:
 
 ```json
@@ -238,6 +242,8 @@ store.dispatch({
 });
 ```
 
+### Подписка на события
+
 Подписать на изменение состояния можно в любом компоненте. В иллюстративных материалах это делается через объект store:
 
 ```javascript
@@ -252,9 +258,53 @@ const unsubscribe = store.listen(changeCallback);
 
 Например, если пользователь прошёл аутентификацию, изменяется текущее состояние и listener отвечающий за навигационную панель, выполняет rendering компонента, который формирует в NavBar ссылки на функции, доступные только после аутентификации пользователя.
 
+В случае, если не используются Hooks, для подписки на события следует использовать функцию **connect**(). Ниже приведён код компонента, который использует Redux для получения состояния из Redux в виде **props**:
+
+```javascript
+import React from 'react';
+import {connect} from 'react-redux';
+
+const BoldName = ({name}) => (
+	<strong>{name}</strong>
+);
+
+const mapStateToProps = state => (
+	{ name: state.name }
+);
+
+export default connect(mapStateToProps, null)(BoldName);
+```
+
+Wrapper-функция connect() связывает компонент BoldName с Redux, а точкой формирования состояния компонента является mapStateToProps.
+
+В случае, если при нажатии на какую либо ссылку внутри компонента нужно поменять состояние в Redux, для этого следует использовать второй параметр вызова connect():
+
+```javascript
+import React from 'react';
+import {connect} from 'react-redux';
+
+const DelName = ({delName}) => (
+	<button type="button" 
+		onClick={delName}>DELETE</button>
+);
+
+const mapDispatchToProps = (
+	dispatch, ownProps
+) => (
+	{ 
+		delName: () => (dispatch({
+			type: "DEL_NAME"
+		}))
+	}
+);
+
+export default connect(null, mapDispatchToProps)(DelName);
+```
+
+### Дополнительно
 
 Для асинхронного взаимодействия часто используется [Redux-Thunk](https://github.com/reduxjs/redux-thunk).
 
-Статья: https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0
-В 2019 году появилась приписка к статье, в которой Дэн Абрамов указывает, что React Hooks заменяет Redux и разделение компонентов на два типа уже не является принципиальным.
+Redux – популярная библиотека state management, разработанная Дэном (Денисом) Абрамовым и Andrew Clark.
 
+Ключевой является [cтатья](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0) Дениса Абрамова с методическими рекомендациями по использованию Redux. В 2019 году появилась приписка к статье, в которой Дэн Абрамов указывает, что React Hooks заменяет Redux и разделение компонентов на два типа уже не является принципиальным.
