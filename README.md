@@ -104,6 +104,37 @@
 
 Разработчики Node.js активно продвигают новый продукт [Deno](https://deno.land/) на замену Node.js. Акцент в Deno сделан на повышенной безопасности и поддержке **TypeScript**. Runtime в Deno написан на **Rust**.
 
+### Особенности технологического стека ASP.NET Core 3
+
+Основным языком программирования ASP.NET Core 3 является C#. Для описания шаблонов Html-страниц может использоваться Razor-синтаксис, который позволяет встраивать в верстку C#-код, при её генерации сервером. ASP.NET Core 3 поддерживает модель MVC.
+
+Сильными сторонами ASP.NET Core 3 является встроенная поддержка ORM Entity Framework, позволяющая работать с базой данных, используя LINQ-запросы, обращаясь к СУБД, как к контейнеру объектов C#. Можно выбрать один из двух вариантов синтаксиса запросов.
+
+Extension methods:
+
+```csharp
+var results = context.Contacts.SelectMany(c => c.SalesOrderHeaders)
+    .OrderBy(c => c.SalesOrderDetails.Count)
+    .Select(c => new { c.SalesOrderDetails.Count });
+```
+
+LINQ Syntax:
+
+```csharp
+IQueryable<SalesOrderDetail> query =
+    from sale in context.SalesOrderDetails
+    where sale.SalesOrderID == s
+    select sale;
+```
+
+Из других удобных особенностей C#: поддержка Dependency Injection.
+
+В качестве web-сервера рекомендуется использовать **Microsoft Internet Information Server**. Для отладки кода можно использовать встроенный сервер **Kestrel**.
+
+Считается, что web-приложения на ASP.NET Core 3 обладают высокой производительностью и надёжностью.
+
+Приложения ASP.NET Core 3 могут работать как под Windows, так и под Linux (Apache).
+
 # Инструментальные средства для web-разработки
 
 Наиболее универсальный IDE со множеством plug-in-ов [Microsoft Visual Studio Code](https://code.visualstudio.com/).
