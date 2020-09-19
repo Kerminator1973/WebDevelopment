@@ -135,6 +135,18 @@ IQueryable<SalesOrderDetail> query =
 
 Приложения ASP.NET Core 3 могут работать как под Windows, так и под Linux (Apache).
 
+### Особенности технологического стека Java
+
+Сильная сторона Java - огромное количество мощных библиотеки, мощная эко-система.
+
+Ключевой библиотекой для взаимодействия с базой данных является [Hibernate ORM](http://hibernate.org/orm/).
+
+[Apache Struts](https://struts.apache.org/) - фреймворд для разработки web-приложений с использованием шаблона проектирования MVC.
+
+Набор библиотек [Spring](https://spring.io/) содержит множество инструментов, исключительно эффективных для разработки корпоративных приложений: Serverless, Cloud, Microservices, Reactive, Event Driven.
+
+Рекомендуется к прочтению статья [Top 10 Libraries every Java Developer should know](https://towardsdatascience.com/top-10-libraries-every-java-developer-should-know-37dd136dff54).
+
 # Инструментальные средства для web-разработки
 
 Наиболее универсальный IDE со множеством plug-in-ов [Microsoft Visual Studio Code](https://code.visualstudio.com/).
