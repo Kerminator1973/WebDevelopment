@@ -171,7 +171,7 @@ IQueryable<SalesOrderDetail> query =
 
 Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/).
 
-Существует огромное количество облачных IDE. Для примера: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/) и [Github Codespaces](https://github.com/features/codespaces). Облочное средство прототипирования и экспериментирования - [CodePen](https://codepen.io/).
+Существует огромное количество облачных IDE. Для примера: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/) и [Github Codespaces](https://github.com/features/codespaces). Облачное средство прототипирования и экспериментирования - [CodePen](https://codepen.io/).
 
 # Дополнительная информация
 
