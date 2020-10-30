@@ -120,3 +120,13 @@ var builder = require('xmlbuilder');
     </firmware>
 </response>
 ```
+
+## Возврат статического файла
+
+Для того чтобы вернуть статический файл, может быть использована функция sendFile():
+
+```javascript
+app.get('/getobj.aspx', (req, res) => {
+	res.sendFile(__dirname + "/magner_update.zip");
+});
+```
