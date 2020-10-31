@@ -215,3 +215,49 @@ const options = {
 
 let server = https.createServer(options, app).listen(3000, function() {
 ```
+
+## Разделение обработчиков запросов по разным файлам
+
+Разделение файла с routes на несколько файлов – по отдельному файлу для каждой сущности, кажется здравой идеей.
+
+Кажется разумным создать отдельный подкаталог с именем «routers» и размещать файлы с описанием обработчиков запросов в этом подкаталоге. Реализация файла с отдельными обработчиками может выглядеть так:
+
+```javascript
+const express = require('express')
+const Task = require('../models/task')
+const router = new express.Router()
+
+router.post('/tasks', async (req, res) => {
+	const task = new Task(req.body)
+	try {
+		await task.save()
+		res.status(201).send(task)
+	} catch (e) {
+		res.status(400).send(e)
+	}
+})
+
+module.exports = router
+```
+
+Мы создаём отдельный объект класса Router, используя ссылку на глобальный объект express, который существует только во одной копии и добавляем в него необходимые нам разработчики. Настроенный соответствующий образом router мы возвращаем посредством директивы module.exports.
+
+В главном файле «index.js» мы включаем в таблицу маршрутизации необходимые нам routers, используя вызов app.use():
+
+```javascript
+const express = require('express')
+require('./db/mongoose')
+const userRouter = require('./routers/user')
+const taskRouter = require('./routers/task')
+
+const app = express()
+const port = process.env.PORT || 3000
+
+app.use(express.json())
+app.use(userRouter)	// Обработка запросов связанных с сущностью «Пользователь»
+app.use(taskRouter)	// Обработка запросов связанных с сущностью «Задача»
+
+app.listen(port, () => {
+	console.log('Server is up on port ' + port)
+})
+```
