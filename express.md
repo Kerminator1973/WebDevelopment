@@ -121,7 +121,7 @@ var builder = require('xmlbuilder');
 </response>
 ```
 
-## Возврат статического файла
+## Передача бинарных данных пользователю
 
 Для того чтобы вернуть статический файл, может быть использована функция sendFile():
 
@@ -130,6 +130,49 @@ app.get('/getobj.aspx', (req, res) => {
 	res.sendFile(__dirname + "/magner_update.zip");
 });
 ```
+
+Передать большой объём бинарных данных данных пользователю
+
+```javascript
+res.set('Content-Type', 'image/jpg')
+res.send(user.avatar)	// bytes
+```
+
+## Получение файла от пользователя
+
+Express по умолчанию не поддерживает files upload. Рекомендуемый Middleware, который поддерживает multipart/form-data называется [Multer](https://www.npmjs.com/package/multer).
+
+Установить библиотеку можно следующим образом: `npm i multer`.
+
+Типовой код, использующий Multer:
+
+```
+const multer = require('multer')
+const upload = multer({		// Указываем, какие файлы можно получить
+	dest: 'images'
+})
+app.post('/upload', upload.single('upload'), (req, res) => {
+	res.send()		// Endpoint для обработки запроса
+})
+```
+
+Multer подключается как: `upload.single('upload')`.
+
+В рамках курса данные загружаются как через Postman, так и со страницы браузера.
+
+Реалистичный пример использования:
+
+```javascript
+router.post('/users/me/avatar', upload.single('avatar'), async (req, res) => {
+	req.user.avatar = req.file.buffer
+	await req.user.save()
+	res.send()
+}, (error, req, res, next) => {
+	res.status(400).send({ error: error.message })
+})
+```
+
+Полученные данные хранятся в **req.file.buffer**.
 
 ## Загрузка файлов из подкаталога public
 
