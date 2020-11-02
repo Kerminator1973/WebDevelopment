@@ -117,7 +117,7 @@ const bodyParser = require('body-parser');
 ...
 // Разбирать данные из application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-'''
+```
  
 Для обработки запросов, в которых данные передаются как JSON, следует использовать другую опцию:
  
