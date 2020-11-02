@@ -71,7 +71,7 @@ With middleware: new request -> do something -> run route handler
 
 Когда мы вызываем функцию app.use() в Express, мы добавляем в цепочку обработчиков запросов приблизительно вот такой код:
 
-```
+```javascript
 app.use((req, res, next) => {
 	if (req.method === 'GET') {
 		res.send('GET requests are disabled')
@@ -85,7 +85,7 @@ app.use((req, res, next) => {
 
 Примерами Middleware, применяемым ко всем запросам являются:
 
-```
+```javascript
 app.use((req, res, next) => {
 	res.status(503).send('Site is currently down. Check back soon!')
 })
