@@ -58,6 +58,82 @@ app.get('/getinfo.aspx', (req, res) => {
 
 В случае, если нам необходимо вернуть HTTP Status Code, следует использовать второй параметр callback-функции (res), связанной с обработчиком GET-запроса. Конкретный код указывается посредством вызова функции status().
 
+## Middleware в Express
+
+**Middleware** - это некоторый код, который выполняется до того, как будет вызвана callback-функция, определённая в router-е. Middleware используются для совершенно разных задач, начиная от валидации JWT, извлечением параметров пользовательской сессии из JWT, продолжая извлечением параметров POST-запроса и заканчивая обработкой файлов, выгружаемых из браузера на сервер.
+
+Проиллюстрировать идею middleware можно следующим образом:
+
+```
+Without middleware: new request -> run route handler
+With middleware: new request -> do something -> run route handler
+```
+
+Когда мы вызываем функцию app.use() в Express, мы добавляем в цепочку обработчиков запросов приблизительно вот такой код:
+
+```
+app.use((req, res, next) => {
+	if (req.method === 'GET') {
+		res.send('GET requests are disabled')
+	} else {
+		next()
+	}
+})
+```
+
+Этот код может завершить сформировать какой-нибудь ответ и завершить свою работу, либо передать управление следующему обработчику в цепочке. Приведённый выше пример проверяет HTTP-глагол в полученном запросе и если этот глагол GET, то возвращает сообщение о том, что GET-запросы запрещены. Если же запрос другой, то вызов метода next() передаст управление следующей функции в цепочке вызова. Такой метод и называется Middleware. Middleware может быть применён ко всем запросам, либо к конкретному обработчику запроса.
+
+Примерами Middleware, применяемым ко всем запросам являются:
+
+```
+app.use((req, res, next) => {
+	res.status(503).send('Site is currently down. Check back soon!')
+})
+app.use(express.json())
+app.use(userRouter)
+app.use(taskRouter)
+```
+
+Middleware может быть применён как ко всем запросам, так и к отдельным router-ам. Причём к одному router-у может быть применено несколько Middleware - они просто указываются между папаметрами req и res. Например:
+
+```javascript
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+```
+
+### Middleware Body-Parser для получения параметров POST-запроса
+
+При обработке POST-запросов традиционно используется специализированный Middleware-компонент, который транслирует содержимое Body в JavaScript-объект параметра request, передаваемого в callback-метод обработчика Endpoint. Одним из наиболее распространённых компонентов является [body-parser](https://www.npmjs.com/package/body-parser). Установить компонент можно следующей командой:
+
+```
+npm install body-parser
+```
+
+Данный middleware может быть применён для всех видов запроса по следующей схеме:
+
+```javascript
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+...
+// Разбирать данные из application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+'''
+ 
+Для обработки запросов, в которых данные передаются как JSON, следует использовать другую опцию:
+ 
+```javascript
+// Разбирать данные из application/json
+app.use(bodyParser.json())
+```
+
+Кроме этого, **body-parser** можно применять не ко всем запросам Express, а только к конкретному. Для этого соответствующий middleware указывается между req и res:
+
+```javascript
+app.post('/add_new_device', bodyParser.json(), (req, res) => {
+	// Здесь можно использовать отдельные поля запроса: req.body.field1, req.body.field2
+});
+```
+
 ## Возврат XML-документа
 
 Express позволяет указать тип возвращаемого content-а, для чего используется вызов res.set(). Например:
@@ -197,48 +273,6 @@ app.use(express.static(publicDirectoryPath))
 Обработчики app.get() и app.post() по-прежнему будут работать.
 
 По сути, мы можем смешивать в Express() динамические генерируемые HTML-файлы и статические HTML-файлы, которые для браузера будут выглядеть как находящиеся в одной папке, хотя фактически они будут находится в разных папках («src» и «public»).
-
-## Middleware в Express
-
-**Middleware** - это некоторый код, который выполняется до того, как будет вызвана callback-функция, определённая в router-е. Middleware используются для совершенно разных задач, начиная от валидации JWT, извлечением параметров пользовательской сессии из JWT, продолжая извлечением параметров POST-запроса и заканчивая обработкой файлов, выгружаемых из браузера на сервер.
-
-Проиллюстрировать идею middleware можно следующим образом:
-
-```
-Without middleware: new request -> run route handler
-With middleware: new request -> do something -> run route handler
-```
-
-Когда мы вызываем функцию app.use() в Express, мы добавляем в цепочку обработчиков запросов приблизительно вот такой код:
-
-```
-app.use((req, res, next) => {
-	if (req.method === 'GET') {
-		res.send('GET requests are disabled')
-	} else {
-		next()
-	}
-})
-```
-
-Этот код может завершить сформировать какой-нибудь ответ и завершить свою работу, либо передать управление следующему обработчику в цепочке. Приведённый выше пример проверяет HTTP-глагол в полученном запросе и если этот глагол GET, то возвращает сообщение о том, что GET-запросы запрещены. Если же запрос другой, то вызов метода next() передаст управление следующей функции в цепочке вызова. Такой метод и называется Middleware. Middleware может быть применён ко всем запросам, либо к конкретному обработчику запроса.
-
-Примерами Middleware, применяемым ко всем запросам являются:
-
-```
-app.use((req, res, next) => {
-	res.status(503).send('Site is currently down. Check back soon!')
-})
-app.use(express.json())
-app.use(userRouter)
-app.use(taskRouter)
-```
-
-Middleware может быть применён как ко всем запросам, так и к отдельным router-ам. Причём к одному router-у может быть применено несколько Middleware - они просто указываются между папаметрами req и res. Например:
-
-```javascript
-router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-```
 
 ## Проверка сертификатов (SSL/TLS)
 
