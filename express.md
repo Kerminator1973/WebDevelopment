@@ -227,16 +227,84 @@ const multer = require('multer')
 const upload = multer({		// Указываем, какие файлы можно получить
 	dest: 'images'
 })
-app.post('/upload', upload.single('upload'), (req, res) => {
-	res.send()		// Endpoint для обработки запроса
+app.post('/upload', upload.single('upload'), (req, res) => { // Endpoint для обработки запроса
+	res.send()		// Возвращаем HTTP Status 200 (OK)
 })
 ```
 
-Multer подключается как: `upload.single('upload')`.
+Когда мы указываем имя переменной в вызове upload.single('**upload**'), в действительности, мы указываем имя переменной в HTML-тэге, посредством которого осуществляется выгрузка:
+
+```html
+<form><input type="file" id="upload_12" name="upload" /></form>
+```
+
+Данные о файле передаётся посредством объекта req.file:
+
+```javascript
+app.post('/upload', upload.single('binobj'), function (req, res, next) {
+
+	// console.dir(req.file);
+	//
+	// req.file.fieldname = 'binobj'
+	// req.file.originalname = оригинальное имя файла
+	// req.file.path = размер сохранённого файла
+	// req.file.filename = уникальное имя файла (GUID)
+	// req.file.encoding = кодировка файла (не приципиально - это как данные передавались)
+	// req.file.mimetype = тип файла
+	// req.file.size = размер файла
+});
+```
+
+В тэге **<input type="file"** следует использовать атрибут **multiple**, если в диалоге выбора разрешён выбор нескольких файлов для выгрузки.
+
+Чтобы начать выгрузку через форму, необходимо добавить кнопку «Submit» в этой форме:
+
+Если мы планируем использовать кнопку выгрузки несколько раз, то после отправки данных на сервер следует сбрасывать её таким образом (используется jQuery):
+
+```javascript
+$("# upload_12").closest("form").reset();
+```
+
+Следующая строка позволяет указать, что все получаемые файлы следует копировать в подкаталог «uploads»:
+
+```javascript
+const upload = multer({	dest: 'uploads/'})
+```
+
+### Отправка данных из JavaScript-кода
+
+Чтобы запустить процесс выгрузки файла/файлов из JavaScript-кода, следует сначала реализовать код наполнения переменной для отправки на сервер:
+
+```javascript
+var formData = new FormData();
+for (var i = 0; i < item.files.length; i++) {
+	// Эквивалент в HTML: <input type="file" name="binobj" />
+	formData.append("binobj", item.files[i]);
+}
+```
+
+Затем можно выполнить AJAX-запрос:
+
+```javascript
+$.ajax({
+	type: "POST",
+	url: "/upload", 
+	enctype: 'multipart/form-data',     // Необходимо для корректной работы Multer
+	processData: false,
+	contentType: false,
+	data: formData,
+	success: function (response) {                    
+	},
+	error: function (jqXHR, textStatus, errorThrown) {
+	}                        
+});
+```
+
+### В рамках курса...
 
 В рамках курса данные загружаются как через Postman, так и со страницы браузера.
 
-Реалистичный пример использования:
+Пример использования из курса Andrew Mead "The Complete Node.js Developer Course (3rd Edition)":
 
 ```javascript
 router.post('/users/me/avatar', upload.single('avatar'), async (req, res) => {
