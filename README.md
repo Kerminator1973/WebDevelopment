@@ -158,7 +158,7 @@ body
 
 Наиболее популярной технологией хранения и поиска данных является NoSQL (Not only SQL). Популярная СУБД является [MongoDB](https://www.mongodb.com/). Часто в проектах используется **Object Document Mapper (ODM)** под названием [Mongoose](https://mongoosejs.com/).
 
-С целью достижения высокой степени безопасности приложений и лучшей поддержки **TypeScript**, Райян Даль, создатель Node.js осуществляет разработку нового продукта [Deno](https://deno.land/). Асинхронный Runtime для Deno (проект Tokyo) написан на **Rust**. Несмотря на высокий уровень Hype вокруг продукта, есть сомнения в том, что произойдёт массовый переход с Node.js на Deno. Рекомендуется к прочтению статья Louis Petrik: [Is Deno Already Dead?](https://medium.com/javascript-in-plain-english/is-deno-already-dead-661ce807338a)
+Райян Даль, создатель Node.js осуществляет разработку нового продукта [Deno](https://deno.land/). С сильными и слабыми сторонами обоих *runtimes* можно [ознакомиться здесь](denojs.md).
 
 ### Особенности технологического стека ASP.NET Core 3
 
