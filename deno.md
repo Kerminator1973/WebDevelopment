@@ -30,6 +30,6 @@
 
 ## Рекомендуется к прочтению
 
-Louis Petrik: [Is Deno Already Dead?](https://medium.com/javascript-in-plain-english/is-deno-already-dead-661ce807338a).
+Louis Petrik: [Is Deno Already Dead?](https://medium.com/javascript-in-plain-english/is-deno-already-dead-661ce807338a)
 
 Dan Halperin: [Top 5 Reasons Javascript Developers Prefer Deno Over Node](https://levelup.gitconnected.com/top-5-reasons-javascript-developers-prefer-deno-over-node-b1ff01734811).
