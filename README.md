@@ -259,12 +259,16 @@ IQueryable<SalesOrderDetail> query =
 
 # Дополнительная информация
 
-Почему [Heroku](heroku.md) так важен для web-разрабочика.
+## Heroku
 
-Что такое **Favicon**, на отсутствие которой очень часто ругается Google Chrome в Developer Console (F12)?
+Почему [Heroku](heroku.md) так важен для web-разработчика.
+
+## Favicon
+
+Что такое **Favicon**, на отсутствие которой ругается Google Chrome в Developer Console (F12)?
 
 ```
 .../favicon.ico Failed to load resource: the server responded with a status of 404 (Not Found)
 ```
 
-Это иконка вашего web-приложения, которую браузер отображает в закладке.
+Это иконка вашего web-приложения, которую браузер отображает в закладке (Page Tab).
