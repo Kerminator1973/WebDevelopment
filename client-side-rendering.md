@@ -25,6 +25,8 @@
 Чтобы сгенерировать html-разметку по шаблону и добавить её к отображаемому документу может быть использован следующий код:
 
 ```javascript
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+...
 const $messages = document.querySelector('#messages')
 ...
 socket.on('message', (message) => {
@@ -40,4 +42,34 @@ socket.on('message', (message) => {
 
 Таким образом, под термином client-side rendering подразумевается, что структура отображаемого документа изменяется динамически и выполняется эта работа в браузере.
 
+# Переходы между статическими страницами
+
+Сервер может быть сконфигурирован таким образом, чтобы возвращать браузеру только статические элементы, но это не помешает при перехода со страницы на страницу осуществлять передачу параметров через URL.
+
+Допустим, у нас есть html-разметка, в которой определена форма ввода:
+
+```html
+<form action="/chat.html">
+	<label>Display name</label>
+	<input type="text" name="username" placeholder="Display name" required>
+	<label>Room</label>
+	<input type="text" name="room" placeholder="Room" required>
+	<button>Join</button>
+</form>
+```
+
+При нажатии на кнопку «Submit», на хост отправляется запрос вида: `localhost:3000/chat.html?username=kermit&room=Sarcasm`. Хитрый трюк состоит в том, что для сервера осуществляется просто загрузка статического файла «chat.html», но с точки зрения браузера произошёл переход по комплексному URL и к этому комплексному URL вполне можно получить доступ, исполняя JavaScript-код уже в файле "chat.html". Этот URL доступен в JavaScript-объекте **location.search**. 
+
+Для повышения удобства разработки кода можно использовать вспомогательные библиотеки, например, библиотеку QS (Query String):
+
+```javascript
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+...
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+```
+
+Таким образом, создать приложение, состоящиее из нескольких отдельных страниц, с передачей данных при переходе между страницами и с полностью динамическим поведением.
+
 # Комплексные библиотеки и Frameworks
+
+Написать об Angular, React, Vue.js и Svelte.
