@@ -48,4 +48,87 @@ app.get('', (req, res) => {
   <h3>Written by {{name}}</h3>
 ```
 	
+## ASP.NET Core 3 + Razer
 
+В ASP.NET Core 3 осуществляется разделение страницы на верстку (cshtml) и компонент подготовки модели данных (cs).
+
+Под моделью подразумевается класс C#, наследующий свойства PageModel. Шаблон верстки заполняется данными публичных атрибутов этого класса. Пример модели:
+
+```csharp
+    public class AccountsModel : PageModel
+    {
+        private readonly ISO2020Context _context;
+        protected IAuthorizationService AuthorizationService { get; }
+
+        public List<Account> ListAccounts { get; set; }
+        public AccountDTO account;
+        public int CompanyID { get; set; }
+        public string CompanyName { get; set; }
+        public AccountsModel(ISO2020Context db, IAuthorizationService authorizationService)
+        {
+            _context = db;            
+            AuthorizationService = authorizationService;
+        }
+	...
+        public async Task<ActionResult> OnGetAsync(int id)
+        {
+            var isAuthorized = await AuthorizationService.AuthorizeAsync(User, "Accounts", RoleRequirements.Read);
+	    ...
+            catch
+            {
+                return StatusCode(400);
+            }
+
+            return Page();
+        }     
+```
+
+Подключение модели выглядит следующим образом:
+
+```aspnet
+@page
+@model ISO2020.AccountsModel
+```
+
+Пример использования **Razor** синтаксиса:
+
+```html
+<div class="container h-100 panel-page-container mt-2" id="unitAccountsContainer">
+    @if (Model.CompanyName != null)
+    {
+        <h4 id="CaptionID" class="col-lg-12 px-0">Список счетов юридического лица: @Model.CompanyName</h4>
+    }
+    else
+    {
+        <h4 id="CaptionID" class="col-lg-12 px-0">Список счетов</h4>
+    }
+    <table id="AccountsTable" class="table table-sm table-striped table-hover table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">ID компании</th>
+                <th class="text-center">Номер счета</th>
+                <th class="text-center">БИК</th>
+                <th class="text-center">Пояснение</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model.ListAccounts)
+            {
+                <tr class="CompanyClass">
+                    <td>@account.Id</td>
+                    <td>@account.CompanyId</td>
+                    <td>@account.AccountNumber</td>
+                    <td>@account.BIK</td>
+                    <td>@account.Explanation</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @using (Html.BeginForm("", "", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+...
+```
