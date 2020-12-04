@@ -161,7 +161,7 @@ body
 
 Следует заметить, что огромное community и доступность сотен тысяч open-source библиотек делают эко-систему Node.js и JavaScript фантастически популярной. В значительной степени, успешность разработки web-приложения на Node.js зависит от разумно выбранных шаблонов и подходящих к шаблонам, надёжных библиотек.
 
-Наиболее популярной технологией хранения и поиска данных является NoSQL (Not only SQL). Популярная СУБД является [MongoDB](https://www.mongodb.com/). Часто в проектах используется **Object Document Mapper (ODM)** под названием [Mongoose](https://mongoosejs.com/).
+Наиболее популярной технологией хранения и поиска данных является NoSQL (Not only SQL). Популярная СУБД является [MongoDB](https://www.mongodb.com/). Часто в проектах используется **Object Document Mapper (ODM)** под названием [Mongoose](https://mongoosejs.com/). Вместе с тем, с ORM для реляционных баз данных всё тоже прекрасно. Популярные ORM: [Sequelize](https://sequelize.org/), [TypeORM](https://typeorm.io/#/), [Bookshelf](https://bookshelfjs.org/) и [Objection](https://vincit.github.io/objection.js/).
 
 Райян Даль, создатель Node.js осуществляет разработку нового продукта [Deno](https://deno.land/). С сильными и слабыми сторонами обоих *runtimes* можно [ознакомиться здесь](deno.md).
 
