@@ -316,3 +316,7 @@ IQueryable<SalesOrderDetail> query =
 ```
 
 Это иконка вашего web-приложения, которую браузер отображает в закладке (Page Tab).
+
+## OpenJS Foundation
+
+[Организация](https://openjsf.org/projects/) которая стоит за множеством популярных ориентированных на JavaScript-проектов, в том числе: jQuery, Node.js, Express и т.д.
