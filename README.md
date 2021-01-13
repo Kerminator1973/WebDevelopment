@@ -198,7 +198,7 @@ IQueryable<SalesOrderDetail> query =
 
 Из других удобных особенностей C#: поддержка Dependency Injection.
 
-В качестве web-сервера рекомендуется использовать **Microsoft Internet Information Server**. Для отладки кода можно использовать встроенный сервер **Kestrel**.
+В качестве web-сервера рекомендуется использовать **Microsoft Internet Information Server**. Для отладки кода можно использовать встроенный сервер **Kestrel**. Статья по настройке IIS и SQL Server доступна [здесь](iis.md).
 
 Считается, что web-приложения на ASP.NET Core 3 обладают высокой производительностью и надёжностью.
 
