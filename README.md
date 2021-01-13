@@ -210,7 +210,7 @@ IQueryable<SalesOrderDetail> query =
 
 Ключевой библиотекой для взаимодействия с базой данных является [Hibernate ORM](http://hibernate.org/orm/).
 
-[Apache Struts](https://struts.apache.org/) - фреймворд для разработки web-приложений с использованием шаблона проектирования MVC.
+[Apache Struts](https://struts.apache.org/) - фреймворк для разработки web-приложений с использованием шаблона проектирования MVC.
 
 Набор библиотек [Spring](https://spring.io/) содержит множество инструментов, исключительно эффективных для разработки корпоративных приложений: Serverless, Cloud, Microservices, Reactive, Event Driven.
 
