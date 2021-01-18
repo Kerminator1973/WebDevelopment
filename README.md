@@ -302,15 +302,24 @@ IQueryable<SalesOrderDetail> query =
 
 # Инструментальные средства для web-разработки
 
+## Visual Studio Code (с Plug-Ins)
+
 Наиболее универсальный IDE со множеством plug-in-ов [Microsoft Visual Studio Code](https://code.visualstudio.com/). Мои любимые Plug-Ins:
 
 1. [Bookmarks](https://marketplace.visualstudio.com/items?itemName=alefragnani.Bookmarks) by Alessandro Fragnani
-2. [Bracket Pair Colorizer](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer) by CoenraadS
+2. [Bracket Pair Colorizer 2](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2) by CoenraadS
 3. [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme) by Philipp Kief
 4. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 5. [Tabnine Autocomplete AI](https://marketplace.visualstudio.com/items?itemName=TabNine.tabnine-vscode) by Tabnine
 
-Отличный шрифт для редактора VSCode - **FireCode** (с поддержкой лигатур).
+Дополнительно рекомендуется установить параметры:
+
+1. Шрифт для редактора VSCode - **FireCode** (с поддержкой лигатур). Доступен на [Google Fonts](https://fonts.google.com/specimen/Fira+Code?query=Fira+Code).
+2. Убрать Mini-Map, который загромождает экран. **Текстовый редактор -> Мини-Карта -> Enabled** установить в False
+3. Автоматическое сохранение кода при переходе из VSCode в другое окно: **Текстовый редактор -> Файлы -> Auto Save** установить в onWindowChange
+4. Не выводить сообщение о превышении длины комментария при commit-е в GitHub на 50-ом символе. **Расширения -> Git -> Input Validation Subject Length** установить в 72
+
+## Sublime Text 3
 
 Популярный HTML/CSS редактор с поддержкой Zen-программирования - [Sublime Text 3](https://www.sublimetext.com/3). Под Zen-программированием подразумевается возможность частичного ввода информации и автоматической генерации html-тэгов при нажатии кнопки <Tab>. Например, для текста: `div.worker` при нажатии на кнопку <Tab> будет сформирована следующая html-разметка:
 
@@ -319,6 +328,8 @@ IQueryable<SalesOrderDetail> query =
 ```
 
 Мета-язык Zen Coding может быть достаточно комплексным и при наличии навыков, кратно ускорять разработку html-верстки. См. также [Emmet](https://packagecontrol.io/packages/Emmet). Доступен [Plug-In](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.ZenCoding) для Visual Studio.
+
+## Другие инструменты
 
 Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/).
 
