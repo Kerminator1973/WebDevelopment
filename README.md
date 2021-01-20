@@ -343,6 +343,8 @@ IQueryable<SalesOrderDetail> query =
 
 Мета-язык Zen Coding может быть достаточно комплексным и при наличии навыков, кратно ускорять разработку html-верстки. См. также [Emmet](https://packagecontrol.io/packages/Emmet). Доступен [Plug-In](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.ZenCoding) для Visual Studio.
 
+Sublime Text 3 является условно-бесплатным и очень часто используется разработчиками на MacOS. В этой операционной системе также часто используется редактор кода [Brackets](http://brackets.io/).
+
 ## Другие инструменты
 
 Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/).
