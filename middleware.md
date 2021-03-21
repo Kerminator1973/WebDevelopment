@@ -70,3 +70,44 @@ public class ExceptionMiddleware {
 ```
 
 Ключевым является вызов метода через делегата \_next - именно в этом месте осуществляется передача управления следующему middleware.
+
+## Middlewares в Express.js
+
+Для подключение middleware в Expreess.js используется функция use(). Например:
+
+```javascript
+const app = express();
+
+app.use(compression());
+
+const flash = require('connect-flash');
+app.use(flash());
+
+app.use(express.urlencoded({ extended: false }));
+...
+app.use(express.static(publicDirectoryPath));
+```
+
+Если мы хотим применять некоторый middleware не ко всех https-запросам, а только к конкретному, нам следует указывать этот middleware между параметрами request и response в обработчике запроса к конкретной Endpoint:
+
+```javascript
+router.get('/import', isLoggedIn, async (req, res) => {
+	res.render('reguids.hbs');
+});
+
+// Страница настройки атрибутов исполнения
+router.get('/attrs', isLoggedIn, async (req, res) => {
+	res.render('attrs.hbs');
+});
+```
+
+В приведённом выше примере, isLoggedIn - это реализация middleware, которая обеспечивает блокировку доступа к конкретным страницам в том случае, если пользователь не прошёл аутентификацию:
+
+```javascript
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/login");
+};
+```
