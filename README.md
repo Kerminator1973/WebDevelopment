@@ -171,10 +171,12 @@ body
 
 Чаще всего инструментальные средства (CLI) конкретных фреймворков создают конфигурационные файлы для Bundler-а (часто, для WebPack 4).
 
-Считается, что WebPack является мощным, но сложным в использовании инструментом, поскольку он появился одним из первых и включает большое количество _legacy_ технологий. В качестве альтернатив рассматриваются:
+Считается, что WebPack является мощным, но сложным в использовании инструментом, поскольку он появился одним из первых и включает большое количество _legacy_ технологий. Основные претензии - сложный, многоуровневый файл "webpack.\*.js", в котором активно используются регулярные выражения, а синтаксис настроект подключаемых компонентов слабо структурирован.
 
-* [Parcel](https://parceljs.org/)
-* [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney
+В качестве альтернатив рассматриваются:
+
+* [Parcel](https://parceljs.org/). Разработчики продукта сфокусировались на _zero configuration_. Простота достигается посредством большого количества default-ных значений. Недостаток: подходит только для простых проектов
+* [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney. Разработчики так же стремятся реализовать подход zero configuration, что достигается благорадя использованию ES Modules, нативно поддерживаемому современными браузерами
 * [Vite](https://vitejs.dev/)
 * [Snowpack](https://www.snowpack.dev/). Статья [Web Developers: Use Snowpack instead of Webpack](https://javascript.plainenglish.io/web-developers-use-snowpack-instead-of-webpack-70e7b04f7853) за авторством Morgan Page
 
