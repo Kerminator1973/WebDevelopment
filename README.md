@@ -307,7 +307,7 @@ IQueryable<SalesOrderDetail> query =
 
 Сильная сторона Java - огромное количество мощных библиотеки, развитая эко-система. Основной разработчик Java - корпорация Oracle, поставляет два **Java Development Kit** (JDK): платный, надежный, с длительным циклом поддержки (LTS) **Oracle JDK** и бесплатный экспериментальный **Open JDK**. Статья [За Oracle JDK нужно будет платить. Какие теперь варианты?](https://habr.com/ru/company/epam_systems/blog/430084/) 
 
-Существуют альтернативные релизы OpenJDK, например: [Amazon Corretto](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html), [Zulu OpenJDK](https://www.azul.com/downloads/zulu-community/?package=jdk), [Alibaba Dragonwell OpenJDK](http://dragonwell-jdk.io/). Существуют специализированные виртуальные машины для компиляции Java в native code, например: [GraalVM](https://www.graalvm.org/).
+Существуют альтернативные релизы Open JDK, например: [Amazon Corretto](https://docs.aws.amazon.com/corretto/index.html), [Zulu OpenJDK](https://www.azul.com/downloads/zulu-community/?package=jdk), [Alibaba Dragonwell OpenJDK](http://dragonwell-jdk.io/). Существуют специализированные виртуальные машины для компиляции Java в native code, например: [GraalVM](https://www.graalvm.org/).
 
 Ключевой библиотекой для взаимодействия с базой данных является [Hibernate ORM](http://hibernate.org/orm/).
 
