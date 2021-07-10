@@ -183,6 +183,24 @@ body
 
 Вместе с тем, WebPack 5 может быть лишён многих, озвучиваемых сообществом, недостатков: https://webpack.js.org/blog/2020-10-10-webpack-5-release/
 
+В некоторых проектах не удаётся применять полноценный Bundler и в этом случае можно применить инструмент минификации. Пример подобной утилиты - [Uglify-JS](https://www.npmjs.com/package/uglify-js).
+
+Установить Uglify-JS можно локально:
+
+```
+npm install uglify-js
+```
+
+Допустим, что мы хотим выполнить минификацию файла "device.js" и сохранить результат в "device.min.js". В этом случае, команда может выглядеть следующим образом:
+
+```
+node d:\Sources\RUFServerLite\node_modules\uglify-js\bin\uglifyjs d:\Sources\RUFServerLite\public\devices.js -o d:\Sources\RUFServerLite\public\devices.min.js
+```
+
+Параметры `-c` (compress) и `-m` (mangle names) позволяют применять дополнительную оптимизацию JavaScript-кода.
+
+На практике объём типового JavaScript-файла удаётся уменьшить в три раза.
+
 <a name="security"></a>
 ## Информационная безопасность
 
