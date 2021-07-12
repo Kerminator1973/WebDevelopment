@@ -412,6 +412,18 @@ IQueryable<SalesOrderDetail> query =
 
 Считается, что fetch и jQuery ajax больше подходят для небольших приложений, в первую очередь из-за небольшого размера библиотек (minimal footprint). Axios прекрасно подходит для сложных приложений, в том числе, благодаря мощному механизму Axios Interceptors, позволяющему централизованно встраивать дополнительных код при обработке запросов и формировании ответов. Это значительно повышает удобство поддержки JWT.
 
+### Критика CRUD и RESTful
+
+Несмотря на очевидную популярность CRUD и RESTful среди популяризаторов, консультантов и авторов online-курсов, среди профессиональных разработчиков отношение скорее негативное. Это связано, в первую очередь, с тем, что CRUD подходит для простых приложений, но начинает создавать множество проблем в сложных, активно развивающихся приложениях.
+
+Рекомендуются к прочтению следующие статьи: [Why Are You Still Creating CRUD APIs?](https://levelup.gitconnected.com/why-are-you-still-creating-crud-apis-8790ca261bfb) by Nicklas Millard, [Is CRUD Bad for REST?](https://www.infoq.com/news/2009/07/CRUDREST/) by Boris Lublinsky, [Using CQRS with Event Sourcing or – what’s wrong with CRUD?](https://blog.softmemes.com/2016/11/12/using-cqrs-with-event-sourcing/) by Kristian Freed, [Why CRUD might be what they want, but may not be what they need](http://codebetter.com/iancooper/2011/07/15/why-crud-might-be-what-they-want-but-may-not-be-what-they-need/) by Ian Cooper, [CRUD is an antipattern](https://verraes.net/2013/04/crud-is-an-anti-pattern/) by Mathias Verraes.
+
+Личный опыт автора связан с разработкой приложений, в которых применение CRUD было осложнено тем, что:
+
+* требовалось большое количество операций Upload, которые не всегда удачно "ложаться" в CRUD
+* при работе с одной сущностью, использовались разные идентификаторы (а не один, явно обозначенный идентификатор сущности), или группы ключей
+* требовалось реализовывать групповые операции, которые в типовых CRUD-приложениях почти не встречаются
+
 <a name="mvc"></a>
 ## MVC
 
