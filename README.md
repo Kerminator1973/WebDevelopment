@@ -536,6 +536,12 @@ Postman может работать как Desktop-приложение, так 
 
 Статья FAM [8 Great Cheatsheets for Web Devs](https://javascript.plainenglish.io/8-amazing-cheatsheet-resources-for-web-developers-74a50fde89ba) содержит ссылки на различные Cheatsheets, исключительно полезные для web-разработки.
 
+[CanIUse](https://caniuse.com/) - поддержка браузерами различных технологий.
+
+[GRID](https://grid.malven.co/) - CSS/Flexbox.
+
+Cheatsheet [Regular Expressions](https://cheatography.com/davechild/cheat-sheets/regular-expressions/).
+
 ## Heroku
 
 Почему [Heroku](heroku.md) так важен для web-разработчика.
