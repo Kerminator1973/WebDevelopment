@@ -333,6 +333,8 @@ IQueryable<SalesOrderDetail> query =
 
 Набор библиотек [Spring](https://spring.io/) содержит множество инструментов, исключительно эффективных для разработки корпоративных приложений: Serverless, Cloud, Microservices, Reactive, Event Driven.
 
+A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.io/retrofit/).
+
 Рекомендуется к прочтению статья [Top 10 Libraries every Java Developer should know](https://towardsdatascience.com/top-10-libraries-every-java-developer-should-know-37dd136dff54).
 
 <a name="serverless"></a>
