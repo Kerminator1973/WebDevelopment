@@ -532,6 +532,10 @@ Postman может работать как Desktop-приложение, так 
 <a name="extra"></a>
 # Дополнительная информация
 
+## Cheatsheets
+
+Статья FAM [8 Great Cheatsheets for Web Devs](https://javascript.plainenglish.io/8-amazing-cheatsheet-resources-for-web-developers-74a50fde89ba) содержит ссылки на различные Cheatsheets, исключительно полезные для web-разработки.
+
 ## Heroku
 
 Почему [Heroku](heroku.md) так важен для web-разработчика.
