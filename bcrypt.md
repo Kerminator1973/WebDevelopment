@@ -56,3 +56,26 @@ const hashedPassword = await bcrypt.hash(user_pwd, saltRounds)
 ```
 const passwordValid = await bcrypt.compare(plainTextPasswoed, passwordHashFromTheDatabase);
 ```
+
+
+### Совмещение асинхронного и синхронного кода
+
+Функция isPasswordValid() является асинхронной и возвращает Promise. Чтобы обработать результат работы, нам необходимо использовать **then**().
+
+Т.к. функция, внутри которой мы работаем является синхронной (Middleware Passport.js), то мы не можем использовать внутри неё await:
+
+``` js
+passport.use(new LocalStrategy(
+	function(username, password, done) {
+		user.isPasswordValid(username, password).then(error => {
+		
+			// В случае ошибки, возвращаем её описание коду-обработчику
+			if (error)
+				return done(null, false, { message: error });
+			return done(null, {
+				username: 'admin'
+			});
+		});
+	}
+));
+```
