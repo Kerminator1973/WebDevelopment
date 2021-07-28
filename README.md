@@ -58,7 +58,7 @@
 3. Responsive design - автоматическую адаптацию внешнего вида приложений под фактическое разрешение монитора/экрана планшета и мобильного телефона, с учётом ориентации
 4. Дополнительные наборы widgets 
 
-Наиболее популярной библиотекой является [Twitter Bootstrap](http://getbootstrap.com/). Популярная альтернатива - [Semantic UI](https://semantic-ui.com/), у которой есть адаптация под React.
+Наиболее популярной библиотекой является [Twitter Bootstrap](http://getbootstrap.com/). Популярная альтернатива - [Semantic UI](https://semantic-ui.com/), у которой есть адаптация под React. Жесткая критика Bootstrap 4/5 изложена в статье [Bootstrap’s Garbage Bin Overflows! Rewriting Their Blog Template As Vanilla Code](https://medium.com/codex/bootstraps-garbage-bin-overflows-rewriting-their-blog-template-as-vanilla-code-22539acaa68e) by Jason Knight.
 
 В крупных проектах возникает проблема избыточных CSS, которая влияет как на объём передаваемых по сети данных, так и на простоту сопровождения web-приложения. Для решения проблемы можно использовать специализированные пред-процессоры SaSS/SCSS, [LESS](http://lesscss.org/), [Stylus](https://stylus-lang.com/) и другие. [Syntactically Awesome Stylesheets (SASS)](http://sass-lang.com/) является одним из наболее популярных инструментов для описания каскадных таблиц с элементами языка программирования. Пример определения каскадных таблиц на **SCSS** - новой версии SaSS:
 
