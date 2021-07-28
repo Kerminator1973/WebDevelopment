@@ -178,7 +178,7 @@ body
 
 * [Parcel](https://parceljs.org/). Разработчики продукта сфокусировались на _zero configuration_. Простота достигается посредством большого количества default-ных значений. Недостаток: подходит только для простых проектов
 * [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney. Разработчики так же стремятся реализовать подход zero configuration, что достигается благорадя использованию ES Modules, нативно поддерживаемому современными браузерами
-* [Vite](https://vitejs.dev/). Использует [Esbuild](https://esbuild.github.io/), разработанный на Go и работает очень быстро. Разработчик - Evan You (автор Vue.js)
+* [Vite](https://vitejs.dev/). Использует [Esbuild](https://esbuild.github.io/), разработанный на Go и работает очень быстро. Разработчик - Evan You (автор Vue.js). Критика инструмента в статье [Vite: How to fail on killing Webpack](https://darkghosthunter.medium.com/vite-how-to-fail-on-killing-webpack-16eb1834593c) by Italo Baeza Cabrera
 * [Snowpack](https://www.snowpack.dev/). Статья [Web Developers: Use Snowpack instead of Webpack](https://javascript.plainenglish.io/web-developers-use-snowpack-instead-of-webpack-70e7b04f7853) за авторством Morgan Page
 
 Вместе с тем, WebPack 5 может быть лишён многих, озвучиваемых сообществом, недостатков: https://webpack.js.org/blog/2020-10-10-webpack-5-release/
