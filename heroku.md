@@ -207,3 +207,7 @@ services.AddDbContext<DataContext>(opt => {
 	options.UseNpgsql(connStr);
 });
 ```
+
+## Занятные факты
+
+Heroku использует AWS в качестве базовой платформы. Таким образом Heroku относится к виртуальным хостинг компаниям.
