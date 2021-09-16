@@ -47,7 +47,9 @@ app.get('', (req, res) => {
   <h1>{{title}}</h1>
   <h3>Written by {{name}}</h3>
 ```
-	
+
+Handlebars считается очень популярным, но относительно медленным. Часто вместо него рассматривают [Eta](https://eta.js.org/), или [EJS](https://ejs.co/).
+
 ## ASP.NET Core 3 + Razer
 
 В ASP.NET Core 3 осуществляется разделение страницы на верстку (cshtml) и компонент подготовки модели данных (cs).
