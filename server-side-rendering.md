@@ -48,7 +48,7 @@ app.get('', (req, res) => {
   <h3>Written by {{name}}</h3>
 ```
 
-Handlebars считается очень популярным, но относительно медленным. Часто вместо него рассматривают [Eta](https://eta.js.org/), или [EJS](https://ejs.co/).
+Handlebars считается очень популярным, но относительно медленным: [The Battle of Express.js Templating Engines — Which One Is the Fastest?](https://javascript.plainenglish.io/handlebars-eta-ejs-1623a6140e56) by Louis Petrik. Часто вместо него рассматривают [Eta](https://eta.js.org/), или [EJS](https://ejs.co/). 
 
 ## ASP.NET Core 3 + Razer
 
