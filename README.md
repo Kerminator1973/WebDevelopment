@@ -420,6 +420,8 @@ A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.
 |  Update | /dogs/:id       |    PUT    | Обновить данные о собаке, а потом перейти куда-нибудь    |
 | Destroy | /dogs/:id       |   DELETE  | Удалить информацию о собаке, а потом перейти куда-нибудь |
 
+Для проектирования и документирования REST API часто используется специализированный инструмент [Swagger](https://swagger.io/).
+
 ### Выбор клиентской библиотеки для взаимодействия с REST API
 
 Наиболее популярными средствами доступа к REST API являются [Fetch API](https://developer.mozilla.org/ru/docs/Web/API/Fetch_API), [jQuery ajax](https://api.jquery.com/jquery.ajax/) и [Axios](https://www.npmjs.com/package/axios).
