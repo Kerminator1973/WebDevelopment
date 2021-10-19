@@ -211,3 +211,9 @@ services.AddDbContext<DataContext>(opt => {
 ## Занятные факты
 
 Heroku использует AWS в качестве базовой платформы. Таким образом Heroku относится к виртуальным хостинг компаниям.
+
+## Похожие сервисы
+
+[Netlify](https://www.netlify.com/pricing/) предлагает бесплатный тарифный план с выделением random имени сайта.
+
+[Deno Delpoy](https://deno.com/deploy/) - hosting для проектов разработанных для Runtime Deno от стартапа разработчиков Deno.
