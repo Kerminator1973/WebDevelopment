@@ -432,7 +432,12 @@ A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.
 |  Update | /dogs/:id       |    PUT    | Обновить данные о собаке, а потом перейти куда-нибудь    |
 | Destroy | /dogs/:id       |   DELETE  | Удалить информацию о собаке, а потом перейти куда-нибудь |
 
-Для проектирования и документирования REST API часто используется специализированный инструмент [Swagger](https://swagger.io/).
+Для проектирования и документирования REST API часто используется специализированный инструмент [Swagger](https://swagger.io/). Настройка Swagger в проекте с Node.js описана в [статье](https://github.com/Kerminator1973/RUFServerLite/blob/main/docs/swagger.md).
+
+Разница между http-глаголами представляется драматической:
+
+- GET не должен приводить к изменение данных на сервере. Как следствие, GET-запросы могут кэшироваться, что позволяет значительно ускорять работу web-приложения
+- PUT только изменяет существующие данные, но не добавляет их. Это свойство называется idempotency. Разница между PUT и POST подробно описана в статье [Why You Should Use a PUT Request Instead of a POST request](https://betterprogramming.pub/why-you-should-use-a-put-request-instead-of-a-post-request-13b593b6e67c) by Dieter Jordens.
 
 ### Выбор клиентской библиотеки для взаимодействия с REST API
 
