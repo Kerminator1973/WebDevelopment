@@ -439,6 +439,8 @@ A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.
 - GET не должен приводить к изменение данных на сервере. Как следствие, GET-запросы могут кэшироваться, что позволяет значительно ускорять работу web-приложения
 - PUT только изменяет существующие данные, но не добавляет их. Это свойство называется idempotency. Разница между PUT и POST подробно описана в статье [Why You Should Use a PUT Request Instead of a POST request](https://betterprogramming.pub/why-you-should-use-a-put-request-instead-of-a-post-request-13b593b6e67c) by Dieter Jordens.
 
+**Идемпотентность** — свойство объекта или операции при повторном применении операции к объекту давать тот же результат, что и при первом. Термин предложил американский математик Бенджамин Пирс в статьях 1870-х годов.
+
 ### Выбор клиентской библиотеки для взаимодействия с REST API
 
 Наиболее популярными средствами доступа к REST API являются [Fetch API](https://developer.mozilla.org/ru/docs/Web/API/Fetch_API), [jQuery ajax](https://api.jquery.com/jquery.ajax/) и [Axios](https://www.npmjs.com/package/axios).
