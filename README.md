@@ -575,6 +575,8 @@ Postman может работать как Desktop-приложение, так 
 
 Cheatsheet [Regular Expressions](https://cheatography.com/davechild/cheat-sheets/regular-expressions/).
 
+[Использование DDNS](https://github.com/Kerminator1973/MobileDevelopment/blob/master/expenses.md#ddns) и сервиса NoIP. Переадрессация запросов через маршрутизатор на домашний компьютер.
+
 ## Heroku
 
 Почему [Heroku](heroku.md) так важен для web-разработчика.
