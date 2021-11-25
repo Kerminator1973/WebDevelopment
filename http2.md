@@ -9,6 +9,8 @@
 
 Данная инструкция базируется на [статье](https://webapplog.com/http2-node/).
 
+[HTTP/3: What was, what is, what will be](https://medium.com/mutualmobile/http-3-what-was-what-is-what-will-be-bcade7df032b) by Mutual Mobile.
+
 ## Использование HTTP/2 совместно с Express
 
 Создание приложения Node.js:
