@@ -581,6 +581,10 @@ Cheatsheet [Regular Expressions](https://cheatography.com/davechild/cheat-sheets
 
 Почему [Heroku](heroku.md) так важен для web-разработчика.
 
+## Бесплатный сайт в домашней сети
+
+Как создать [публично доступный](homesite.md) web-сайт на базе домашней сети, бесплатно.
+
 ## GitHub Pages
 
 GitHub предоставляет бесплатный хостинг для статических сайтов с URL: https://[account_name].github.io/[repo_name]
