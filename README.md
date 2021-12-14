@@ -479,6 +479,12 @@ A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.
 * при работе с одной сущностью, использовались разные идентификаторы (а не один, явно обозначенный идентификатор сущности), или группы ключей
 * требовалось реализовывать групповые операции, которые в типовых CRUD-приложениях почти не встречаются
 
+Популяризаторы CRUD отмечают, что если ваш API содержит действие, которое не попадает в CRUD, добавьте ACTION. ACTION – это глагол, который размещается в URI за номером версии API. Примеры глаголов: CALCULATE, SEARCH, и т.д. В частности, Spotify использует ACTION search:
+
+``` http
+https://api.spotify.com/v1/search?query=tania+nowra&offset 
+```
+
 В качестве альтернативы рассматриваются [GraphQL](https://graphql.org/), [gRPC](https://github.com/grpc/grpc) и [JSON-RPC](https://en.wikipedia.org/wiki/JSON-RPC).
 
 <a name="mvc"></a>
