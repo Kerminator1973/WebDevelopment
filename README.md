@@ -452,6 +452,15 @@ A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.
 |  Update | /dogs/:id       |    PUT    | Обновить данные о собаке, а потом перейти куда-нибудь    |
 | Destroy | /dogs/:id       |   DELETE  | Удалить информацию о собаке, а потом перейти куда-нибудь |
 
+HTTP-глаголы и возвращаемые HTTP Status Codes
+
+| Действие              | HTTP Verb                                                                                                                                                      | HTTP Status Codes                                                 |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| Creating a Resource   | POST                                                                                                                                                           | 201 Created. 400 Missing required field. 503 Database unreachable |
+| Retrieving Resource   | GET                                                                                                                                                            | 200 OK. 404 Resource Not Found. 500 Internal Server Error         |
+| Updating the Resource | PUT – Update ALL of the attributes of the resource. PATCH – Update SOME of the attributes of the resource. Patch May be more performant for large size objects | 200 Success. 201 Created. 204 No Content                          |
+| Deleting the Resource | DELETE                                                                                                                                                         | 200 Success. 204 No Content                                       |
+
 Для проектирования и документирования REST API часто используется специализированный инструмент [Swagger](https://swagger.io/). Настройка Swagger в проекте с Node.js описана в [статье](https://github.com/Kerminator1973/RUFServerLite/blob/main/docs/swagger.md).
 
 Разница между http-глаголами представляется драматической:
