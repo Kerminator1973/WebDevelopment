@@ -571,13 +571,21 @@ namespace API.Controllers
 Наиболее универсальный IDE со множеством plug-in-ов [Microsoft Visual Studio Code](https://code.visualstudio.com/). Мои любимые Plug-Ins:
 
 1. [Bookmarks](https://marketplace.visualstudio.com/items?itemName=alefragnani.Bookmarks) by Alessandro Fragnani
-2. [Bracket Pair Colorizer 2](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2) by CoenraadS
-3. [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme) by Philipp Kief
-4. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-5. [Tabnine Autocomplete AI](https://marketplace.visualstudio.com/items?itemName=TabNine.tabnine-vscode) by Tabnine. ВНИМАНИЕ! Огромное потребление ОЗУ. Создаёт десятки процессов по ~60 Мб каждый
-6. [NuGet Gallery](https://marketplace.visualstudio.com/items?itemName=patcx.vscode-nuget-gallery) by pcislo
-7. [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) by Microsoft
-8. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) by Microsoft
+2. [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme) by Philipp Kief
+3. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+4. [Tabnine Autocomplete AI](https://marketplace.visualstudio.com/items?itemName=TabNine.tabnine-vscode) by Tabnine. ВНИМАНИЕ! Огромное потребление ОЗУ. Создаёт десятки процессов по ~60 Мб каждый
+5. [NuGet Gallery](https://marketplace.visualstudio.com/items?itemName=patcx.vscode-nuget-gallery) by pcislo
+6. [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) by Microsoft
+7. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) by Microsoft
+
+Один из моих любимых plugin-ов **Bracket Pair Colorizer 2** вошел в состав Visual Studio Code. Чтобы активировать его, следует включить в settings.json строки:
+
+``` json
+{
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs":"active"
+}
+```
 
 Дополнительно рекомендуется установить параметры:
 
