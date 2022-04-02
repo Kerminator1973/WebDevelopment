@@ -576,6 +576,8 @@ namespace API.Controllers
 4. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 5. [Tabnine Autocomplete AI](https://marketplace.visualstudio.com/items?itemName=TabNine.tabnine-vscode) by Tabnine. ВНИМАНИЕ! Огромное потребление ОЗУ. Создаёт десятки процессов по ~60 Мб каждый
 6. [NuGet Gallery](https://marketplace.visualstudio.com/items?itemName=patcx.vscode-nuget-gallery) by pcislo
+7. [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) by Microsoft
+8. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) by Microsoft
 
 Дополнительно рекомендуется установить параметры:
 
