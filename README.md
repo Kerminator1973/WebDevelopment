@@ -629,7 +629,14 @@ Google Chrome сам по себе является очень мощным ин
 
 Облачные IDE: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/), [Github Codespaces](https://github.com/features/codespaces).
 
-Песочницы для быстрого прототипирования и экспериментирования: [CodePen](https://codepen.io/), [CodeSandBox](https://codesandbox.io/) и [StackBlitz](https://stackblitz.com/).
+Облачный редактор [VS Code](https://vscode.dev/).
+
+Песочницы для быстрого прототипирования и экспериментирования: [CodePen](https://codepen.io/), [CodeSandBox](https://codesandbox.io/) и [StackBlitz](https://stackblitz.com/),  [OnlineGDB](https://www.onlinegdb.com/), [CodeChef](https://www.codechef.com/ide), [Cups Online от Main.ru](https://interview.cups.online/).
+
+Специализированные песочницы:
+
+- [.NET Fiddle](https://dotnetfiddle.net/)
+- [SQL Fiddle](http://sqlfiddle.com/)
 
 Исключительно важным продуктом для отладки REST API является [Postman](https://www.postman.com/). Этот продукт позволяет, посредством GUI, сконструировать любой http(s) запрос и проанализировать полученный результат. Продукт считается индустриальным стандартом. Схожий функционал есть у консольного приложения [CURL](https://curl.haxx.se/), но в этом продукте нет такого мощного и удобного графического пользовательского интерфейса, как у Postman.
 
