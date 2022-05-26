@@ -30,6 +30,8 @@
 
 Бесплатные сертификаты можно сгенерировать на [Let's Encrypt](https://letsencrypt.org/ru/getting-started/).
 
+Чтобы упростить управление сертификатами при использовании Let's Encrypt может быть использовать [certbot](https://certbot.eff.org/pages/about) - специальный Tool, который обновляет бесплатные сертификаты каждые 60 дней. Оптимально подходит для случаев, когда уже существует http-сайт на 80 порту и его необходимо с минимальными усилиями перевести на https.
+
 ## Настройка Raspberry Pi, в качестве публичного web-сервера
 
 Инструкция по применению NoIP для RPi 3/4: [How to Install No-IP on Raspberry Pi](https://www.slicethepi.co.uk/how-to-install-no-ip-on-raspberry-pi/)
