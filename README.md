@@ -590,6 +590,7 @@ namespace API.Controllers
 5. [NuGet Gallery](https://marketplace.visualstudio.com/items?itemName=patcx.vscode-nuget-gallery) by pcislo
 6. [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) by Microsoft
 7. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) by Microsoft
+8. [Markdown PDF](https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf) by yzane
 
 Один из моих любимых plugin-ов **Bracket Pair Colorizer 2** вошел в состав Visual Studio Code. Чтобы активировать его, следует включить в settings.json строки:
 
