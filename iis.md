@@ -2,7 +2,7 @@
 
 ## Установка IIS
 
-По умолчанию, сервисы IIS не установливаются в Windows 10. Отправной точно для разработчки инструкции являлась статья [Install and Setup a Website in IIS on Windows 10](https://helpdeskgeek.com/windows-10/install-and-setup-a-website-in-iis-on-windows-10/).
+По умолчанию, сервисы IIS не установливаются в Windows 10. Отправной точкой для разработки инструкции являлась статья [Install and Setup a Website in IIS on Windows 10](https://helpdeskgeek.com/windows-10/install-and-setup-a-website-in-iis-on-windows-10/).
 
 Запустить «Параметры Windows», выбрать «Programs and Features / Приложения». С правой стороны, в углу – «Сопутствующие параметры – Программы и компоненты». Открывается «Control Panel» в разделе «Программы и компоненты».
 
