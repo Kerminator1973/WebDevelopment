@@ -216,7 +216,7 @@ openssl pkcs12 -in localhost.pfx -clcerts -nokeys -out cert.pem
 
 ``` xml
 <system.web>
- <sessionState allowCustomSqlDatabase="true" cookieless="UseCookies" mode="InProc" ... />
+ <sessionState cookieless="UseCookies" mode="InProc" />
 ```
 
 Отрадно, что в IIS конфигурационный файл "Web.Config" транслируется в поля графического пользовательского интерфейса и их довольно удобно изменять. При изменении параметров в управляющей консоли IIS, содержимое файла "Web.Config" также будет корректироваться.
