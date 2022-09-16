@@ -30,11 +30,17 @@
 
 Бесплатные сертификаты можно сгенерировать на [Let's Encrypt](https://letsencrypt.org/ru/getting-started/).
 
-Чтобы упростить управление сертификатами при использовании Let's Encrypt может быть использовать [certbot](https://certbot.eff.org/pages/about) - специальный Tool, который обновляет бесплатные сертификаты каждые 60 дней. Оптимально подходит для случаев, когда уже существует http-сайт на 80 порту и его необходимо с минимальными усилиями перевести на https.
+Let’s Encrypt — это бесплатный, автоматизированный и открытый Центр сертификации (ЦС), работающий на благо общества. Это сервис, предоставляемый Исследовательской группой по безопасности Интернета (ISRG). Ознакомиться с ключевыми принципами Let’s Encrypt можно по [ссылке](https://letsencrypt.org/ru/about/).
+
+Чтобы упростить управление сертификатами при использовании Let's Encrypt может быть использован [certbot](https://certbot.eff.org/pages/about) - специальный Tool, который обновляет бесплатные сертификаты каждые 60 дней. Оптимально подходит для случаев, когда уже существует http-сайт на 80 порту и его необходимо с минимальными усилиями перевести на https.
+
+### Отечественные сервисы для выдачи TLS-сертификатов.
+
+[Минцифры запустила](https://www.interfax.ru/digital/862341) на портале Госуслуг сервис выдачи отечественных SSL/TLS-сертификатов. Ключевая особенность - эти сертификаты являются доверенными только при использовании [Яндекс.Браузер](https://browser.yandex.ru/) и [Атом от VK](https://browser.ru/).
 
 ## Настройка Raspberry Pi, в качестве публичного web-сервера
 
-Инструкция по применению NoIP для RPi 3/4: [How to Install No-IP on Raspberry Pi](https://www.slicethepi.co.uk/how-to-install-no-ip-on-raspberry-pi/)
+В сети интернет есть множество инструкций по применению [NoIP для RPi 3/4](https://raspberrytips.com/install-no-ip-raspberry-pi/). Поисковая строка: "How to Install No-IP on Raspberry Pi".
 
 Видео-инструкция [Fireship: Raspberry Pi versus AWS // How to host your website on the RPi4](https://www.youtube.com/watch?v=QdHvS0D1zAI)
 
