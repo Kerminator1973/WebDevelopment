@@ -678,11 +678,13 @@ Cheatsheet [Regular Expressions](https://cheatography.com/davechild/cheat-sheets
 
 ## Heroku
 
-Почему [Heroku](heroku.md) так важен для web-разработчика.
+**Устаревший текст**: почему [Heroku](heroku.md) так важен для web-разработчика.
+
+**Текущее состояние**: Heroku уже не важен, так как Heroku отменили бесплатную виртуальную машину для разработчиков. См. [The End Of Free Dynos At Heroku](https://levelup.gitconnected.com/the-end-of-free-dynos-at-heroku-272fdf2d78c4) by tomerpacific
 
 ## Бесплатный сайт в домашней сети
 
-Как создать [публично доступный](homesite.md) web-сайт на базе домашней сети, бесплатно.
+Как создать [публично доступный](homesite.md) web-сайт на базе домашней сети, бесплатно. ВНИМАНИЕ! Инструкция не работает с интернет-провайдером **МТС**.
 
 ## GitHub Pages
 
