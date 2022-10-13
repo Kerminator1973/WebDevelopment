@@ -593,6 +593,7 @@ namespace API.Controllers
 6. [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) by Microsoft
 7. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) by Microsoft
 8. [Markdown PDF](https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf) by yzane
+9. Microsoft [HexEditor](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
 
 Один из моих любимых plugin-ов **Bracket Pair Colorizer 2** вошел в состав Visual Studio Code. Чтобы активировать его, следует включить в settings.json строки:
 
@@ -634,9 +635,9 @@ Google Chrome сам по себе является очень мощным ин
 
 Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/).
 
-Облачные IDE: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/), [Github Codespaces](https://github.com/features/codespaces).
+Облачные IDE: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/), [Github Codespaces](https://github.com/features/codespaces). CodeAnywhere и Codespaces являются платными - в России не доступны.
 
-Облачный редактор [VS Code](https://vscode.dev/).
+Облачный редактор [VS Code](https://vscode.dev/) - оплата за фактические время использования - в России не доступны.
 
 Песочницы для быстрого прототипирования и экспериментирования: [CodePen](https://codepen.io/), [CodeSandBox](https://codesandbox.io/) и [StackBlitz](https://stackblitz.com/),  [OnlineGDB](https://www.onlinegdb.com/), [CodeChef](https://www.codechef.com/ide), [Cups Online от Main.ru](https://interview.cups.online/).
 
