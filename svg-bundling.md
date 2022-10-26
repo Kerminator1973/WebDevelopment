@@ -34,7 +34,7 @@
 
 ```html
 <svg class="icon">
-	<use xlink:href="/img/images.svg#user"></use>
+    <use xlink:href="/img/images.svg#user"></use>
 </svg>
 ```
 
@@ -50,5 +50,7 @@
     overflow: hidden;
 }
 ```
+
+ВАЖНО: приведённые выше рекомендации работают только в том случае, если svg-файл загружается с сайта (например, с сервера приложений на Node.js). Если мы делаем локальное приложение, запускаемоё с жёсткого диска, то браузер может блокировать загрузку svg-файла, считая подобное действие нарушением информационной безопасности.
 
 Ключевое обсуждение: https://stackoverflow.com/questions/52427858/preloader-script-change-svg-fill-color-before-page-load/52439542#52439542although
