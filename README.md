@@ -641,7 +641,7 @@ Google Chrome сам по себе является очень мощным ин
 
 Облачный редактор [VS Code](https://vscode.dev/) - оплата за фактические время использования - в России не доступны.
 
-Песочницы для быстрого прототипирования и экспериментирования: [CodePen](https://codepen.io/), [CodeSandBox](https://codesandbox.io/) и [StackBlitz](https://stackblitz.com/),  [OnlineGDB](https://www.onlinegdb.com/), [CodeChef](https://www.codechef.com/ide), [Cups Online от Mail.ru](https://interview.cups.online/).
+Песочницы для быстрого прототипирования и экспериментирования: [CodePen](https://codepen.io/), [CodeSandBox](https://codesandbox.io/) и [StackBlitz](https://stackblitz.com/),  [OnlineGDB](https://www.onlinegdb.com/), [CodeChef](https://www.codechef.com/ide), [Cups Online от Mail.ru](https://interview.cups.online/), [CodingGround](https://www.tutorialspoint.com/codingground.htm).
 
 Online-компилятор С++ [GodBolt](https://godbolt.org/). Ключевая особенность - показывает ассемблерный код для приведённого кода C++. Главная задача ресурса - экспериментальная проверка степени оптимизации кода C++. Для web-приложений это важный инструмент, т.к. встраивание высокоэффективного C++ кода в приложения на других языках программирования (Python, JavaScript) является естественным способом значительного повышения эффективности работы таких приложений.
 
