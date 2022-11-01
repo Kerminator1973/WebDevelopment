@@ -54,3 +54,30 @@
 ВАЖНО: приведённые выше рекомендации работают только в том случае, если svg-файл загружается с сайта (например, с сервера приложений на Node.js). Если мы делаем локальное приложение, запускаемоё с жёсткого диска, то браузер может блокировать загрузку svg-файла, считая подобное действие нарушением информационной безопасности.
 
 Ключевое обсуждение: https://stackoverflow.com/questions/52427858/preloader-script-change-svg-fill-color-before-page-load/52439542#52439542although
+
+## Динамическое добавление SVG в HTML-верстку
+
+Создать SVG-элемент динамически можно используя функцию **createElementNS**(). Например:
+
+``` js
+let iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+iconSvg.setAttribute('fill', 'gray');
+iconSvg.setAttribute('viewBox', '0 0 512 512');
+iconSvg.setAttribute('stroke', 'gray');
+iconSvg.classList.add('post-icon');
+
+const iconPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+iconPath1.setAttribute(
+    'points',
+    '512,59.076 452.922,0 256,196.922 59.076,0 0,59.076 196.922,256 0,452.922 59.076,512 256,315.076 452.922,512 512,452.922 315.076,256'
+);
+iconSvg.appendChild(iconPath1);
+```
+
+Созданный элемент следует включить в некоторый родительский элемент, например:
+
+``` span
+let span = document.createElement('span');
+span.className = "svgtool";
+span.append(iconSvg);
+```
