@@ -649,6 +649,7 @@ Online-компилятор С++ [GodBolt](https://godbolt.org/). Ключева
 
 - [.NET Fiddle](https://dotnetfiddle.net/) - проверка консольных приложений
 - [SQL Fiddle](http://sqlfiddle.com/) - разные СУБД
+- [DB Fiddle](https://www.db-fiddle.com/) - MySQL, PostgreSQL и SQLite
 - [pgSQL](https://pg-sql.com/) - песочница для PostgreSQL
 - [Python](https://colab.research.google.com/) - специализация Machine Learning, но не только
 
