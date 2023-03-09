@@ -11,18 +11,20 @@
 
 [HTTP/3: What was, what is, what will be](https://medium.com/mutualmobile/http-3-what-was-what-is-what-will-be-bcade7df032b) by Mutual Mobile.
 
+Ключевая особенность HTTP/3 состоит в отказе от использования TCP-соединения в пользу QUIC, который базируется на UDP. См. статью [Why HTTP Dropped TCP and Adopted UDP](https://javascript.plainenglish.io/why-http-dropped-tcp-and-adopted-udp-7a1c49b24c68) by Ruby Valappil.
+
 ## Использование HTTP/2 совместно с Express
 
 Создание приложения Node.js:
 
-```
+``` shell
 npm init
 npm i express spdy --save
 ```
 
 Для работы HTTP/2 требуется использовать защищённое соединение (SSL). Сгенерировать ключи можно, например, утилитой openssl. В частности, openssl встроена в дистрибутив Git. Используя Visual Studio Code можно в окне "Terminal" открыть shell "Git Bush" и ввести команду:
 
-```
+``` shell
 openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
 ```
 
