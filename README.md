@@ -594,6 +594,9 @@ namespace API.Controllers
 7. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) by Microsoft
 8. [Markdown PDF](https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf) by yzane
 9. Microsoft [HexEditor](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
+10. [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode) by SonarSource - мощный Link для разных языков программирования, включая JavaScript/TypeScript
+11. [Polacode](https://marketplace.visualstudio.com/items?itemName=pnp.polacode) by P & P - сделать красивую картинку с выделенным кодом приложения
+12. [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) by GitKraken - позволяет посмотреть Commit Graph, визуализировать историю изменений кода, "кто исправлял текущую строку кода"
 
 Один из моих любимых plugin-ов **Bracket Pair Colorizer 2** вошел в состав Visual Studio Code. Чтобы активировать его, следует включить в settings.json строки:
 
