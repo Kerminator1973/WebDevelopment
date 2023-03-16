@@ -385,9 +385,11 @@ IQueryable<SalesOrderDetail> query =
 
 Сильная сторона Java - огромное количество мощных библиотеки, развитая эко-система. Основной разработчик Java - корпорация Oracle, поставляет два **Java Development Kit** (JDK): платный, надежный, с длительным циклом поддержки (LTS) **Oracle JDK** и бесплатный экспериментальный **Open JDK**. Статья [За Oracle JDK нужно будет платить. Какие теперь варианты?](https://habr.com/ru/company/epam_systems/blog/430084/)
 
-Существуют альтернативные релизы Open JDK, например: [Amazon Corretto](https://docs.aws.amazon.com/corretto/index.html), [Microsoft JDK](https://docs.microsoft.com/ru-ru/java/openjdk/download), [Zulu OpenJDK](https://www.azul.com/downloads/zulu-community/?package=jdk), [Alibaba Dragonwell OpenJDK](http://dragonwell-jdk.io/), [Eclipse Temurin](https://adoptium.net/). Доступен даже [OpenJDK Axiom от российского разработчика BellSoft](https://libericajdk.ru/pages/liberica-jdk/), сертифицированный ФСТЭК России.
+Существуют альтернативные релизы Open JDK, например: [Amazon Corretto](https://docs.aws.amazon.com/corretto/index.html), [Microsoft JDK](https://docs.microsoft.com/ru-ru/java/openjdk/download), [Zulu OpenJDK](https://www.azul.com/downloads/zulu-community/?package=jdk), [Alibaba Dragonwell OpenJDK](http://dragonwell-jdk.io/), [Eclipse Temurin](https://adoptium.net/) - 12.3 млн. загрузок Runtime в феврале 2023 года. Доступен даже [OpenJDK Axiom от российского разработчика BellSoft](https://libericajdk.ru/pages/liberica-jdk/), сертифицированный ФСТЭК России.
 
 Существуют специализированные виртуальные машины для компиляции Java в native code, например: [GraalVM](https://www.graalvm.org/).
+
+Агентство New Relic [выпустило отчёт](https://sdtimes.com/software-development/eclipse-foundation-finds-significant-momentum-for-open-source-java-this-year/) в 2022 году, в котором указывается, что доля Oracle’s share на рынке Java снизилась с 75% в 2020 до 35% в 2022.
 
 Ключевой библиотекой для взаимодействия с базой данных является [Hibernate ORM](http://hibernate.org/orm/).
 
