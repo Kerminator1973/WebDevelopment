@@ -19,7 +19,7 @@
 
 Сборка bundle осуществляется командой: `npm run start`
 
-# Коротко о терминах
+## Коротко о терминах
 
 **Transpiler** - утилита, которая конвертирует исходный текст из одной версии языка программирования (или другого языка) в другой язык. Например, transplier может привести TypeScript к ES6, или ES2017 к ES6.
 
@@ -31,7 +31,7 @@
 
 [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/) - сервер для отладки приложений с использованием Webpack. Базируется на Express Cocoa и его можно воссоздать используя Express с несколькими дополнительными **middlewares**.
 
-[Nodemon](https://www.npmjs.com/package/nodemon) - консольная утилита, которая отслеживает изменения в js-файлах и автоматически пересобирает проект, если находит какие-либо изменения в нём.
+[Nodemon](https://www.npmjs.com/package/nodemon) - консольная утилита, которая отслеживает изменения в js-файлах и автоматически пересобирает проект, если находит какие-либо изменения в нём. Следует заметить, что начиная с Node.js 18.11 добавлен ключ `--watch`, который работает также, как и Nodemon. Этот режим называется [Watch Mode](https://nodejs.org/en/blog/release/v18.11.0).
 
 **HTML Preprocessor** - вспомогательная библиотека (package), которая осуществляет обработку шаблона страницы, содержащей HTML и макросы. Значения макросов, чаще всего устанавливаются в JavaScript-коде (отдельный словарь содержит значения макросов шаблона). Примерами HTML Preprocessors являются [EJS](https://ejs.co/), [Pug](https://pugjs.org/api/getting-started.html) (ранее Jade), [Slim](http://slim-lang.com/about.html), [Handlebars.js](https://handlebarsjs.com/), [HAML](http://haml.info/). HTML препроцессоры также называют *шаблонизаторами*.
 

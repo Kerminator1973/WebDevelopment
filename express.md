@@ -6,7 +6,7 @@
 
 Первый шаг – сгенерировать служебные файлы с описанием приложения Node.js:
 
-```
+``` shell
 npm init -y
 ```
 
@@ -14,13 +14,13 @@ npm init -y
 
 В процесс работы над приложением, в подкаталог проекта будут добавляться зависмости и служебные файлы. Зависимости (папка node_modules) не имеет смысла сохранять в системе контроля версий. При создании backup-а, развертывании системы на другом компьютере, папку "node_modules" и файл "" можно не копировать "package-lock.json". Чтобы восстановить эти файлы, следует использовать команду:
 
-```
+``` shell
 npm install
-``` 
+```
 
 Для того, чтобы добавить в проект [Express](http://expressjs.com/) достаточно выполнить команду:
 
-```
+``` shell
 npm install express --save
 ```
 
@@ -75,7 +75,7 @@ app.get('/users/:id', (req, res) => {
 
 Проиллюстрировать идею middleware можно следующим образом:
 
-```
+``` console
 Without middleware: new request -> run route handler
 With middleware: new request -> do something -> run route handler
 ```
