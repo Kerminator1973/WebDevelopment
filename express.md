@@ -227,35 +227,86 @@ res.send(user.avatar)	// bytes
 
 ## Получение файла от пользователя
 
-Express по умолчанию не поддерживает files upload. Рекомендуемый Middleware, который поддерживает multipart/form-data называется [Multer](https://www.npmjs.com/package/multer).
+Express по умолчанию не поддерживает _files upload_. Рекомендуемый Middleware, который поддерживает multipart/form-data называется [Multer](https://www.npmjs.com/package/multer).
 
-Установить библиотеку можно следующим образом: `npm i multer`.
+Установить библиотеку можно командой: `npm i multer`.
 
-Типовой код, использующий Multer:
+Ниже приведёт пример HTML-верстки, в которой используется input с типом "file", через который реализуется загрузка файлов на сервер:
 
+``` html
+<form method="post" id="upload-form" enctype="multipart/form-data">
+	<div class="input-group mb-3">
+		<input type="file" class="form-control" id="inputPublicKey">
+		<label class="input-group-text" for="inputPublicKey">Публичный ключ</label>
+	</div>
+</form>
 ```
+
+Ключевым атрибутом формы является **enctype**, который позволяет указать формат данных, передаваемых на сервер.
+
+Вызывая функцию multer мы создаём middleware-объект, которые извлекает данные из POST-запроса и помещает их в объекта-запроса (req):
+
+```js
 const multer = require('multer')
-const upload = multer({		// Указываем, какие файлы можно получить
-	dest: 'images'
-})
+var upload = multer({ 
+	dest: 'uploads/', // "uploads/" - подкаталог в котором сохраняются файлы
+	limits: {
+	   fileSize: 500000 // Загруждаем не более 500Кб (защита от DoS)
+	}
+});
 app.post('/upload', upload.single('upload'), (req, res) => { // Endpoint для обработки запроса
-	res.send()		// Возвращаем HTTP Status 200 (OK)
+	res.send() // Возвращаем HTTP Status 200 (OK)
 })
 ```
 
-Когда мы указываем имя переменной в вызове upload.single('**upload**'), в действительности, мы указываем имя переменной в HTML-тэге, посредством которого осуществляется выгрузка:
+Загружаемые данных сохраняются в виде файлов со случайными имена в папку, имя которой задаётся параметром **dest**. С целью снизить возможности злоумышленников по загрузке сервера fake-овыми запросами, имеет смысл ограничивать размер передаваемых данных. Для этого используются параметры **limits** и **fileSize**.
+
+### Именование объектов при использовании Multer
+
+В простейшем случае, имя параметра ассоциированного с загружаемыми на сервер данными указывается в атрибуте **name**:
 
 ```html
 <form><input type="file" id="upload_12" name="upload" /></form>
 ```
 
-Данные о файле передаётся посредством объекта req.file:
+Чтобы начать выгрузку через форму, необходимо добавить кнопку «Submit» в этой форме.
+
+Мы можем выполнить POST-запрос на сервер в ручном режиме:
+
+```js
+window.onload = function() {
+    // Подписываемся на событие выбора файла из списка
+    const filePublicKey = document.getElementById("inputPublicKey");
+    filePublicKey.addEventListener('change', function (evt) {
+        sendFileToServer(filePublicKey, "public");
+    });
+};
+
+function sendFileToServer(fileInput, itemName)
+{
+    // Формируем данные для POST-запроса вручную. Из органа управления "file"
+    // извлекаем выбранный пользователем файл и и отправляем его на сервер
+    var formData = new FormData();
+    for (var _file of fileInput.files) {
+        formData.append(itemName, _file);
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/upload" + itemName);
+    xhr.send(formData);
+}
+```
+
+В приведённом выше коде мы указываем, что именем ассоциированным с данными будет "public". Назначение имени позволяет создавать комплексные схемы загрузки данных на сервер.
+
+Предположим, что имя ассоциированне с данными будет называться 'binobj'. В этом случае, мы можем определить endpoint, который будет обрабатывать запрос браузера на загрузку данных на сервер. В этом Endpoint нам следует настроить middleware для извлечения данных, выполнив вызов: `upload.single('binobj')`
+
+Ниже приведён пример настройки Endpoint:
 
 ```javascript
 app.post('/upload', upload.single('binobj'), function (req, res, next) {
+	console.dir(req.file);
 
-	// console.dir(req.file);
-	//
 	// req.file.fieldname = 'binobj'
 	// req.file.originalname = оригинальное имя файла
 	// req.file.path = размер сохранённого файла
@@ -266,9 +317,9 @@ app.post('/upload', upload.single('binobj'), function (req, res, next) {
 });
 ```
 
-В тэге **<input type="file"** следует использовать атрибут **multiple**, если в диалоге выбора разрешён выбор нескольких файлов для выгрузки.
+Данные о файле передаются посредством объекта **req.file** .
 
-Чтобы начать выгрузку через форму, необходимо добавить кнопку «Submit» в этой форме:
+В тэге **<input type="file"** следует использовать атрибут **multiple**, если следует разрешить выбор нескольких файлов для выгрузки.
 
 Если мы планируем использовать кнопку выгрузки несколько раз, то после отправки данных на сервер следует сбрасывать её таким образом (используется jQuery):
 
@@ -276,15 +327,9 @@ app.post('/upload', upload.single('binobj'), function (req, res, next) {
 $("# upload_12").closest("form").reset();
 ```
 
-Следующая строка позволяет указать, что все получаемые файлы следует копировать в подкаталог «uploads»:
-
-```javascript
-const upload = multer({	dest: 'uploads/'})
-```
-
 ### Отправка данных из JavaScript-кода
 
-Чтобы запустить процесс выгрузки файла/файлов из JavaScript-кода, следует сначала реализовать код наполнения переменной для отправки на сервер:
+Чтобы запустить процесс выгрузки файла/файлов из JavaScript-кода, следует сначала реализовать код наполнения данных для отправки на сервер:
 
 ```javascript
 var formData = new FormData();
