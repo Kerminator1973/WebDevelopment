@@ -309,7 +309,7 @@ app.post('/upload', upload.single('binobj'), function (req, res, next) {
 
 	// req.file.fieldname = 'binobj'
 	// req.file.originalname = оригинальное имя файла
-	// req.file.path = размер сохранённого файла
+	// req.file.path = имя файла с частью пути (uploads\[имя файла])
 	// req.file.filename = уникальное имя файла (GUID)
 	// req.file.encoding = кодировка файла (не приципиально - это как данные передавались)
 	// req.file.mimetype = тип файла
