@@ -1,6 +1,12 @@
 # Express - самый важный package Node.js
 
-Библиотека Express позволяет создавать web-приложения с минимальными затратами времени и усилий. Основными достоинставами Express являются: низкий порог вхождения, огромное количество подключаемых модулей и относительно высокая производительность.
+Библиотека Express позволяет создавать web-приложения с минимальными затратами времени и усилий. Основными достоинствами Express являются:
+
+- низкий порог вхождения
+- огромное количество подключаемых модулей
+- относительно высокая производительность
+
+Следует заметить, что наиболее значимыми компонентами, используемыми в работе Express-приложения являются middlewares и генераторы HTML-страниц по шаблонам.
 
 ## Создание web-приложения на базе Express
 
@@ -115,7 +121,7 @@ router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) 
 
 При обработке POST-запросов традиционно используется специализированный Middleware-компонент, который транслирует содержимое Body в JavaScript-объект параметра request, передаваемого в callback-метод обработчика Endpoint. Одним из наиболее распространённых компонентов является [body-parser](https://www.npmjs.com/package/body-parser). Установить компонент можно следующей командой:
 
-```
+```shell
 npm install body-parser
 ```
 
@@ -129,9 +135,9 @@ const bodyParser = require('body-parser');
 // Разбирать данные из application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 ```
- 
+
 Для обработки запросов, в которых данные передаются как JSON, следует использовать другую опцию:
- 
+
 ```javascript
 // Разбирать данные из application/json
 app.use(bodyParser.json())
@@ -222,7 +228,7 @@ app.get('/getobj.aspx', (req, res) => {
 
 ```javascript
 res.set('Content-Type', 'image/jpg')
-res.send(user.avatar)	// bytes
+res.send(user.avatar) // bytes
 ```
 
 ## Получение файла от пользователя
@@ -383,7 +389,7 @@ const path = require('path')
 console.log(path.join(__dirname, '../public'))
 ```
 
-Макрос \_\_dirname содержит путь к подкаталогу с исходными текстами и его необходимо скорректировать, чтобы указать путь к «public». 
+Макрос \_\_dirname содержит путь к подкаталогу с исходными текстами и его необходимо скорректировать, чтобы указать путь к «public».
 
 Далее нам нужно указать Express-у подкаталог со статическими файлами:
 
@@ -453,11 +459,11 @@ const https = require("https"),
 fs = require("fs");
 
 const options = {
-  key: fs.readFileSync("server_dev.key"),
-  cert: fs.readFileSync("server_dev.crt"),
-  // Следующую строку следует добавить при активации проверки
-  // сервером сертификата клиента:
-  // ca: fs.readFileSync('client-localhost.pem')
+	key: fs.readFileSync("server_dev.key"),
+	cert: fs.readFileSync("server_dev.crt"),
+	// Следующую строку следует добавить при активации проверки
+	// сервером сертификата клиента:
+	// ca: fs.readFileSync('client-localhost.pem')
 };
 
 let server = https.createServer(options, app).listen(3000, function() {
