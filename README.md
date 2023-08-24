@@ -611,12 +611,12 @@ namespace API.Controllers
 
 Дополнительно рекомендуется установить параметры:
 
-1. Шрифт для редактора VSCode - **FireCode** (с поддержкой лигатур). Доступен на [Google Fonts](https://fonts.google.com/specimen/Fira+Code?query=Fira+Code).
+1. Шрифт для редактора VSCode - **FireCode** (с поддержкой лигатур). Доступен на [Google Fonts](https://fonts.google.com/specimen/Fira+Code?query=Fira+Code)
 2. Убрать Mini-Map, который загромождает экран. **Текстовый редактор -> Мини-Карта -> Enabled** установить в False
-3. Автоматическое сохранение кода при переходе из VSCode в другое окно: **Текстовый редактор -> Файлы -> Auto Save** установить в onWindowChange
+3. Автоматическое сохранение кода при переходе из VSCode в другое окно: **Текстовый редактор -> Файлы -> Auto Save** установить в **onWindowChange**
 4. Не выводить сообщение о превышении длины комментария при commit-е в GitHub на 50-ом символе. **Расширения -> Git -> Input Validation Subject Length** установить в 72
 
-Альтернативный вариант шрифта [Cascadia Code](https://github.com/microsoft/cascadia-code)
+Альтернативный вариант шрифта [Cascadia Code](https://github.com/microsoft/cascadia-code). Также интересный вариант - [Intel One Mono](https://github.com/intel/intel-one-mono/releases/tag/V1.3.0).
 
 ## Sublime Text 4
 
