@@ -207,7 +207,7 @@ body
 <a name="bundler"></a>
 ### Bundler. WebPack и другие...
 
-Использование **Bundler** важно, поскольку этот инструмент позволяет настроить среды отладки и промышленной сборки должным образом. Конфигурация Bundler-а определяет:
+Приложение для формирования bundle-а (**Bundler**) позволяет настроить среды отладки и промышленной сборки. Конфигурация Bundler-а определяет:
 
 1. какой транспайлер будет использован, например: Babel (React), или TypeScript (Angular)
 2. какая версии ECMAScript является целевой
@@ -222,10 +222,10 @@ body
 
 В качестве альтернатив рассматриваются:
 
-* [Parcel](https://parceljs.org/). Разработчики продукта сфокусировались на _zero configuration_. Простота достигается посредством большого количества default-ных значений. Недостаток: подходит только для простых проектов
-* [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney. Разработчики так же стремятся реализовать подход zero configuration, что достигается благорадя использованию ES Modules, нативно поддерживаемому современными браузерами
-* [Vite](https://vitejs.dev/). Использует [Esbuild](https://esbuild.github.io/), разработанный на Go и работает очень быстро. Разработчик - Evan You (автор Vue.js). Критика инструмента в статье [Vite: How to fail on killing Webpack](https://darkghosthunter.medium.com/vite-how-to-fail-on-killing-webpack-16eb1834593c) by Italo Baeza Cabrera. Статья в подержку Vite - [You Should Choose Vite Over CRA for React Apps, Here’s Why](https://medium.com/codex/you-should-choose-vite-over-cra-for-react-apps-heres-why-47e2e7381d13) by Can Durmus
-* [Snowpack](https://www.snowpack.dev/). Статья [Web Developers: Use Snowpack instead of Webpack](https://javascript.plainenglish.io/web-developers-use-snowpack-instead-of-webpack-70e7b04f7853) за авторством Morgan Page
+- [Parcel](https://parceljs.org/). Разработчики продукта сфокусировались на _zero configuration_. Простота достигается посредством большого количества default-ных значений. Недостаток: подходит только для простых проектов
+- [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney. Разработчики так же стремятся реализовать подход zero configuration, что достигается благорадя использованию ES Modules, нативно поддерживаемому современными браузерами
+- [Vite](https://vitejs.dev/). Использует [Esbuild](https://esbuild.github.io/), разработанный на Go и работает очень быстро. Разработчик - Evan You (автор Vue.js). Критика инструмента в статье [Vite: How to fail on killing Webpack](https://darkghosthunter.medium.com/vite-how-to-fail-on-killing-webpack-16eb1834593c) by Italo Baeza Cabrera. Статья в подержку Vite - [You Should Choose Vite Over CRA for React Apps, Here’s Why](https://medium.com/codex/you-should-choose-vite-over-cra-for-react-apps-heres-why-47e2e7381d13) by Can Durmus
+- [Snowpack](https://www.snowpack.dev/). Статья [Web Developers: Use Snowpack instead of Webpack](https://javascript.plainenglish.io/web-developers-use-snowpack-instead-of-webpack-70e7b04f7853) за авторством Morgan Page
 
 Вместе с тем, WebPack 5 может быть лишён многих, озвучиваемых сообществом, недостатков: https://webpack.js.org/blog/2020-10-10-webpack-5-release/
 
@@ -233,19 +233,23 @@ body
 
 Установить Uglify-JS можно локально:
 
-```
+```shell
 npm install uglify-js
 ```
 
 Допустим, что мы хотим выполнить минификацию файла "device.js" и сохранить результат в "device.min.js". В этом случае, команда может выглядеть следующим образом:
 
-```
+```shell
 node d:\Sources\RUFServerLite\node_modules\uglify-js\bin\uglifyjs d:\Sources\RUFServerLite\public\devices.js -o d:\Sources\RUFServerLite\public\devices.min.js
 ```
 
 Параметры `-c` (compress) и `-m` (mangle names) позволяют применять дополнительную оптимизацию JavaScript-кода.
 
 На практике объём типового JavaScript-файла удаётся уменьшить в три раза.
+
+### Ценность снижения объема Bundle
+
+Борьбя за минимальный размер Bundle-а может иметь высокую коммерческую ценность. Для улучшения пользовательского опыта компоненты web-приложения часто размещают максимально близко к пользователю, используя **Content Delivery Networks** (CDN). Такие сети могут состоять из десятков тысяч кэширующих серверов, размещённых по всему миру. В соответствии с тарифной политикой, CDN сумма платёжа чаще всего зависит от объема переданных данных, т.е. размер Bundle явным образом и весьма ощутимо влиять на расходы компании.
 
 <a name="security"></a>
 ## Информационная безопасность
