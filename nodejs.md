@@ -202,3 +202,24 @@ module.exports = new Logger('DEFAULT');
 const customLogger = new logger.constructor('CUSTOM');
 customLogger.log(`Информационное сообщение для второго экземпляра модуля`);
 ```
+
+JavaScript позволяет вноить изменения в другие модули, или в **global scope**. Этот подход называется _monkey patching_ и рассматривается как исключительно опасный. Однако, он может быть полезен, например, для mocking-а при разработке тестов. Выглядит подход таким образом:
+
+```js
+// Это реализация модуля, который выполняет patch. Файл: patcher.js
+require('./logger').customMessage = function() {
+    console.log('Это новый добавленный метод');
+}
+```
+
+Пример применения patch-а из некоторого прикладного кода:
+
+```js
+require('./patcher');
+const logger = require('./logger');
+logger.customMessage();
+```
+
+В приведённом выше примере мы добавили в чужой модуль logger дополнительную функцию customMessage().
+
+Ещё раз заметим, что в этом подходе есть side-effects, т.е. может возникнуть борьба patcher-ов с непредсказуемыми эффектами, но его реально применяют, например, он используется в package [nock](https://www.npmjs.com/package/nock).
