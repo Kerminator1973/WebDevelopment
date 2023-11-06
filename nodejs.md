@@ -223,3 +223,55 @@ logger.customMessage();
 В приведённом выше примере мы добавили в чужой модуль logger дополнительную функцию customMessage().
 
 Ещё раз заметим, что в этом подходе есть side-effects, т.е. может возникнуть борьба patcher-ов с непредсказуемыми эффектами, но его реально применяют, например, он используется в package [nock](https://www.npmjs.com/package/nock).
+
+## ESM в Node.js (новая система модулей)
+
+По умолчанию, в Node.js используется CommonJS, а не ESM. Чтобы активировать ESM нужно либо использовать у JavaScript-файлов расширение ".mjs", либо добавить в "package.json" строку:
+
+```json
+{
+    "type": "module"
+}
+```
+
+Следует заметить, что в ESM вместо _plural word_ **exports**, используется _singular word_ **export**:
+
+```js
+export function log (message) {
+    console.log(message);
+}
+
+export const LEVELS = {
+    error: 0,
+    debug: 1,
+    warn: 2,
+    data: 3,
+    info: 4,
+    verbose: 5
+}
+```
+
+По умолчанию, все функции/переменные модуля для которых не указано ключевое слово **export** считаются _private_, т.е. не видимы снаружи.
+
+Чтобы испортировать сущности, следует использовать ключевое слово **import**:
+
+```js
+import * as loggerModule from './logger.js';
+console.log(loggerModule);
+```
+
+Заметим, что в случае ESM следует обязательно использовать расширение импортируемого модуля.
+
+ESM позволяет импортировть отдельные сущности из модуля, например:
+
+```js
+import { log, Logger } from './logger.js';
+const logger = new Logger('DEFAULT');
+logger.log('Здравствуй МИР!');
+```
+
+Также можно назначать синонимы (aliases) для импортируемых сущностей, например:
+
+```js
+import { log as Log2 } from './logger.js';
+```
