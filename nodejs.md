@@ -275,3 +275,34 @@ logger.log('Здравствуй МИР!');
 ```js
 import { log as Log2 } from './logger.js';
 ```
+
+Если мы хотим, чтобы модуль экспортировал одеу функцию, или описание класса, то следует использовать ключевое слово **default**:
+
+```js
+export default class Logger {
+    constructor (name) {
+        this.name = name;
+    }
+
+    log (message) {
+        console.log(`[${this.name}] ${message}`)
+    }
+}
+```
+
+Импорт модуля может выглядеть следующим образом:
+
+```js
+import MyLogger from './logger.js';
+const logger = new MyLogger('info');
+logger.log('Hello World!');
+```
+
+Default-ный экспорт эквивалентен следующему коду:
+
+```js
+import * as loggerModule from './logger.js';
+console.log(loggerModule);
+```
+
+ESM позволяет смешить _named exports_ и _default export_, что используется, например, в React.
