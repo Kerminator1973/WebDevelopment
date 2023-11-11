@@ -399,7 +399,11 @@ IQueryable<SalesOrderDetail> query =
 
 Сильная сторона Java - огромное количество мощных библиотеки, развитая эко-система. Основной разработчик Java - корпорация Oracle, поставляет два **Java Development Kit** (JDK): платный, надежный, с длительным циклом поддержки (LTS) **Oracle JDK** и бесплатный экспериментальный **Open JDK**. Статья [За Oracle JDK нужно будет платить. Какие теперь варианты?](https://habr.com/ru/company/epam_systems/blog/430084/)
 
-Существуют альтернативные релизы Open JDK, например: [Amazon Corretto](https://docs.aws.amazon.com/corretto/index.html), [Microsoft JDK](https://docs.microsoft.com/ru-ru/java/openjdk/download), [Zulu OpenJDK](https://www.azul.com/downloads/zulu-community/?package=jdk), [Alibaba Dragonwell OpenJDK](http://dragonwell-jdk.io/), [Eclipse Temurin](https://adoptium.net/) - 12.3 млн. загрузок Runtime в феврале 2023 года. Доступен даже [OpenJDK Axiom от российского разработчика BellSoft](https://libericajdk.ru/pages/liberica-jdk/), сертифицированный ФСТЭК России.
+Существуют альтернативные релизы Open JDK, например: [Amazon Corretto](https://docs.aws.amazon.com/corretto/index.html), [Microsoft JDK](https://docs.microsoft.com/ru-ru/java/openjdk/download), [Zulu OpenJDK](https://www.azul.com/downloads/zulu-community/?package=jdk), [Alibaba Dragonwell OpenJDK](http://dragonwell-jdk.io/), [Eclipse Temurin](https://adoptium.net/) - 12.3 млн. загрузок Runtime в феврале 2023 года. Доступен [OpenJDK Axiom от российского разработчика BellSoft](https://libericajdk.ru/pages/liberica-jdk/), сертифицированный ФСТЭК России.
+
+Альтернативые версии Open JDK базируются на open-source [OpenJDK](https://openjdk.org/) и, чаще всего, содержат специализированные дополнения (в том числе, поддержка требований госудаственных регламентирующих организаций) и исправления ошибок. Важный нюанс состоит в том, что Open JDK - это исходные тексты, а разработчикам прикладных систем нужны бинарные сборки для целевых платформ. Так, например, OpenJDK Axiom создаёт сборки для процессоров Эльбрус и Байкал. Степень доверия к поставщикам бинарных сборок может быть разной, что также позволяет их дифференциировать (например, госорганизации России не могут использовать коммерческий JDK от Oracle).
+
+Заметим, что ядро Java написано на C++.
 
 Существуют специализированные виртуальные машины для компиляции Java в native code, например: [GraalVM](https://www.graalvm.org/).
 
