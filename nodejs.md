@@ -306,3 +306,14 @@ console.log(loggerModule);
 ```
 
 ESM позволяет смешить _named exports_ и _default export_, что используется, например, в React.
+
+Следует заметить, что CommonJS и ESM не обладают взаимозаменяемостью, т.е. разработчик явно должен выбрать модульную систему, которая будет использована в проекте. Так же заметим, что при выборе ESM автоматически активируется [strict-mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) для всех JS-файлов.
+
+Если мы хотим загрузить объект из JSON-файла, это можно сделать посредством заменителя:
+
+```js
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const data = require('./data.json');
+console.log(data);
+```
