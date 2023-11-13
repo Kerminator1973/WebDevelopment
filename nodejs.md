@@ -317,3 +317,7 @@ const require = createRequire(import.meta.url);
 const data = require('./data.json');
 console.log(data);
 ```
+
+## Closures / Замыкания
+
+Критически важным в JavaScript является механизм Clousres (замыкания). Почитать: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures

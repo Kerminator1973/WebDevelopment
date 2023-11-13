@@ -75,6 +75,41 @@ body
     color: $primary-color
 ```
 
+Ещё один инструмент - [Tailwind CSS](https://tailwindcss.com/) считается одним из наиболее перспективных инструментов предобработки CSS. К достоинствам продукта осносятся: versatile, user-friendly, responsive, reliable, fast. Tailwind совместим с Next.js, Vite, Angular, React. 
+
+Рекомендуется к прочтению статья [Обзор фреймворка TailwindCSS: чем он хорош и кому будет полезен](https://timeweb.com/ru/community/articles/chto-takoe-tailwindcss-zachem-nuzhen-i-chem-horosh) за авторством Space Police. Идея заключается в том, чтобы прописывать стили напрямую в директиву class, а не под селекторами в CSS-файле. Это выглядит так:
+
+```html
+<div class="flex justify-center font-bold text-red-400">Заголовок</div>
+```
+
+Каждый класс Tailwind – отдельный CSS-селектор, определяемый в CSS-файле:
+
+```css
+.flex { display: flex; }
+.justify-center { justify-content: center; }
+.flex-col { flex-direction: column; }
+.border { border: 1px black solid; }
+.text-blue-200 { --tw-text-opacity: 1; rgba(191, 219, 254, var(--tw-text-opacity)); }
+```
+
+Технически это похоже на применение inline-классов, когда вы описываете дизайн элемента внутри его тега:
+
+```html
+<div style="display: flex; justify-content: center; font-weight: 700; color: rgba(248, 113, 113, var(--tw-text-opacity));>Заголовок</div>
+```
+
+Устанавливается Tailwind CSS через npm - это plug-in для системы сборки проекта и это означает, что команда установки зависит от целевого framework-а. Например, для React команда может выглядеть следующим образом:
+
+```shell
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+```
+
+Однако, применение Tailwind CSS - это holywar-ная тема и у этого подхода есть свои недостатки. Рекомендуется к прочтению статьи:
+
+- [Чем хорош и чем плох Tailwind CSS, или «Допустим, у вас стартап!»](https://habr.com/ru/companies/sbermarket/articles/737474/) за авторством vodolazskikh
+- [Взгляд на Tailwind CSS](https://habr.com/ru/companies/skillfactory/articles/558654/) за авторством Mari_Dem
+
 **Динамическое поведение** (JavaScript), преимущественно отвечает за взаимодействие с сервером. В случае применения парадигмы Single Page Application (**SPA**), значение JavaScript значительно шире - он начинает управлять состоянием приложения, переходами между логическими экранами, обеспечивает информационную безопасность, и т.д.
 
 Из-за использования пользователями разных браузеров и их разных версий, существует проблема технологической фрагментации - какие-то технологические возможности браузера могут быть недоступны конкретному пользователю. Чтобы решить подобные проблемы обычно используются вспомогательные инструменты/библиотеки.
@@ -685,8 +720,6 @@ Postman может работать как Desktop-приложение, так 
 [Gatsby.js](https://www.gatsbyjs.com/) - генератор статических сайтов. Ключевая идея: сайт генерируется с использованием базы данных и шаблонов периодически, например, раз в сути, по ночам. Все артефакты являются окончательно сформированными (минимизированными, сжатыми). Вычислительные ресурсы сервера используются максимально эффективно, скорость работы сайта - максимально высокая.
 
 [Next.js](https://nextjs.org/) - популярный фреймворк для Server-Side Rendering. Основывается на React.js.
-
-[Tailwind CSS](https://tailwindcss.com/) считается одним из наиболее перспективных инструментов предобработки CSS. К достоинствам продукта осносятся: versatile, user-friendly, responsive, reliable, fast.
 
 [Million.js](https://million.dev/) - легковесная библиотека, которая оптимизирует работу с Shadow DOM в React, ускоряя рендеринг до 70%.
 
