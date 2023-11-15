@@ -693,7 +693,7 @@ Google Chrome сам по себе является очень мощным ин
 
 ## Другие инструменты
 
-Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/).
+Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/). В России оплата продукта не доступна.
 
 Облачные IDE: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/), [Github Codespaces](https://github.com/features/codespaces). CodeAnywhere и Codespaces являются платными - в России не доступны.
 

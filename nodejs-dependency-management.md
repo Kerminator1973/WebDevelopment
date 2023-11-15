@@ -70,3 +70,7 @@ npx npm-check-updates -u
 Существуют комплексные коммерческие решения, которые обеспечивают надёжную работу с зависимостями:
 
 - [Sonatype Nexus repository OSS](https://www.sonatype.com/products/sonatype-nexus-oss)
+
+Существует ряд зеркал для npm, реализованных китайскими товарищами, например: https://www.npmmirror.com/ (при поддержке TaoBao).
+
+Проект создания частного репозитария NPM для https://github.com/cnpm/cnpmcore и web-сайт для него: https://github.com/cnpm/cnpmweb#-cnpmweb
