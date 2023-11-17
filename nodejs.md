@@ -407,3 +407,40 @@ const emitter = new EventEmitter();
 - **once**(event, listener): подписчик автоматически удаляется сразу после получения события
 - **emit**(event, [arg1], [...]): метод создаёт новое событие и доставляет его подписчикам
 - **removeListener**(event, listener): удаляет подписчика из списка
+
+Пример генерации событий, посредством EventEmitter:
+
+```js
+import { EventEmitter } from 'events';
+import { fileRead } from 'fs';
+
+function findRegex (files, regex) {
+    const emitter = new EventEmitter();
+    for (const file of files) {
+        readFile(file, 'utf8', (err, content) => {
+            if (err) {
+                return emitter.emit('error', err);
+            }
+
+            emitter.emit('fileread', file);
+            const match = content.match(regex);
+            if (match) {
+                match.forEach(elem => emitter.emit('found', file, elem));
+            }
+        });
+    }
+
+    return emitter;
+}
+```
+
+Легко увидеть, что функция findRegex() возвращает экземпляр класса EventEmitter. Через этот instance мы может оформить подписку на все три типа событий, генерируемых функцией, используя _chaining methods_:
+
+```js
+findRegex(['fileA.txt', 'fileB.json'],
+    /hello \w+/g
+)
+    .on('fileread', file => console.log(`${file} was read`))
+    .on('found', (file, match) => console.log( `Matched "${match}" in ${file}`))
+    .on('error', err => console.error(`Error emitted ${err.message}`));
+```
