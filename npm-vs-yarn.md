@@ -1,12 +1,26 @@
 # NPM vs. Yarn
 
-Наиболее популярным package manager-ом является [npm](https://www.npmjs.com/), приобретённый корпорацией Microsoft. Его основным конкурентом является [yarn](https://yarnpkg.com/), разработанный специалистами Facebook.
+Наиболее популярным package manager-ом является [npm](https://www.npmjs.com/), приобретённый корпорацией Microsoft. Его основным конкурентом является [yarn](https://yarnpkg.com/), разработанный специалистами Facebook. Заметим, что существует как классическая версия Yarn (версия 1.x), которая может быть загружена через npm, так и современная (версия 2+), которую загружается с сайта, либо через дополнительные инструменты (например, Corepack).
 
 Harsha Vardhan: [npm vs Yarn — Choosing the right package manager](https://medium.com/javascript-in-plain-english/npm-vs-yarn-choosing-the-right-package-manager-a5f04256a93f).
 
 Digital Ocean: [Cheat Sheet: npm vs Yarn Commands](https://www.digitalocean.com/community/tutorials/nodejs-npm-yarn-cheatsheet).
 
 Ключевые различия состоят в параллельной загрузке зависимостей и лучшем управлении версиями зависимостей. **Yarn** поддерживает параллелизм и выполняет операции загрузки в 2-3 раза быстрее, чем **npm**.
+
+В большинстве случае, [Yarn использует тот же самый репозитарий npm](https://classic.yarnpkg.com/en/docs/cli/add#toc-adding-dependencies), что и npm. Однако, Yarn позволяет включать зависимости, используя их URL (например, GitHub):
+
+```shell
+yarn add <package name>@git+ssh://<git remote URL>#semver:^3.2.0
+```
+
+В версиях 1.x можно было не указывать имя package перед URI:
+
+```shell
+yarn add https://github.com/fancyapps/fancybox [remote url]
+yarn add ssh://github.com/fancyapps/fancybox#3.0  [branch]
+yarn add https://github.com/fancyapps/fancybox#5cda5b529ce3fb6c167a55d42ee5a316e921d95f [commit]
+```
 
 При загрузке зависимостей, оба менеджера используют файл "package.json" и, в частности, определяют версию компонента, наиболее подходящего к использованию в приложении Node.js. Версия указывается следующим образом:
 
