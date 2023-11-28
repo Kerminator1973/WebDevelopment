@@ -37,6 +37,8 @@
 
 Важным следствием применения триммера является тот факт, что каждое приложение загружает необходимые ему packages и runtime.
 
+Также рекомендуется ознакомиться с обсуждением на [Blazor wasm size and load time is the worst and biggest problem ever and should be the #1 priority](https://github.com/dotnet/aspnetcore/issues/41909).
+
 Стоит заметить, что [Blazor Server не загружает Microsoft.NET](https://learn.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-8.0) и может работать с браузерами, не поддерживающими Web Assembly. Однако, в этом варианте значительно повышается латентность системы, т.к. любое изменение на клиенте транслируется на сервер и выполняет [частичный?] рендеринг страницы.
 
 Файл "Routes.razor" содержит тэги для запуска навигационной системы с использованием Blazor Web Assembly:
