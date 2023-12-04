@@ -488,3 +488,37 @@ asyncOperationPromise(arg)
         // этот код будет вызван только в том случае, если в цепочке выполнения возникнет ошибка (исключение)
     });
 ```
+
+Важно обратить внимание на _синтаксический сахар_ - вместо `.then(undefined, err => {})` можно написать вот такой код:
+
+```js
+promise.catch(onRejected)
+```
+
+Ещё один полезный обработчик, позволяет выполнить код в любом случае, вне зависимости от того, как завершилась операция - успешно, или не успешно:
+
+```js
+promise.finally(onFinally)
+```
+
+Пример реализации функции с использованием Promises:
+
+```js
+function delay (milliseconds) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(new Date());
+        }, milliseconds);
+    })
+}
+```
+
+Использовать такую функцию можно следующим образом:
+
+```js
+console.log(`Delaying...${new Date().getSeconds()}s`);
+delay(1000)
+    .then(newDate => {
+        console.log(`Done ${new Date().getSeconds()}s`);
+    });
+```
