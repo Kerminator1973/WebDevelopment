@@ -541,3 +541,37 @@ function spiderLinks (currentUrl, content, nesting) {
 ```
 
 Ещё один очень интересный класс - **TaskQueue**, позволяет создать очередь асинхронных задач с ограничением максимального количество выполняемых задач одновременно.
+
+В книге есть ссылка на ready-to-use, production-ready реализацию функции map() поддерживающую promises и ограниченную конкурентность: [p-map package](https://www.npmjs.com/package/p-map)
+
+Также в книге есть ссылка на [p-limit package](https://www.npmjs.com/package/p-limit). который реализует шаблон *limit the concurrency of a set of tasks*.
+
+## Async/Await
+
+Полное название механизма: **async functions and the await expressions**
+
+Async-функции являются специальным типом функций, в которых возможно использование await-выражения для приостановки (pause) выполнения до момента, пока Promise не будет resolved.
+
+Пример реализации async-функции:
+
+```js
+async function playingWithDelays() {
+    console.log('Delaying...', new Date());
+
+    const dateAfterIneSecond = await delay(1000);
+    console.log(dateAfterOneSecond);
+
+    const dateAfterThreeSeconds = await delay(3000);
+    console.log(dateAfterThreeSeconds);
+
+    return 'done';
+}
+```
+
+Вызвать асинхронную функцию из синхронного кода можно с помощью Promises:
+
+```js
+playingWithDelays().then(result => {
+    console.log(`After 4 seconds: ${result}`)
+});
+```
