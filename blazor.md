@@ -268,3 +268,78 @@ await builder.Build().RunAsync();
 **Update декабрь 2023**: в действительности, получить актульный DOM можно в режиме "Посмотреть код". Для этого следует нажать кнопку "Select an element in the Page to inspect it", и выбрать конкретный элемент в визуальном представлении. Как только мы выбираем элемент, DOM-представление обновляется и, таким образом, можно вполне успешно анализировать HTML-разметку.
 
 Ещё одна проблема связана с разработкой Unit-тестов: их очень легко делать для Backend, но весьма сложно для Frontend. Это отличает Blazor от, например, React, для которого легко выполнять Rendering-компонентов и, таким образом, выполнять их Unit-тестирование.
+
+## Встраивание Bootstrap в Blazor-приложение (Standalone)
+
+В сгенерированном по шаблону приложению, в папке /wwwroot/css/bootstrap находится файл "bootstrap.min.css", версии v5.1.0. Там же находится map-файл. Однако, в папке отсутстует js-файл, что не позволяет использовать динамическое поведение Twitter Bootstrap. 
+
+Рекомендуется скачать актуальную и полную версию Boostrap с официального [сайта](https://getbootstrap.com/). Файл "bootstrap.bundle.min.js" вместе с соответствующим map-файлом кажется разумным добавить в папку /wwwroot/js/bootstrap. Загрузку js-файла можно добавить в конец "index.html":
+
+```html
+<script src="_framework/blazor.webassembly.js"></script>
+<script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+```
+
+Для того, чтобы JavaScript "подхватился", может потребоваться выполнить команду Refresh в браузере.
+
+### Замена NavBar с левой стороны на NavBar в верхней части экрана
+
+В сгенерированном шаблоне приложения используется разметка с NavBar находящимся в левой части экрана. Чтобы заменить внешний вид на более привычную навигационную панель, находящуюся в верхней части экрана, потребуется модифицировать два файла: "MainLayout.razor" и "NavMenu.razor".
+
+Основная разметка в "MainLayout.razor" может выглядеть следующим образом:
+
+```html
+@inherits LayoutComponentBase
+
+<NavMenu />
+
+<main class="container">
+    @Body
+</main>
+```
+
+Навигационная панель может быть такой:
+
+```html
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">BlazingTopMenu</a>
+        <button class="navbar-toggler @NavButtonCssClass" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-label="Toggle navigation" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse @NavBarCssClass" id="navbarCollapse" @onclick="ToggleNavMenu">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="counter">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="fetchdata">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+    private string? NavBarCssClass => collapseNavMenu ? null : "show";
+    private string? NavButtonCssClass => collapseNavMenu ? "collapsed" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
+```
+
+Однако, после компиляции примера возникает побочный эффект - первый пункт меню оказывается значительно ниже, чем следующие пункты меню.
