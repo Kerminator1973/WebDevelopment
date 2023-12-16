@@ -575,3 +575,13 @@ playingWithDelays().then(result => {
     console.log(`After 4 seconds: ${result}`)
 });
 ```
+
+Если мы хотим запустить несколько асинхронных задач в цикле и дождаться их выполнения, то используя функцию map() сделать это можно следующим образом:
+
+```js
+async function spiderLinks (currentIrl, content, nesting) {
+    const links = getPageLinks(currentUrl, content);
+    const promises = links.map(link => spider(link, nesting - 1));
+    return Promise.all(promises);
+}
+```
