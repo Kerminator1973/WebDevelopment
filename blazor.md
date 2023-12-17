@@ -51,6 +51,8 @@ dotnet new blazor --search
 dotnet new install blazorbootstrap-wasm-net6 -f net6.0
 ```
 
+Сгенерировать шаблон можно командой:
+
 ```shell
 dotnet new blazorbootstrap-wasm-net6 -o BlazorApp
 ```
