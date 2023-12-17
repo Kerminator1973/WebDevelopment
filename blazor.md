@@ -209,6 +209,15 @@ app.Run();
 
 Ориентировочно, базовый [размер загрузки приложения .NET - 6.72 Мб](https://www.reddit.com/r/Blazor/comments/kx8a17/whats_the_size_of_mb_downloaded_by_the_browser/). Такой размер достигается благодаря использованию trimmer-а - приложения, которое исключает из состава приложения не нужные ему зависимости. Т.е. чем больше у приложения зависимостей, тем больший объём данных оно будет скачивать с сервера. Следует заметить, что trimmer [не всегда может срабатывать корректно](https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/configure-trimmer?view=aspnetcore-6.0) - он не учитывает случаев использования Reflection и динамические типы. В этом случае, необходимо давать подсказки триммеру, как в сборке, так и в самом проекте. Рекомендуется ознакомиться с видео [Introducing Blazor: Razor Components | ASP.NET Core 101 - 10 of 13](https://www.youtube.com/watch?v=R23v4lgHYQI&ab_channel=dotnet).
 
+В случае запуска приложения в браузере Microsoft Edge, в Developer Console будет выведена приблизительно следующая информация:
+
+```output
+assetsCache.ts:30 
+dotnet Loaded 22.51 MB resourcesThis application was built with linking (tree shaking) disabled. Published applications will be significantly smaller if you install wasm-tools workload. See also https://aka.ms/dotnet-wasm-features
+```
+
+[По ссылке](https://aka.ms/dotnet-wasm-features) можно почитать ознакомиться с документом, описывающим способы уменьшить размер package для загрузки в браузер.
+
 Замеры трафика приложений из коллекции [Grid.Blazor](https://github.com/gustavnavar/Grid.Blazor) позволяют утверждать, что для реального приложения объём - 20 Мб.
 
 Важным следствием применения триммера является тот факт, что каждое приложение загружает необходимые ему packages и runtime.
@@ -279,7 +288,7 @@ await builder.Build().RunAsync();
 
 Файлы с расширение "razor" определяют компоненты. В начале .razor-файла находится директива @page, определяющая маршрут компонента. Обычно, компоненты размещаются в папке /Components/\[папка\].
 
-Если мы хотим добавить у компонента публичное свойствро, то мы должны использовать атрибут [Parameter] в секции `@code`:
+Если мы хотим добавить у компонента публичное свойство, то мы должны использовать атрибут [Parameter] в секции `@code`:
 
 ```csharp
 @code {
@@ -393,9 +402,9 @@ NavLink - это особенный компонент Blazor, который б
 }
 ```
 
- Определённое в файле "BlazorAppStandalone.styles.css". Этот стиль относится к ScopedCSS и является частью framework-а Blazor.
+Это свойство определённо в файле "BlazorAppStandalone.styles.css". Этот стиль относится к ScopedCSS и является частью framework-а Blazor. Очень хороший маркер принадлежности стиля компонентам Blazor - "случайный" индекс элемента, в нашем случае - `b-5myx3ezuz3`.
 
- Чтобы решить проблему, следует открыть файл "NavMenu.razor.css" через "Solution Explorer" и найти в каскадной таблице следующее свойство:
+Чтобы решить проблему, следует открыть файл "NavMenu.razor.css" через "Solution Explorer" и найти в каскадной таблице следующее свойство:
 
 ```css
 .nav-item:first-of-type {
@@ -406,6 +415,36 @@ NavLink - это особенный компонент Blazor, который б
 Соответственно, если мы удалим это свойство, или заменим 1rem на 0rem, а затем перезагрузим страницу, то элементы списка будут выравнены.
 
 Дополнительная информация доступна на [StackOverflow](https://stackoverflow.com/questions/69275392/modifying-menu-spacing-in-blazor).
+
+## Добавление выпадающего меню в меню
+
+Чтобы добавить выпадающее меню в навигационную панель, достаточно встроить в элемент с классом 'navbar-nav' следующий блок:
+
+```html
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Dropdown
+    </a>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+</li>
+```
+
+Чтобы переходить между страницами приложения, мы можем добавить NavLink:
+
+```html
+<li>
+    <NavLink class="nav-link" href="counter">
+        <span class="oi oi-plus" aria-hidden="true"></span> Counter
+    </NavLink>
+</li>
+```
+
+И выпадающее меню, и NavLink будут корректно работать, однако, потребуется внести некоторые изменения в стилическое оформление, чтобы выпадающее меню обладало контрастностью.
 
 ## Первые впечатления
 
