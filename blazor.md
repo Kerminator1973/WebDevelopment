@@ -37,6 +37,22 @@
 
 При генерации кода проекта любого из шаблонов, рекомендуется в форме "Additional Information" убрать кнопку "Do not use top-level statements".
 
+В случае использования Visual Studio Code, сгенерировать проекты по шаблону можно консольными командами:
+
+```shell
+dotnet new blazor -o BlazorApp
+```
+
+```shell
+dotnet new blazorserver -f net6.0
+```
+
+Запустить приложение в режиме hot-update можно командой:
+
+```shell
+dotnet watch run
+```
+
 ## Blazor Web App
 
 Стоит заметить, что [Blazor Server не загружает Microsoft.NET](https://learn.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-8.0) и может работать с браузерами, не поддерживающими Web Assembly. Однако, в этом варианте значительно повышается латентность системы, т.к. любое изменение на клиенте транслируется на сервер и выполняет (частичный?) рендеринг страницы.
@@ -258,6 +274,39 @@ await builder.Build().RunAsync();
     </nav>
 </div>
 ```
+
+## Ключевые особенности языка описания страниц
+
+Файлы с расширение "razor" определяют компоненты. В начале .razor-файла находится директива @page, определяющая маршрут компонента. Обычно, компоненты размещаются в папке /Components/\[папка\].
+
+Если мы хотим добавить у компонента публичное свойствро, то мы должны использовать атрибут [Parameter] в секции `@code`:
+
+```csharp
+@code {
+    [Parameter]
+    public string? UserName { get; set; }
+```
+
+Чтобы привязать значение элемента управления HTML к переменной C#, следует использовать `@bind()`:
+
+```html
+@page "/bind"
+
+<p>
+    <input @bind="inputValue" />
+</p>
+<ul>
+    <li><code>inputValue</code>: @inputValue</li>
+</ul>
+
+@code {
+    private string? inputValue;
+}
+```
+
+NavLink - это особенный компонент Blazor, который базируется на NavigationManager и анализирует ссылку перехода. Если ссылка соответствует правилам оформления внутреннего перехода, то выполняется не загрузка по внешней ссылке, а локальный переход по локальному маршруту.
+
+Рекомендуется ознакомиться с микро-курсами по Blazor на сайте [Microsoft Learn](https://learn.microsoft.com/).
 
 ## Встраивание Bootstrap в Blazor-приложение (Standalone)
 
