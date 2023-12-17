@@ -37,14 +37,28 @@
 
 При генерации кода проекта любого из шаблонов, рекомендуется в форме "Additional Information" убрать кнопку "Do not use top-level statements".
 
-В случае использования Visual Studio Code, сгенерировать проекты по шаблону можно консольными командами:
+В случае использования Visual Studio Code, сгенерировать проекты по шаблону можно консольными командами.
+
+Начать следует с поиска подходящего шаблона в репозитарии NuGet:
 
 ```shell
-dotnet new blazor -o BlazorApp
+dotnet new blazor --search
+```
+
+Из нескольких десятков вариантов следует выбрать подходящий и загрузить его. Пример:
+
+```shell
+dotnet new install blazorbootstrap-wasm-net6 -f net6.0
 ```
 
 ```shell
-dotnet new blazorserver -f net6.0
+dotnet new blazorbootstrap-wasm-net6 -o BlazorApp
+```
+
+Загрузить зависимости можно командой:
+
+```shell
+dotnet restore
 ```
 
 Запустить приложение в режиме hot-update можно командой:
@@ -52,6 +66,19 @@ dotnet new blazorserver -f net6.0
 ```shell
 dotnet watch run
 ```
+
+При запуске приложение может выдать, например, вот такой текст:
+
+```shell
+developer@developer-HP-ENVY-15-Notebook-PC:~/projects/MyNewBlazorApp$ dotnet run
+Building...
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://localhost:7194
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5114
+```
+
+Соответственно, далее следует открыть браузер и перейти по локальной ссылке: `http://localhost:5114`
 
 ## Blazor Web App
 
