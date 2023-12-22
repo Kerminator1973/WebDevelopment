@@ -517,6 +517,63 @@ NavLink - это особенный компонент Blazor, который б
 
 Таким образом код, который запускается по комбинации **Shift+Alt+D** проверяет режим, в котором запущен браузер. Если браузер запущен в обычном режиме, подсказывает, как перейти в режим отладки. Если браузер уже находится в режиме отладки, то комбинация клавиш запускает DevTools со встроенным отладчиком.
 
+## Как вызвать JavaScript-код из C#
+
+Для этого используется библиотека IJSRuntime, которая должна быть внедрена в страницу:
+
+```csharp
+@page "/counter"
+@inject IJSRuntime JS
+```
+
+Затем должна быть определёна некоторая JavaScript-функция, которая может не возвращать результат и не принимать параметры, например:
+
+```html
+<script>
+    window.showDialog = () => {
+        console.log('Hello');
+    };
+</script>
+```
+
+Непосредственно вызов осуществляется через InvokeVoidAsynс(), т.к. функция не возвращает какое-либо значение:
+
+```csharp
+@code {
+    private async Task ShowDialog()
+    {
+        await JS.InvokeVoidAsync("showDialog", null);
+    }
+}
+```
+
+Вместе с тем, JavaScript-функция может принимать входные параметры и возвращать значение, например:
+
+```csharp
+<script>
+    window.showDialog = (msg) => {
+        console.log('msg');
+        return "Done";
+    };
+</script>
+```
+
+В этом случае, вызов функции должен быть другим:
+
+```csharp
+@code {
+    private MarkupString text;
+
+    private async Task ShowDialog()
+    {
+        text = new(await JS.InvokeAsync<string>("showDialog", "Hello, world!"));
+        Console.WriteLine(text);
+    }
+}
+```
+
+Больше информации о механизме доступно [по ссылке](https://learn.microsoft.com/ru-ru/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet?view=aspnetcore-8.0).
+
 ## Первые впечатления
 
 По структуре проекта, похоже на React с TypeScript. Пока не понятно, как реализовывать State Management.
