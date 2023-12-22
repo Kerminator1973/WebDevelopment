@@ -572,6 +572,8 @@ NavLink - это особенный компонент Blazor, который б
 }
 ```
 
+Следует заметить, что возвращаемым значением может быть и `String?`. Тип **MarkupString** - это строка с HTML-разметкой, которая может быть использована при рендеринге.
+
 Больше информации о механизме доступно [по ссылке](https://learn.microsoft.com/ru-ru/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet?view=aspnetcore-8.0).
 
 ## Первые впечатления
