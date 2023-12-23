@@ -55,3 +55,32 @@ dotnet new install Blazor.Bootstrap.Templates::1.10.0
     }
 }
 ```
+
+## Уведомляющие сообщения
+
+Для уведомления о результатах выполнения асинхронных операций, в web-приложениях часто используют специализированные библиотеки, примером которых является [Alertify.js](https://alertifyjs.com/). В BlazorBootstrap также есть компонент, который реализует схожий функционал - [Toast](https://docs.blazorbootstrap.com/components/toasts).
+
+В верстке следует определить сам объект и кнопку для его активации:
+
+```html
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.BottomRight" />
+
+<Button Color="ButtonColor.Primary" @onclick="() => ShowMessage(ToastType.Primary)">Primary Toast</Button>
+```
+
+Активация Tosater выполняется следующим кодом C#:
+
+```csharp
+List<ToastMessage> messages = new List<ToastMessage>();
+
+private void ShowMessage(ToastType toastType) => messages.Add(CreateToastMessage(toastType));
+
+private ToastMessage CreateToastMessage(ToastType toastType)
+=> new ToastMessage
+{
+    Type = toastType,
+    Message = $"Hello, world! This is a simple toast message. DateTime: {DateTime.Now}",
+};
+```
+
+В приведённом выше примере следует обратить внимание на атрибуты AutoHide и Delay - они определяют режим работы "автоматическое сокрытие сообщения" и продолжительность отображения элемента на экране.
