@@ -631,3 +631,44 @@ createReadStream(filename)
     .pipe( createWriteStream(`${filename}.gz`))
     .o('finish', () => console.log(`File successfully compressed'));
 ```
+
+Пример реализации "читающего" потока (Readable stream) в non-floweing mode:
+
+```js
+process.stdin
+    .on('readable', () => {
+        let chunk;
+        console.log('New data available');
+        while ((chunk = process.stdin.read()) !== null) {
+            console.log(`Chunk read (${chunk.length} bytes): "${chunk.toString()}"`);
+        }
+    })
+    .on('end', () => console.log('End of stream'));
+```
+
+Пример реализации _Readable stream_:
+
+```js
+import { Readable } from 'stream';
+import Chance from 'chance';
+
+const chance = new Chance();
+
+export class RandomStream extends Readable {
+    constructor (options) {
+        supre (options);
+        this.emittedBytes = 0;
+    }
+
+    _read (size) {
+        const chunk = chance.string({length: size});
+        this.push(chunk, 'utf8');
+        this.emittedBytes += chunk.length;
+        if (chance.bool({likelihood: 5})) {
+            this.push(null);
+        }
+    }
+}
+```
+
+Библиотека [Chance](https://www.npmjs.com/package/chance) генерирует различные типы случайных данных.
