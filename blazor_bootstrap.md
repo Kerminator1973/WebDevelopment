@@ -18,6 +18,8 @@
 
 Одной из адаптаций Bootstrap под Blazor является **Blazor Bootstrap** by Vikram Reddy. Ввиду того, что адаптация может быть глубокой, фактор версии оригинальной библиотеки Bootstrap (4, или 5) уже не имеет решающего значения.
 
+В качестве альтернативы можно рассматривать библиотеку [Bootstrap Blazor](https://blazor.zone/) от китайских товарищей.
+
 Начать изучение Blazor Bootstrap следует [со страницы](https://docs.blazorbootstrap.com/getting-started/blazor-webassembly-net-8). На GitHub приведена более [подробная инструкция](https://github.com/vikramlearning/blazorbootstrap) по созданию проекта. В соответствии с инструкцией, следует загрузить шаблон проекта и сгененрировать новое решение:
 
 ```shell
