@@ -20,6 +20,8 @@
 
 В качестве альтернативы можно рассматривать библиотеку [Bootstrap Blazor](https://blazor.zone/) от китайских товарищей.
 
+Сущестуют реализации Semantic UI для Blazor, например, [SemanticBlazor](https://github.com/strakamichal/SemanticBlazor). К сожалению, Semantic UI не очень популярен у Blazor-разработчиков.
+
 Начать изучение Blazor Bootstrap следует [со страницы](https://docs.blazorbootstrap.com/getting-started/blazor-webassembly-net-8). На GitHub приведена более [подробная инструкция](https://github.com/vikramlearning/blazorbootstrap) по созданию проекта. В соответствии с инструкцией, следует загрузить шаблон проекта и сгененрировать новое решение:
 
 ```shell

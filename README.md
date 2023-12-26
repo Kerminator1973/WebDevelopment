@@ -177,7 +177,7 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
 По мнению экспертного сообщестава (сентябрь 2023 г.), ценность TypeScript сильно снизится после того, как проверка типов будет включена в новые версии JavaScript (в том числе, во время исполнения кода), а также по мере развития экосистемы Framework-ов: Svelte, Drizzle и Turbo. См.: https://www.reddit.com/r/JavaScriptTips/comments/16q1ur2/why_are_javascript_pros_saying_goodbye_to/
 
-**Update, декабрь 2023**: Svelte, Turbo и ещё ряд разработчиков frameworks отказались (_ditching_) от использования TypeScript в своих продуктах. Причин две: компиляция делает цикл сборки более длинным, а так же код становится гораздо более сложным. Для обозначения увеличения сложности кода был введён специальный термин - _TypeScript Gymnastics_. Примеры [TypeScript Gymnastics](https://github.com/g-plane/type-gymnastics).
+**Update, декабрь 2023**: Svelte, Turbo и ещё ряд разработчиков frameworks отказались (*ditching*) от использования TypeScript в своих продуктах. Причин две: компиляция делает цикл сборки более длинным, а так же код становится гораздо более сложным. Для обозначения увеличения сложности кода был введён специальный термин - *TypeScript Gymnastics*. Примеры [TypeScript Gymnastics](https://github.com/g-plane/type-gymnastics). Под термином "гимнастика" подразумевается "художественная гимнастика", т.е. выступления профессиональных атлетов, которые крутят "колёса" на перекладинах, кольцах и брусьях.
 
 <a name="problems"></a>
 
