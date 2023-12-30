@@ -1,6 +1,6 @@
 # Создание компонентов в Blazor
 
-Для ссздания компонента в Blazor достаточно создать некоторую папку (рекомендуется - "Components") и создать в папке файл с разрешением ".razor". В этом файле может быть определена как разметка, так и методы с атрибутами. Например:
+Для ссздания компонента в Blazor достаточно создать некоторую папку (рекомендуется - "Components"; как вариант, его можно разместить в папке "Shared") и создать в папке файл с разрешением ".razor". В этом файле может быть определена как разметка, так и методы с атрибутами. Например:
 
 ```csharp
 <h2>New Pizza: @PizzaName</h2>
@@ -94,5 +94,114 @@ public class PizzaTopping
 @code {
     [CascadingParameter(Name="DealName")]
     private string DealName { get; set; }
+}
+```
+
+## Использование AppState
+
+Портал learn.microsoft.com содержит [материалы](https://learn.microsoft.com/ru-ru/training/modules/interact-with-data-blazor-web-apps/6-share-data-in-blazor-applications) по добавлению AppState для Blazor Server.
+
+Общая идея состоит в том, что разрабатывается класс, в котором хранится некоторое состояние, например:
+
+```csharp
+public class PizzaSalesState
+{
+    public int PizzasSoldToday { get; set; }
+}
+```
+
+Затем, используя механизм **Dependency Injection**, добавляется сервис, который можно затем внедрять в разные страницы:
+
+```csharp
+// Add services to the container
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
+// Add the AppState class
+builder.Services.AddScoped<PizzaSalesState>();
+```
+
+Внедрение состояния и его использование выглядит следующим образом:
+
+```csharp
+@page "/"
+@inject PizzaSalesState SalesState
+
+<h1>Welcome to Blazing Pizzas</h1>
+
+<p>Today, we've sold this many pizzas: @SalesState.PizzasSoldToday</p>
+
+<button @onclick="IncrementSales">Buy a Pizza</button>
+
+@code {
+    private void IncrementSales()
+    {
+        SalesState.PizzasSoldToday++;
+    }
+}
+```
+
+## State Management для Blazor Web Assembly
+
+Тоже самое можно сделать и для Blazor Web Assembly, см. [демонстрационное приложение](https://github.com/dotnet/blazor-samples/tree/main/8.0/BlazorSample_WebAssembly).
+
+Справочная информация доступна [по ссылке](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-8.0#add-client-side-services).
+
+Регистрация зависимостей выполняется в файле "Program.cs" и может выглядеть следующим образом:
+
+```csharp
+builder.Services.AddSingleton<NotifierService>();
+builder.Services.AddSingleton<TimerService>();
+builder.Services.AddSingleton<IDataAccess, DataAccess>();
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+```
+
+Определение интерфейса может выглядеть, например, так:
+
+```csharp
+public interface IUserService
+{
+    public string? Name { get; set; }
+}
+
+public interface ISettingService
+{
+    public IList<Setting> GetSettings();
+}
+```
+
+Или так:
+
+```csharp
+@code {
+    ...
+    public interface IDataAccess
+    {
+        public Task<IReadOnlyList<Actor>> GetAllActorsAsync();
+    }
+
+    public class DataAccess : IDataAccess
+    {
+        public Task<IReadOnlyList<Actor>> GetAllActorsAsync() => 
+            Task.FromResult(GetActors());
+    }
+    ...
+}
+```
+
+Внедрение зависимости может осуществляться на странице ".razor":
+
+```csharp
+@page "/the-sunmakers"
+@inject IDataAccess DataRepository
+...
+@if (actors != null)
+{
+    <ul>
+        @foreach (var actor in actors)
+        {
+            <li>@actor.FirstName @actor.LastName</li>
+        }
+    </ul>
 }
 ```
