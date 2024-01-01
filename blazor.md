@@ -368,6 +368,40 @@ NavLink - это особенный компонент Blazor, который б
 
 Рекомендуется ознакомиться с микро-курсами по Blazor на сайте [Microsoft Learn](https://learn.microsoft.com/).
 
+Директива `@bind` является интеллектуальной и в зависимости от конкретного типа input-объекта, привязка будет осуществлена к корректному типу данных. По умолчанию, элемент управления привязан к событию DOM **onchange**, но иногда требуется привязка к другим типам событий. Добавить привязку к событию `oninput` можно используя директиву `@bind-value`, а для того, чтобы выполнить привязку к произвольному событию, используется директива `@bind-value:event`. Например:
+
+```csharp
+@page "/"
+
+<h1>My favorite pizza is: @favPizza</h1>
+<p>
+    Enter your favorite pizza:
+    <input @bind-value="favPizza" @bind-value:event="oninput" />
+</p>
+
+@code {
+    private string favPizza { get; set; } = "Margherita"
+}
+```
+
+Для форматирования полей может быть использована директива `@bind:format`, например:
+
+```csharp
+@page "/ukbirthdaypizza"
+
+<h1>Order a pizza for your birthday!</h1>
+<p>
+    Enter your birth date:
+    <input @bind="birthdate" @bind:format="dd-MM-yyyy" />
+</p>
+
+@code {
+    private DateTime birthdate { get; set; } = new(2000, 1, 1);
+}
+```
+
+В качестве альтернативы форматированию посредством `@bind:format` могут быть [реализованы setter и getter](https://learn.microsoft.com/ru-ru/training/modules/interact-with-data-blazor-web-apps/8-bind-control-data-blazor-applications).
+
 ## Встраивание Bootstrap в Blazor-приложение (Standalone)
 
 В сгенерированном по шаблону приложению, в папке /wwwroot/css/bootstrap находится файл "bootstrap.min.css", версии v5.1.0. Там же находится map-файл. Однако, в папке отсутстует js-файл, что не позволяет использовать динамическое поведение Twitter Bootstrap. 
