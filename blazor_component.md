@@ -189,6 +189,8 @@ public interface ISettingService
 }
 ```
 
+Сохранять классы, отвечающие за _State Management_ рекомендуется в папке "Services".
+
 Внедрение зависимости может осуществляться на странице ".razor":
 
 ```csharp
