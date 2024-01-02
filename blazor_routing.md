@@ -21,6 +21,13 @@
 - Counter.razor: `@page "/counter"`
 - FetchData.rzor: `@page "/fetchdata"`
 
+Следует заметить, что Blazor позволяет указывать несколько директив @page, например:
+
+```csharp
+@page "/Pizzas"
+@page "/CustomPizzas"
+```
+
 Секция **Found** определяет компонент, который обрабатывает запрос в том случае, если маршрут был найден в сборке. В секция **NotFound**, если осуществляется попытка перехода на несуществующую (отсутствующую в сборке) странице.
 
 В нашем примере, при любом легальном переходе обработку запроса на переход будет обрабатывать страница **MainLayout**, определённая в папке "Shared". В сгенерированном приложении, MainLayout определяет общий шаблон формы, в котором есть навигационный блок размещающийся в левой части экрана (Sidebar) и основной блок, размещающийся справа и состоящий из некоторого заголовка и основной части:
@@ -91,3 +98,65 @@
 ```
 
 Однако возникает вопрос, можно ли формировать навигационную панель Bootstrap динамически?
+
+## Получение сведений о расположении и навигация с помощью NavigationManager
+
+Для того, чтобы получить информацию о базовом URI web-сайта испольузется объект NavigationManager, который следует встроить в страницу, например:
+
+```csharp
+@page "/pizzas"
+@inject NavigationManager NavManager
+
+<a href=@HomePageURI>Home Page</a>
+
+@code {
+	public string HomePageURI { get; set; }
+	
+	protected override void OnInitialized()
+	{
+		HomePageURI = NavManager.BaseUri;
+	}
+}
+```
+
+Если мы хотим разобрать строку запроса, то следует выполнить  синтаксический анализ полного URI. Например:
+
+```csharp
+@code {
+	private string ToppingName { get; set; }
+	
+	protected override void OnInitialized()
+	{
+		var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+		if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("extratopping", out var extraTopping))
+		{
+			ToppingName = System.Convert.ToString(extraTopping);
+		}
+	}
+}
+```
+
+Для переадрессации можно использовать метод **NavigateTo**():
+
+```csharp
+<button class="btn" @onclick="NavigateToPaymentPage">
+	Buy this pizza!
+</button>
+
+@code {
+	private void NavigateToPaymentPage()
+	{
+		NavManager.NavigateTo("/buypizza");
+	}
+}
+```
+
+## Использование NavLink
+
+В Blazor вместо тэга <a> рекомендуется использовать компонент NavLink. Например:
+
+```csharp
+<NavLink href=@HomePageURI Match="NavLinkMatch.All">Home Page</NavLink>
+```
+
+Значения атрибута Match (NavLinkMatch.All и NavLinkMatch.Prefix) влияют на визуальное отображение ссылки (активная, или не активная).
