@@ -72,7 +72,7 @@ dotnet new install Blazor.Bootstrap.Templates::1.10.0
 <Button Color="ButtonColor.Primary" @onclick="() => ShowMessage(ToastType.Primary)">Primary Toast</Button>
 ```
 
-Активация Tosater выполняется следующим кодом C#:
+Активация Toaster выполняется следующим кодом C#:
 
 ```csharp
 List<ToastMessage> messages = new List<ToastMessage>();
