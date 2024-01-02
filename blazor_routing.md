@@ -175,3 +175,50 @@
 ```
 
 Значения атрибута Match (NavLinkMatch.All и NavLinkMatch.Prefix) влияют на визуальное отображение ссылки (активная, или не активная).
+
+## Директива @page гораздо более сложная
+
+Мы можем заложить в директиву @page указание на извлечение параметров, близкое к RESTful:
+
+```csharp
+@page "/FavoritePizzas/{favorite}"
+
+<h1>Choose a Pizza</h1>
+
+<p>Your favorite pizza is: @Favorite</p>
+
+@code {
+	[Parameter]
+	public string Favorite { get; set; }
+}
+```
+
+В приведённом выше примере, Blazor поймёт, что в конкретном поле URI (favorite) находится изменяемое значение и проекцирует его в поле **Favorite** в программном коде.
+
+Параметр может быть не обязательным - для этого достаточно добавить символ `?`:
+
+```csharp
+@page "/FavoritePizzas/{favorite?}"
+```
+
+Можно добавлять значение по умолчанию:
+
+```csharp
+@code {
+	[Parameter]
+	public string Favorite { get; set; }
+	
+	protected override void OnInitialized()
+	{
+		Favorite ??= "Пицца с тунцом";
+	}
+}
+```
+
+Также мы можем явным образом указывать тип параметра маршрута, для случаев, когда мы хотим получать не string, а, например, целочисленное значение:
+
+```csharp
+@page "/FavoritePizza/{preferredsize:int}"
+```
+
+Список используемых типов [доступен по ссылке](https://learn.microsoft.com/ru-ru/training/modules/use-pages-routing-layouts-control-blazor-navigation/4-explore-route-parameters-effect-apps-routing).
