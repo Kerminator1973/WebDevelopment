@@ -682,3 +682,11 @@ export class RandomStream extends Readable {
 ```js
 pipeline(stream1, stream2, stream3, ..., cb);
 ```
+
+Функционал работы с потоками в Node.js развит весьма сильно. Мы можем, например, объединить несколько потоков в один, чтобы улучшить читаемость кода. Например, мы можем взять поток, который умеет сжимать данные и шифровать их и объединив, сделать "черный ящик", который и сжимает, и шифрует в поточной модели. Удобнее всего это сделать используя библиотеку [pump](https://www.npmjs.com/package/pump):
+
+```js
+const combinedStream = pumpify(streamA, streamB, streamC);
+```
+
+Потоки в JavaScript можно разхделять на части (_forking streams_), или объединять несколько потоков в один (_merging streams_).
