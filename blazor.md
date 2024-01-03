@@ -227,6 +227,126 @@ app.Run();
 }
 ```
 
+### Обработка событий DOM в Blazor
+
+Большинство событий, обрабатываемых в коде на C# имеют такле же имя, как и в JavaScript-коде, но начинаются с символа @, например: `@onkeydown`, `@onclick` или `@onfocus`. 
+
+Обработчик события @onclick может выглядеть следующим образом:
+
+```csharp
+private void IncrementCount(MouseEventArgs e)
+{
+    if (e.CtrlKey) // Ctrl key pressed as well
+    {
+        currentCount += 5;
+    }
+    else
+    {
+        currentCount++;
+    }
+}
+```
+
+Для разных событий, входной параметр в обработчике будет иметь разный тип: MouseEventArgs, KeyboardEventArgs, и т.д.
+
+В приложении Blazor можно обрабатывать события как в C#, так и в JavaScript-коде.
+
+Blazor позволяет осуществлять асинхронную обработку событий, например:
+
+```csharp
+<button @onclick="DoWork">Run time-consuming operation</button>
+
+@code {
+    private async Task DoWork()
+    {
+        // Call a method that takes a long time to run and free the current thread
+        var data = await timeConsumingOperation();
+
+        // Omitted for brevity
+    }
+}
+```
+
+Также следует заметить, что Blazor поддерживает лямбда-выражения:
+
+```csharp
+@page "/counter"
+
+<h1>Counter</h1>
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="() => currentCount++">Click me</button>
+
+@code {
+    private int currentCount = 0;
+}
+```
+
+Блокировать default-ную обработку событий JavaScript можно используя **preventDefault** и **stopPropagation**:
+
+```csharp
+<input value=@data @onkeypress="ProcessKeyPress" @onkeypress:preventDefault />
+```
+
+## Вызов Callback-метода родительского компонента
+
+Реклмендуется [ознакомиться со статьёй](https://learn.microsoft.com/ru-ru/training/modules/blazor-improve-how-forms-work/2-attach-csharp-code-dom-events-blazor-event-handlers).
+
+В дочернем компонент определяем параметр, в качестве которого используется шаблон класса EventCallback, со специализацией подходящим нам типом:
+
+```csharp
+@* TextDisplay component *@
+@using WebApplication.Data;
+
+<p>Enter text:</p>
+<input @onkeypress="HandleKeyPress" value="@data" />
+
+@code {
+    [Parameter]
+    public EventCallback<KeyTransformation> OnKeyPressCallback { get; set; }
+
+    private string data;
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        KeyTransformation t = new KeyTransformation() { Key = e.Key };
+        await OnKeyPressCallback.InvokeAsync(t);
+        data += t.TransformedKey;
+    }
+}
+```
+
+Тип специализации может быть произвольным, например:
+
+```csharp
+namespace WebApplication.Data
+{
+    public class KeyTransformation
+    {
+        public string Key { get; set; }
+        public string TransformedKey { get; set; }
+    }
+}
+```
+
+В родительском классе Callback указывается так:
+
+```csharp
+@page "/texttransformer"
+@using WebApplication.Data;
+
+<h1>Text Transformer - Parent</h1>
+
+<TextDisplay OnKeypressCallback="@TransformText" />
+
+@code {
+    private void TransformText(KeyTransformation k)
+    {
+        k.TransformedKey = k.Key.ToUpper();
+    }
+}
+```
+
 ## Blazor Web Assembly Standalone App
 
 Если основываться на статье [Введение в Blazor с сайта Метанит](https://metanit.com/sharp/blazor/1.1.php), _web assembly_ используется только для загрузки .NET и необходимых сборок. Как следствие, появляются как уникальные свойства, так и существенные недостатки. Уникальные свойства:
@@ -612,12 +732,13 @@ NavLink - это особенный компонент Blazor, который б
 
 ## Первые впечатления
 
-По структуре проекта, похоже на React с TypeScript. Пока не понятно, как реализовывать State Management.
+По структуре проекта, Blazor похож на React с TypeScript. Однако, в нём нет hook-ов и код выглядит гораздо похоже на типовой структурный код, чем код React.
 
 Однако, ключевой нюанс состоит в том, React адаптируется под особенности JavScript/TypeScript и это приводит к более сложному коду. В случае Blazor - язык и среда выполнения адаптируются под Framework, что делает код гораздо менее сложным. Примеры:
 
-- выполнение асинхронных запросов в Blazor выглядит просто как синхронный код
+- выполнение асинхронных запросов (http) в Blazor выглядит просто как синхронный код
 - привязка (binding) переменной в коде на C# к HTML-элементу выполняется элементарно
+- обработчики событий в Blazor могут быть асинхронными, т.е. обработчик может выполнять какую тяжёлую нагрузку, но это не отразится на потоке пользовательского интерфейса.
 
 Чтобы просматривать DOM, следует использовать режим "Посмотреть код". Для этого следует нажать кнопку "Select an element in the Page to inspect it", и выбрать конкретный элемент в визуальном представлении. Как только мы выбираем элемент, DOM-представление обновляется и, таким образом, можно вполне успешно анализировать HTML-разметку.
 
