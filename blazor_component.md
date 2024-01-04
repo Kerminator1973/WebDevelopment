@@ -101,7 +101,7 @@ public class PizzaTopping
 
 Портал learn.microsoft.com содержит [материалы](https://learn.microsoft.com/ru-ru/training/modules/interact-with-data-blazor-web-apps/6-share-data-in-blazor-applications) по добавлению AppState для Blazor Server.
 
-Общая идея состоит в том, что разрабатывается класс, в котором хранится некоторое состояние, например:
+Общая идея состоит в том, что разрабатывается класс, в котором хранится некоторое состояние. Например:
 
 ```csharp
 public class PizzaSalesState

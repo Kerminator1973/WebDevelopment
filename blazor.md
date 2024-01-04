@@ -730,7 +730,13 @@ NavLink - это особенный компонент Blazor, который б
 
 Больше информации о механизме доступно [по ссылке](https://learn.microsoft.com/ru-ru/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet?view=aspnetcore-8.0).
 
-## Первые впечатления
+## Советы по использованию
+
+Чтобы просматривать DOM, следует использовать режим "Посмотреть код". Для этого следует нажать кнопку "Select an element in the Page to inspect it", и выбрать конкретный элемент в визуальном представлении. Как только мы выбираем элемент, DOM-представление обновляется и, таким образом, можно вполне успешно анализировать HTML-разметку.
+
+Есть проблема с разработкой Unit-тестов: их очень легко делать для Backend, но весьма сложно для Frontend. Это отличает Blazor от, например, React, для которого легко выполнять Rendering-компонентов и, таким образом, выполнять их Unit-тестирование.
+
+## Сравнение с React
 
 По структуре проекта, Blazor похож на React с TypeScript. Однако, в нём нет hook-ов и код выглядит гораздо похоже на типовой структурный код, чем код React.
 
@@ -740,8 +746,70 @@ NavLink - это особенный компонент Blazor, который б
 - привязка (binding) переменной в коде на C# к HTML-элементу выполняется элементарно
 - обработчики событий в Blazor могут быть асинхронными, т.е. обработчик может выполнять какую тяжёлую нагрузку, но это не отразится на потоке пользовательского интерфейса.
 
-Чтобы просматривать DOM, следует использовать режим "Посмотреть код". Для этого следует нажать кнопку "Select an element in the Page to inspect it", и выбрать конкретный элемент в визуальном представлении. Как только мы выбираем элемент, DOM-представление обновляется и, таким образом, можно вполне успешно анализировать HTML-разметку.
-
-Есть проблема с разработкой Unit-тестов: их очень легко делать для Backend, но весьма сложно для Frontend. Это отличает Blazor от, например, React, для которого легко выполнять Rendering-компонентов и, таким образом, выполнять их Unit-тестирование.
-
 Благодаря значительно более низкой сложности программирования, Blazor выглядит предпочтительным инструментом, который, при удачном стечении обстоятельств закопает React, Angular, Vue.js и Svelte.
+
+### Передача параметров в компонент
+
+Осуществляется посредством использования атрибута `[Parameter]`:
+
+```csharp
+@code {
+    [Parameter]
+    public string PizzaName { get; set; }
+}
+```
+
+### Вызывать метод родителя
+
+Осуществляется через callback-функцию передаваемую через параметр дочернего компонента:
+
+```csharp
+@code {
+    [Parameter]
+    public EventCallback<KeyTransformation> OnKeyPressCallback { get; set; }
+}
+```
+
+### Действия при инициализации компонента
+
+Действия при инициализации компонента осуществляются в методе **OnInitialized**():
+
+```csharp
+@code {
+	protected override void OnInitialized()
+	{
+        // ...
+	}
+}
+```
+
+### Обработка событий  DOM в Blazor
+
+Большинство событий, обрабатываемых в коде на C# имеют такле же имя, как и в JavaScript-коде, но начинаются с символа @, например: `@onkeydown`, `@onclick` или `@onfocus`. Пример обработчика:
+
+```csharp
+private void IncrementCount(MouseEventArgs e)
+{
+    // ...
+}
+```
+
+### State Management
+
+State Management реализуется через механизм Dependency Injection. Для Blazor Server см. **AppState**, а для Blazor Web Assembly см. [справочную информацию](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-8.0#add-client-side-services).
+
+### Асинхронные запросы на сервер
+
+Асинхронные запросы в Blazor исключительно удобно выполнять, благодаря асинхронномы выполнению код и Dependency Injection:
+
+```csharp
+@inject HttpClient Http
+
+...
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+}
+```
