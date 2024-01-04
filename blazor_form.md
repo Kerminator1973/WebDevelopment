@@ -50,6 +50,23 @@ public class WeatherForecast
 
 EditForm реализует три события, которые выполняются при отправке: OnValidSubmit, OnInvalidSubmit и OnSubmit.
 
+Следует заметить, что если используется обработчик OnSubmit, то события OnValidSubmit и OnInvalidSubmit не будут приходить в программный код. Однако, вместо этого можно использовать параметр **EditContext**. Например:
+
+```csharp
+<EditForm Model="@pizza" OnSubmit=@HandleSubmission>
+...
+@code {
+    void HandleSubmission(EditContext context)
+    {
+        bool dataIsValid = context.Validate();
+        if (dataIsValid)
+        {
+            // Store valid data here
+        }
+    }
+}
+```
+
 Если необходимо реализовать комплексную проверку поля ввода, то следует рассмотреть возможность использования события **OnSubmit**. Пример валидации:
 
 ```csharp
@@ -95,5 +112,152 @@ EditForm реализует три события, которые выполня
         // Save the data
         Message = "Changes saved";
     }
+}
+```
+
+В Blazor часто в качестве стилистического оформления используется Bootstrap.
+
+## Блокировка кнопки на время отправки заказа на сервер
+
+Часто используется следующий подход:
+
+```csharp
+<div class="main">
+    <EditForm Model=Order.DeliveryAddress OnSubmit=CheckSubmission>
+        <button class="checkout-button btn btn-warning" disabled=@isSubmitting>
+            Place order
+        </button>
+    </EditForm>
+</div>
+
+@code {
+    private async Task CheckSubmission()
+    {
+        isSubmitting = true;
+        await PlaceOrder();
+        isSubmitting = false;
+    }    
+}
+```
+
+## Пример оформления сообщения об ошибке
+
+Для информирования об ошибке может быть использован следующий код:
+
+```csharp
+<div class="checkout-delivery-address">
+    <h4>Deliver to...</h4>
+    @if (isError) {
+        <div class="alert alert-danger">Please enter a name and address.</div>
+    }
+    <AddressEditor Address="Order.DeliveryAddress" />
+</div>
+```
+
+## Использование DataAnnotationsValidator для проверки полей формы
+
+**DataAnnotations** в Blazor может использоваться также, как и в ASP.NET Core:
+
+```csharp
+using  System.ComponentModel.DataAnnotations;
+
+public class Pizza
+{
+    public int Id { get; set; }
+    
+    [Required]
+    public string Name { get; set; }
+    
+    public string Description { get; set; }
+    
+    [EmailAddress]
+    public string ChefEmail { get; set;}
+    
+    [Required]
+    [Range(10.00, 25.00)]
+    public decimal Price { get; set; }
+}
+```
+
+Список дополнительных атрибутов валидации доступен в [статье](https://learn.microsoft.com/ru-ru/training/modules/blazor-improve-how-forms-work/6-validate-user-input-implicitly).
+
+Для того, чтобы _неявная_ валидация работала, следует добавить дополнительные тэги (DataAnnotationsValidator, ValidationSummary и ValidationMessage) в верстку:
+
+```csharp
+@page "/admin/createpizza"
+
+<h1>Add a new pizza</h1>
+
+<EditForm Model="@pizza">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <InputText id="name" @bind-Value="pizza.Name" />
+    <ValidationMessage For="@(() => pizza.Name)" />
+    
+    <InputText id="description" @bind-Value="pizza.Description" />
+    
+    <InputText id="chefemail" @bind-Value="pizza.ChefEmail" />
+    <ValidationMessage For="@(() => pizza.ChefEmail)" />
+    
+    <InputNumber id="price" @bind-Value="pizza.Price" />
+    <ValidationMessage For="@(() => pizza.Price)" />
+</EditForm>
+
+@code {
+    private Pizza pizza = new();
+}
+```
+
+Настроить сообщения об ошибках можно в описании модели:
+
+```csharp
+public class Pizza
+{
+    public int Id { get; set; }
+    
+    [Required(ErrorMessage = "You must set a name for your pizza.")]
+    public string Name { get; set; }
+    
+    public string Description { get; set; }
+    
+    [EmailAddress(ErrorMessage = "You must set a valid email address for the chef responsible for the pizza recipe.")]
+    public string ChefEmail { get; set;}
+    
+    [Required]
+    [Range(10.00, 25.00, ErrorMessage = "You must set a price between $10 and $25.")]
+    public decimal Price { get; set; }
+}
+```
+
+Можно реализовать свои собственные правила валидации, разработав класс производный от  ValidationAttribute:
+
+```csharp
+public class PizzaBase : ValidationAttribute
+{
+    public string GetErrorMessage() => $"Sorry, that's not a valid pizza base.";
+
+    protected override ValidationResult IsValid(
+        object value, ValidationContext validationContext)
+    {
+        if (value != "Tomato" || value != "Pesto")
+        {
+            return new ValidationResult(GetErrorMessage());
+        }
+
+        return ValidationResult.Success;
+    }
+}
+```
+
+Использовать валидатор можно в описании модели:
+
+```csharp
+public class Pizza
+{
+    // ...
+
+    [PizzaBase]
+    public string Base { get; set; }
 }
 ```

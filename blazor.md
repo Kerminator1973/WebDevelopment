@@ -813,3 +813,7 @@ State Management реализуется через механизм Dependency I
     }
 }
 ```
+
+### Валидация полей форм
+
+В React довольно часто используется библиотека Formik, а в Blazor - **EditForm** и **DataAnnotation** в модели данных.
