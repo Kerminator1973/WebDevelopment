@@ -50,6 +50,13 @@ public class WeatherForecast
 
 EditForm реализует три события, которые выполняются при отправке: OnValidSubmit, OnInvalidSubmit и OnSubmit.
 
+В типовом случае, при получении события OnValidSubmit выполняются следующие действия:
+
+- используя HttpClient отправляется сообщение на сервер
+- выполняется внутренний переход в приложении на следующую формы (например, на форму подтверждения оплаты)
+
+При получении события OnInvalidSubmit часто активируется блок верстки информирующий о наличии ошибок при заполнении формы.
+
 Следует заметить, что если используется обработчик OnSubmit, то события OnValidSubmit и OnInvalidSubmit не будут приходить в программный код. Однако, вместо этого можно использовать параметр **EditContext**. Например:
 
 ```csharp
@@ -179,7 +186,7 @@ public class Pizza
 }
 ```
 
-Список дополнительных атрибутов валидации доступен в [статье](https://learn.microsoft.com/ru-ru/training/modules/blazor-improve-how-forms-work/6-validate-user-input-implicitly).
+Список дополнительных атрибутов валидации доступен в [статье](https://learn.microsoft.com/ru-ru/training/modules/blazor-improve-how-forms-work/6-validate-user-input-implicitly). Также рекомендуется для ознакомления [статья](https://learn.microsoft.com/ru-ru/training/modules/blazor-improve-how-forms-work/7-exercise-add-server-client-side-data-validation-address-form)
 
 Для того, чтобы _неявная_ валидация работала, следует добавить дополнительные тэги (DataAnnotationsValidator, ValidationSummary и ValidationMessage) в верстку:
 
@@ -230,7 +237,7 @@ public class Pizza
 }
 ```
 
-Можно реализовать свои собственные правила валидации, разработав класс производный от  ValidationAttribute:
+Можно реализовать свои собственные правила валидации, разработав класс, производный от **ValidationAttribute**:
 
 ```csharp
 public class PizzaBase : ValidationAttribute
