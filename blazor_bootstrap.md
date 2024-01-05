@@ -22,13 +22,15 @@
 
 Сущестуют реализации Semantic UI для Blazor, например, [SemanticBlazor](https://github.com/strakamichal/SemanticBlazor). К сожалению, Semantic UI не очень популярен у Blazor-разработчиков.
 
-Начать изучение Blazor Bootstrap следует [со страницы](https://docs.blazorbootstrap.com/getting-started/blazor-webassembly-net-8). На GitHub приведена более [подробная инструкция](https://github.com/vikramlearning/blazorbootstrap) по созданию проекта. В соответствии с инструкцией, следует загрузить шаблон проекта и сгененрировать новое решение:
+Начать изучение Blazor Bootstrap следует [со страницы](https://docs.blazorbootstrap.com/getting-started/blazor-webassembly-net-8). На GitHub приведена более [подробная инструкция](https://github.com/vikramlearning/blazorbootstrap) по созданию проекта. В соответствии с инструкцией, следует загрузить шаблон проекта и сгенерировать новое решение:
 
 ```shell
 dotnet new install Blazor.Bootstrap.Templates::1.10.0
 ```
 
 Соответственно, при создании проекта следует выбирать шаблон от Vikram Reddy. Заметим, что в визуальном плане шаблон чуть попроще, чем шаблон от Microsoft и, возможно, имеет смысл рассмотреть объединение в приложении разных частей обоих шаблонов.
+
+**ВНИМАНИЕ!** По каким-то причинам, сгенерированный мной шаблон приложения использует .NET 7, а не .NET 8. Также шаблон активно использует CDN (https://cdn.jsdelivr.net/), что недопустимо в банковских приложениях.
 
 Пример создания модального диалога можно взять из [примера BlazorBootstrap](https://demos.blazorbootstrap.com/modals):
 
