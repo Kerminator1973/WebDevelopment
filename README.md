@@ -268,7 +268,7 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 В качестве альтернатив рассматриваются:
 
 - [Parcel](https://parceljs.org/). Разработчики продукта сфокусировались на *zero configuration*. Простота достигается посредством большого количества default-ных значений. Недостаток: подходит только для простых проектов
-- [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney. Разработчики так же стремятся реализовать подход zero configuration, что достигается благодаряя использованию ES Modules, нативно поддерживаемому современными браузерами. **Vite 5** базируется на Rollup
+- [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney. Разработчики так же стремятся реализовать подход zero configuration, что достигается благодаря использованию ES Modules, нативно поддерживаемому современными браузерами. **Vite 5** базируется на Rollup
 - [Vite](https://vitejs.dev/). Использует [Esbuild](https://esbuild.github.io/), разработанный на Go и работает очень быстро. Разработчик - Evan You (автор Vue.js). Критика инструмента в статье [Vite: How to fail on killing Webpack](https://darkghosthunter.medium.com/vite-how-to-fail-on-killing-webpack-16eb1834593c) by Italo Baeza Cabrera. Статья в подержку Vite - [You Should Choose Vite Over CRA for React Apps, Here’s Why](https://medium.com/codex/you-should-choose-vite-over-cra-for-react-apps-heres-why-47e2e7381d13) by Can Durmus. Vite - это не только система сборки, но и генератор шаблонных проектов. Генерация проекта: `npm create vite@latest`
 - [Snowpack](https://www.snowpack.dev/). Статья [Web Developers: Use Snowpack instead of Webpack](https://javascript.plainenglish.io/web-developers-use-snowpack-instead-of-webpack-70e7b04f7853) за авторством Morgan Page
 
@@ -668,7 +668,7 @@ namespace API.Controllers
 }
 ```
 
-В 2023 году много хайпа получил Linter [Biome](https://biomejs.dev/). Особенность продукта - написан на Rust и обладает высокой производительностью.
+В 2023 году много хайпа получил Linter [Biome](https://biomejs.dev/). Особенность продукта - написан на Rust и обладает высокой производительностью. Также интересным является [OxLint](https://oxc-project.github.io/docs/guide/usage/linter.html), также разработанный на Rust. Декларируется, что он в 50-100 раз быстрее, чем ESLint и содержит более 200 правил для проверки кода. См. статью [Oxlint — более быстрая альтернатива ESLint](https://habr.com/ru/companies/domclick/articles/783150/) by Игорь Карелин.
 
 Дополнительно рекомендуется установить параметры:
 
@@ -756,6 +756,12 @@ Cheatsheet [Regular Expressions](https://cheatography.com/davechild/cheat-sheets
 [Использование DDNS](./homesite.md) и сервиса NoIP. Переадрессация запросов через маршрутизатор на домашний компьютер.
 
 [Ориентировочная стоимость](https://github.com/Kerminator1973/MobileDevelopment/blob/master/expenses.md) запуска полноценного web-сервера (до начала СВО).
+
+## Вспомогательные библиотеки
+
+- [SweetAlert2](https://sweetalert2.github.io/) - очень красивые информационные сообщения. Актуальная библиотека
+- [Alertify.js](https://alertifyjs.com/) - всплывающие информационные сообщения. Устаревшая. Последняя модификация кода 5 лет назад
+- [DataTables.net](https://datatables.net/) - очень удобный инструмент работы с таблицами. Актуальная библиотека, часть функционала коммерческий
 
 ## Heroku
 

@@ -755,6 +755,16 @@ NavLink - это особенный компонент Blazor, который б
 
 Больше информации о механизме доступно [по ссылке](https://learn.microsoft.com/ru-ru/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet?view=aspnetcore-8.0).
 
+Blazor Server (?!): ссылки на загружаемые js-файлы следует добавлять в файл "Pages/_Host.cshtml". Ориентироваться следует на строку:
+
+```html
+<script src="_framework/blazor.server.js"></script>
+```
+
+В качестве примера библиотеки в [курсе обучения Blazor](https://learn.microsoft.com/ru-ru/training/modules/blazor-build-rich-interactive-components/3-exercise-use-javascript-libraries-blazor-apps) используется библиотека, которая выводит информационные сообщения - [SweetAlert2](https://sweetalert2.github.io/).
+
+Также возможно совместно использовать DataTables.NET и Blazor. Рекомендуется для ознакомления статья [Blazor Web Assembly – Two Methods For Using DataTables.net JavaScript Library](https://www.intertech.com/blazor-web-assembly-two-methods-for-using-datatables-net-javascript-library/) by Sean Woodward.
+
 Существует возможность вызова .NET-кода из JavaScript. Для этого следует использовать вспомогательные методы класса DotNet: **invokeMethodAsync**() и **invokeMethod**(). При передаче ссылок на объекты, следует использовать специализированный тип **DotNetObjectReference**.
 
 ## Советы по использованию
