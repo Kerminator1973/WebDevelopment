@@ -106,7 +106,10 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
 	res.status(503).send('Site is currently down. Check back soon!')
 })
+
+// Разбирать данные из application/json и помещать их в виде JavaScript-объекта в req?.body
 app.use(express.json())
+
 app.use(userRouter)
 app.use(taskRouter)
 ```
@@ -139,7 +142,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 Для обработки запросов, в которых данные передаются как JSON, следует использовать другую опцию:
 
 ```javascript
-// Разбирать данные из application/json
+// Разбирать данные из application/json и помещать их в виде JavaScript-объекта в req?.body
 app.use(bodyParser.json())
 ```
 
