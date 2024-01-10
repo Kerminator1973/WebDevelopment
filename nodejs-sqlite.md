@@ -11,7 +11,7 @@ npm init
 Создаём файл "index.js" и добавляем в него шаблонный код для запуска Express-сервера:
 
 ```js
-const express = require('express');
+import express from 'express'; // Express
 const app = express();
 const port = 3000;
 
@@ -22,6 +22,15 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+```
+
+В приведенном выше примере используется **ECMA Script modules**. Для поддержки ESM необходимо модифицировать файл "package.json":
+
+```json
+{
+	...,
+	"type": "module"
+}
 ```
 
 Добавляем в проект библиотеку Express: `npm install express`, используя Command Shell (не PowerShell).

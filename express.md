@@ -33,16 +33,27 @@ npm install express --save
 Рекомендуется размещать исходники в отдельной папке «src». Главный файл с исходниками можно назвать «app.js». Пример содержимого файла:
 
 ```javascript
-const express = require('express')
-const app = express()
+const PORT = process.env.PORT || 3000;
+
+import express from 'express'; // Express
+const app = express();
 
 app.get('', (req, res) => {
-	res.send('Hello express!');
+  res.send('Hello express!');
 })
 
-app.listen(3000, () => {
-	console.log('Server is up on port 3000.');
+app.listen(PORT, () => {
+  console.log(`Server is up on port ${PORT}.`);
 })
+```
+
+В приведенном выше примере используется **ECMA Script modules**. Для поддержки ESM необходимо модифицировать файл "package.json":
+
+```json
+{
+  ...,
+  "type": "module"
+}
 ```
 
 В приведённом выше примере осуществляется получение экземпляра класса **express** и создание экземпляра этого класса под именем **app**. Далее к app добавляется обработчик любого HTTP-запроса с глаголом GET, в ответ на который возвращается Http Status Code 200 (OK) и строка текста "Hello express!". Последнее действие - запускается процесс обработчки поступающих запросов с порта 3000. Подключиться к этому серверу можно перейдя в браузере на URL: `http://localhost:3000`
