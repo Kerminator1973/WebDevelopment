@@ -30,3 +30,35 @@ console.log(sum(1, 2, 3));
 console.log(sum(1, 2, 3, 4));
 // Expected output: 10
 ```
+
+## Таймеры высокого разрешения
+
+В Node.js есть таймеры высокого разрешения - process.hrtime().
+
+Пример класса для обеспечения замера времени между двумя событиями:
+
+```js
+class Profiler {
+    constructor (label) {
+        this.label = label;
+        this.lastTime = null;
+    }
+
+    start () {
+        this.lastTime = process.hrtime();
+    }
+
+    end () {
+        const diff = process.hrtime(this.lastTime);
+        console.log(`Timer ${this.label} took ${diff[0]} seconds and ${diff[1]} nanoseconds.`);
+    }
+}
+```
+
+## Установка переменных окружения из командной строки
+
+Установить переменные окружения можно так:
+
+```shell
+NODE_ENV=production node index.js
+```
