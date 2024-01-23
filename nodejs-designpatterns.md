@@ -234,3 +234,104 @@ serviceLocator.get('db');
 - Lazy initialization: если создание субъекта дорогое, то прокси может не выполнять его до тех пор, пока данные действительно не понадобятся
 - Logging: логирование вызовов
 - Remote objects: прокси может забирать удалённые объекты и делать их локальными
+
+Реализация шаблона проектирования в JavaScript может быть очень простой:
+
+```js
+class SafeCalculator {
+    constructor (calculator) {
+        this.calculator = calculator;
+    }
+
+    // proxied method
+    divide () {
+        const divisor = this.calculator.peekValue();
+        if (divisor === 0) {
+            throw Error('Division by 0');
+        }
+        return this.calculator.divide();
+    }
+
+    // delegated methods
+    putValue (value) {
+        return this.calculator.putValue(value);
+    }
+
+    // ...
+}
+```
+
+Аналогично можно создать proxy через фабричную функцию:
+
+```js
+function createSafeCalculator (calculator) {
+    return {
+        divide () {
+            const divisor = this.calculator.peekValue();
+            if (divisor === 0) {
+                throw Error('Division by 0');
+            }
+            return this.calculator.divide();
+        },
+        putValue (value) {
+            return this.calculator.putValue(value);
+        },
+        // ...
+    }
+}
+```
+
+Недостаток обоих вариантов - если нужно переопределить один-две метода, реализация proxy может быть слишком избыточной.
+
+Некоторые программисты используют подход **Object augmentation** (или **monkey patchin**), который позволяет переопределить только те методы, которые нуждаются в переопределении. Пример:
+
+```js
+function patchToSafeCalculator (calculator) {
+    const divideOrig = calculator.divide;
+    calculator.divide = () => {
+        const divisor = this.calculator.peekValue();
+        if (divisor === 0) {
+            throw Error('Division by 0');
+        }
+        return divideOrgi.apply(calculator);    
+    }
+
+    return calculator;
+}
+
+const calculator = new SafeCalculator();
+const safeCalculator = patchToSafeCalculator(calculator);
+```
+
+Эта техника может казаться очень удобной, но её применение может быть очень опасным, т.к. она влияет на оригинальный объект. В JavaScript вообще следует стремиться избегать Mutations (случаев, когда _immutable_ объект становится _mutable_) любой ценой.
+
+В спецификации **ES2015** определён нативный способ создания мощных proxy-объектов:
+
+```js
+const proxy = new Proxy(target, handler);
+```
+
+Вот как можно реализовать предыдущие примеры используя Proxy:
+
+```js
+const safeCalculatorHandler = {
+    get: (target, property) => {
+        if (property === 'divide') {
+            return function () {
+                const divisor = target.peekValue();
+                if (divisor === 0) {
+                    throw Error('Division by 0');
+                }
+                return target.divide();
+            }
+        }
+        return target[property];
+    }
+}
+
+const calculator = new StackCalculator();
+const safeCalculator = new Proxy(
+    calculator,
+    safeCalculatorHandler
+);
+```
