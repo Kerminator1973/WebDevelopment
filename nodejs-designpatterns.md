@@ -337,3 +337,25 @@ const safeCalculator = new Proxy(
     safeCalculatorHandler
 );
 ```
+
+## Дополнительные возможности и ограничения шаблона проектирования Proxy
+
+JavaScript позволяет разработчику перехватывать и переопределять многие операции, которые возможны над объектом. Это позволяет реализовывать такие сценарии использования как: _meta-programming_, _operator overloading_ и _object virtualization_. Например, мы можем написать вот такой код:
+
+```js
+const evenNumbers = new Proxy([], {
+    get: (target, index) => index * 2,
+    has: (target, index) => number % 2 === 0
+});
+
+console.log(2 in evenNumbers);  // true
+console.log(5 in evenNumbers);  // false
+console.log(evenNumbers[7]);    // 14
+```
+
+В приведённом выше примере мы создаём виртуальный массив, который хранит все чётные числа и он может быть использован как обычный (regular) массив.
+
+Больше информации о Proxy можно подчерпнуть по ссылкам:
+
+- [Proxy на MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
+- [Представляем прокси ES2015](https://developer.chrome.com/blog/es2015-proxies?hl=ru) by Адди Османи
