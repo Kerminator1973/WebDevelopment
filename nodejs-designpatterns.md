@@ -130,15 +130,15 @@ Reveal = раскрыть.
 
 Чтобы избежать необходимости создания defensive copy, передаваемый в чужой код объект должен быть неизменяемым (_immutable objects_). 
 
-Тема _immutable objects_ крайне важна в JavaScript, т.е. она позволяет не только избежать создания defensive copy, но и, например, реализовать  механизм _effective change detection_, который активно применяется в таких библиотеках, как React, Angular и Vue.js. В этих библиотеках, каждое изменение состояния/объекта требует создания новой копии. Это означает, что о том произошло ли изменение можно судить просто сравнивая ссылки на зафиксированное значение и текущее значение, используя triple equal (===).
+Тема _immutable objects_ крайне важна в JavaScript, т.е. она позволяет не только избежать создания _defensive copy_, но и, например, реализовать  механизм _effective change detection_, который активно применяется в таких библиотеках, как React, Angular и Vue.js. В этих библиотеках, каждое изменение состояния/объекта требует создания новой копии. Это означает, что о том произошло ли изменение можно судить просто сравнивая ссылки на зафиксированное значение и текущее значение, используя triple equal (===).
 
-Однако, на практике, при создании объекта может потребоваться выполнить какие-то дополнительные настройки объекта. Но после создания, объект становится **immutable**. Что бывает нужно сделать при использовании шаблона проектирования Revealing Constructor:
+Однако на практике, при создании объекта, может потребоваться выполнить какие-то дополнительные настройки объекта. При этом после создания, объект становится **immutable**. Именно такую ситуацию решает шаблон проектирования **Revealing Constructor**:
 
 - создать объект, который может быть изменён только на этапе создания
 - может быть настроено _custom behavior_ на этапе создания
 - некоторые переменные класса могут быть проинициализированы только на этапе создания
 
-Шаблон проектирования Revealing Constructor позволяет вносить изменения только на этапе создания, что и дало слова Revealing (раскрывающий) и Constructor в его названии. В примере из книги "Node.js Design Patterns" используется пример создания ImmutableBuffer - буфера с данными, которые нельзя изменить в чужлм коде.
+Шаблон проектирования Revealing Constructor позволяет вносить изменения только на этапе создания, что и дало слова Revealing (раскрывающий) и Constructor в его названии. В книге "Node.js Design Patterns" используется пример создания **ImmutableBuffer** - буфера с данными, которые нельзя изменить в чужом коде.
 
 В общем виде, применение шаблона выглядит следующим образом:
 
@@ -234,3 +234,128 @@ serviceLocator.get('db');
 - Lazy initialization: если создание субъекта дорогое, то прокси может не выполнять его до тех пор, пока данные действительно не понадобятся
 - Logging: логирование вызовов
 - Remote objects: прокси может забирать удалённые объекты и делать их локальными
+
+Реализация шаблона проектирования в JavaScript может быть очень простой:
+
+```js
+class SafeCalculator {
+    constructor (calculator) {
+        this.calculator = calculator;
+    }
+
+    // proxied method
+    divide () {
+        const divisor = this.calculator.peekValue();
+        if (divisor === 0) {
+            throw Error('Division by 0');
+        }
+        return this.calculator.divide();
+    }
+
+    // delegated methods
+    putValue (value) {
+        return this.calculator.putValue(value);
+    }
+
+    // ...
+}
+```
+
+Аналогично можно создать proxy через фабричную функцию:
+
+```js
+function createSafeCalculator (calculator) {
+    return {
+        divide () {
+            const divisor = this.calculator.peekValue();
+            if (divisor === 0) {
+                throw Error('Division by 0');
+            }
+            return this.calculator.divide();
+        },
+        putValue (value) {
+            return this.calculator.putValue(value);
+        },
+        // ...
+    }
+}
+```
+
+Недостаток обоих вариантов - если нужно переопределить один-две метода, реализация proxy может быть слишком избыточной.
+
+В npm есть библиотека [delegates](https://www.npmjs.com/package/delegates), которая позволяет создавать proxy, управляя доступом к методам оригинального класса.
+
+Некоторые программисты используют подход **Object augmentation** (или **monkey patching**), который позволяет переопределить только те методы, которые нуждаются в переопределении. Пример:
+
+```js
+function patchToSafeCalculator (calculator) {
+    const divideOrig = calculator.divide;
+    calculator.divide = () => {
+        const divisor = this.calculator.peekValue();
+        if (divisor === 0) {
+            throw Error('Division by 0');
+        }
+        return divideOrgi.apply(calculator);    
+    }
+
+    return calculator;
+}
+
+const calculator = new SafeCalculator();
+const safeCalculator = patchToSafeCalculator(calculator);
+```
+
+Эта техника может казаться очень удобной, но её применение может быть очень опасным, т.к. она влияет на оригинальный объект. В JavaScript вообще следует стремиться избегать Mutations (случаев, когда _immutable_ объект становится _mutable_) любой ценой.
+
+В спецификации **ES2015** определён нативный способ создания мощных proxy-объектов:
+
+```js
+const proxy = new Proxy(target, handler);
+```
+
+Вот как можно реализовать предыдущие примеры используя Proxy:
+
+```js
+const safeCalculatorHandler = {
+    get: (target, property) => {
+        if (property === 'divide') {
+            return function () {
+                const divisor = target.peekValue();
+                if (divisor === 0) {
+                    throw Error('Division by 0');
+                }
+                return target.divide();
+            }
+        }
+        return target[property];
+    }
+}
+
+const calculator = new StackCalculator();
+const safeCalculator = new Proxy(
+    calculator,
+    safeCalculatorHandler
+);
+```
+
+## Дополнительные возможности и ограничения шаблона проектирования Proxy
+
+JavaScript позволяет разработчику перехватывать и переопределять многие операции, которые возможны над объектом. Это позволяет реализовывать такие сценарии использования как: _meta-programming_, _operator overloading_ и _object virtualization_. Например, мы можем написать вот такой код:
+
+```js
+const evenNumbers = new Proxy([], {
+    get: (target, index) => index * 2,
+    has: (target, index) => number % 2 === 0
+});
+
+console.log(2 in evenNumbers);  // true
+console.log(5 in evenNumbers);  // false
+console.log(evenNumbers[7]);    // 14
+```
+
+В приведённом выше примере мы создаём виртуальный массив, который хранит все чётные числа и он может быть использован как обычный (regular) массив.
+
+Больше информации о Proxy можно подчерпнуть по ссылкам:
+
+- [Proxy на MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
+- [Представляем прокси ES2015](https://developer.chrome.com/blog/es2015-proxies?hl=ru) by Адди Османи
