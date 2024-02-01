@@ -442,9 +442,13 @@ IQueryable<SalesOrderDetail> query =
 
 Сильная сторона Java - огромное количество мощных библиотеки, развитая эко-система. Основной разработчик Java - корпорация Oracle, поставляет два **Java Development Kit** (JDK): платный, надежный, с длительным циклом поддержки (LTS) **Oracle JDK** и бесплатный экспериментальный **Open JDK**. Статья [За Oracle JDK нужно будет платить. Какие теперь варианты?](https://habr.com/ru/company/epam_systems/blog/430084/)
 
+Ключевой репозитарий библиотек для Java - [Maven Central Repository](https://search.maven.org/?eh=)
+
 Существуют альтернативные релизы Open JDK, например: [Amazon Corretto](https://docs.aws.amazon.com/corretto/index.html), [Microsoft JDK](https://docs.microsoft.com/ru-ru/java/openjdk/download), [Zulu OpenJDK](https://www.azul.com/downloads/zulu-community/?package=jdk), [Alibaba Dragonwell OpenJDK](http://dragonwell-jdk.io/), [Eclipse Temurin](https://adoptium.net/) - 12.3 млн. загрузок Runtime в феврале 2023 года. Доступен [OpenJDK Axiom от российского разработчика BellSoft](https://libericajdk.ru/pages/liberica-jdk/), сертифицированный ФСТЭК России.
 
 Альтернативые версии Open JDK базируются на open-source [OpenJDK](https://openjdk.org/) и, чаще всего, содержат специализированные дополнения (в том числе, поддержка требований госудаственных регламентирующих организаций) и исправления ошибок. Важный нюанс состоит в том, что Open JDK - это исходные тексты, а разработчикам прикладных систем нужны бинарные сборки для целевых платформ. Так, например, OpenJDK Axiom создаёт сборки для процессоров Эльбрус и Байкал. Степень доверия к поставщикам бинарных сборок может быть разной, что также позволяет их дифференциировать (например, госорганизации России не могут использовать коммерческий JDK от Oracle).
+
+**UPDATE 2024**: ключевым вендором Java в России становится BellSoft с их Axiom SDK Pro. Разработчик занимается сопровождением JDK, т.е. максимально быстро исправляет критичные ошибки в реализации Runtime (что является очень серьезной проблемой из-за роста сложности Runtime; зарегистрировано и не устранено более 2500 уязвимостей). В качестве сервера приложений предлагается использовать **Libercat**, а системы контейнеризации: **Axiom Runtime Container**, **Axiom Linux** и **Axiom Native Image Kit**.
 
 Заметим, что ядро Java написано на C++.
 
