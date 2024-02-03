@@ -2,7 +2,29 @@
 
 Ниже идёт конспект лекций [Взаимодействие с данными в веб-приложениях Blazor](https://learn.microsoft.com/ru-ru/training/modules/interact-with-data-blazor-web-apps/).
 
-В случае использования реализации пользовательского интерфейса как Blazor Server добавление взаимодействия с СУБД строиться по типовой схеме: подключение EntityFramework, создание сервиса, встраивание сервиса в нужную страницу.
+Следует заметить, что краткий курс лекций сайта learn.microsoft.com ориентирован на объяснение основных механизмов интеграции, но не является готовой инструкцией. По этой причине, в конспект были включены дополнительные рекомендации, отсутствующие в оригинальном курсе.
+
+Используемый шаблон - "Blazor Web App" (шаблон от Microsoft). Сгенерировать приложение можно через Visual Studio, либо через консольную строку:
+
+```shell
+dotnet new blazorserver -o BlazingPizzaSite -f net8.0
+```
+
+В варианте Blazor Server взаимодействия с СУБД строиться по типовой схеме: подключение EntityFramework, создание сервиса, встраивание сервиса в нужную страницу.
+
+Для того, чтобы можно было выполнять операции с EF через командную строку следует установить пакет `dotnet-ef`:
+
+```shell
+dotnet tool install --global dotnet-ef
+```
+
+Обновить до актуальной версии:
+
+```shell
+dotnet tool update --global dotnet-ef
+```
+
+Используя NuGet добавляем зависимости: **Microsoft.EntityFrameworkCore**, **Microsoft.EntityFrameworkCore.Design**, **Microsoft.EntityFrameworkCore.SqlServer**. **Design** нужен для того, чтобы иметь возможность управлять миграциями, а **SqlServer** может быть заменён на адаптер к реально используемой базе данных, например, может быть заменён на **Microsoft.EntityFrameworkCore.SQLite**, или **Npgsql.EntityFrameworkCore.PostgreSQL**.
 
 В папке "Data" мы можем добавить обычные классы данных:
 
@@ -20,6 +42,79 @@ public class Pizza
     public decimal Price { get; set; }
 }
 ```
+
+## Подключение к СУБД (SQL Server) и создание структуры базы данных (ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ)
+
+Для подключения к базе данных необходимо выполнить два важных этапа:
+
+- создать структуру базы данных (миграции)
+- добавить сервисы подключения к СУБД через соответствующий адаптер
+
+Для создания миграцией необходимо добавить описание класса, создающего контекст доступа к данным. В курсе лекций такой класс описан, он есть ниже по тексту. На практике было достаточно добавить следующий код:
+
+```csharp
+namespace BlazoServerApp.Data
+{
+    public class BlazoContext : DbContext
+    {
+        public BlazoContext(DbContextOptions options) : base(options) {}
+
+        public DbSet<Pizza> Pizzas { get; set; }
+    }
+}
+```
+
+Затем, в файле "Program.cs", перед строкой `app.Run();` можно добавить код, который будет добавлять в базу данных отладочные данные SeedData:
+
+```csharp
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using (var scope = scopeFactory.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<BlazoContext>();
+    if (db.Database.EnsureCreated())
+    {
+        // SeedData.Initialize(db);
+    }
+}
+```
+
+Пример реализации метод SeedData.Initialize() есть [по ссылке](https://learn.microsoft.com/ru-ru/training/modules/interact-with-data-blazor-web-apps/5-exercise-access-data-from-blazor-components).
+
+Также необходимо определить сервис, который обеспечивает подключение к СУБД:
+
+```csharp
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+builder.Services.AddSqlServer<BlazoContext>("Data Source=ROCKET\\SQLEXPRESS;Initial Catalog=Blazo;Integrated Security=True;Encrypt=False;Trust Server Certificate=True;");
+
+var app = builder.Build();
+```
+
+Вызов **AddSqlServer<>()** можно добавить в цепочку вызовов, но в примере выше, для ясности, вызов осуществлён отдельно от других инициализационных процедур.
+
+Часто, сложным может оказаться подготовка строки подключения к базе данных. В Visual Studio существует специализированный инструмент **Tools -> Connect to Database**, который предоставляет возможность поэкспериментировать с разными вариантами подключения к СУБД. В диалоге создания подключения, есть кнопка **Advanced**, в которой отображается строка для успешного подключения. Добившись успеха с выполнением операции "Test Connecion", можно нажать кнопку "Advanced" и скопировать строку подключения из соответствующего поля. С целью упрощения процесса настройки стенда, можно использовать следующие параметры:
+
+- Integrated Security=True
+- Encrypt=False
+- Trust Server Certificate=True
+
+Если после добавления кода он успешно собирается, то можно выполнить операцию генерации первой миграции:
+
+```shell
+dotnet ef migrations add FirstMigration
+```
+
+А затем сформировать структуру базы данных в СУБД:
+
+
+```shell
+dotnet ef database update
+```
+
+Если всё пройдёт успешно, вызов **SeedData.Initialize**() заполнит базу тестовыми данными.
+
+## Создание сервиса (курс)
 
 Создаём класс-сервис, в котором определяем асинхронный метод получения данных:
 
