@@ -359,3 +359,11 @@ console.log(evenNumbers[7]);    // 14
 
 - [Proxy на MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
 - [Представляем прокси ES2015](https://developer.chrome.com/blog/es2015-proxies?hl=ru) by Адди Османи
+
+Стоит добавить, что часто шаблоны Observable и Proxy, например, для реалдизации **reactive programming** (RP) и **functional reactive programming**. Почитать о реактивном программировании можно в статье [Reactive Manifesto](https://www.reactivemanifesto.org/).
+
+Примеры активного использования шаблона проектирования Proxy в различных библиотеках:
+
+- [LoopBack](https://loopback.io/) - популярный web framework для разработки API и микросервисов. Этот framework использует шаблон Proxy, чтобы предоставить возможность перехватывать и расширять вызовы контроллеров. Эта возможность может быть использована, чтобы создать механизм custom validation, или механизм аутентификации
+- [Vue.js 3](https://vuejs.org/) - очень популярный JavaScript reactive UI framework, в котором observable-свойства базируются на использовании шаблона проектирования Proxy
+- [MobX](https://mobx.js.org/README.html) - известная библиотека, реализующая reactive state management. Чаще всего библиотека используется совместно с Vue.js, или React
