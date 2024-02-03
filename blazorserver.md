@@ -130,6 +130,22 @@ public class PizzaService
 }
 ```
 
+В рамках курса, реализация сервиса для получения данных предполагает, что используется REST API, размещённый на отдельном сервере (не обязательно физическом). Пример использования такого API:
+
+```csharp
+public class UserService
+{
+    private readonly HttpClient _httpClient;
+    private readonly string BaseApiUrl = "https://localhost:44340/api/User";
+
+    public UserService(HttpClient httpClient) => _httpClient = httpClient;
+
+    public async Task<List<User>> GetUsers()
+    {
+        return await _httpClient.GetFromJsonAsync<List<User>>(BaseApiUrl);
+    }
+```
+
 Регистрируем сервис для встраивания в "Program.cs":
 
 ```csharp
