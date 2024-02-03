@@ -9,6 +9,8 @@
 - _Two different processes in the components try to access injected DbContext at the same time. For example a timer is updating information on the page by reading from db periodically_
 - _Another process or background task is changing database somewhere in the application_
 
+Проблема совместной работы Blazor и EF разобрана в статье [Проблемы работы с Entity Framework на Blazor Server](https://habr.com/ru/articles/658865/) by Никита Фурса. DbContext не является **Thread-save**.
+
 Дополнительно можно заменить, что REST API очень легко тестировать автоматизированно. Тогда как тестирование пользовательского интерфейса выполнять значительно сложнее.
 
 Используемый шаблон - "Blazor Web App" (шаблон от Microsoft). Сгенерировать приложение можно через Visual Studio, либо через консольную строку:
@@ -223,6 +225,94 @@ else
 ```
 
 К этому моменту у нас выполнены подготовительные этапы, но ещё нет данных.
+
+### Альтернативные варианты внедрения зависимости от DbContext для Blazor Page
+
+Один из рекомендуемых вариантов (У МЕНЯ НЕ ЗАРАБОТАЛ) выглядит следующим образом:
+
+```csharp
+public class GameService
+{
+    private readonly IDbContextFactory<ApplicationDbContext> factory;
+    public GameService(IDbContextFactory<ApplicationDbContext> factory)
+    {
+        this.factory = factory;
+    }
+
+    public async Task<Game[]> GetGamesAsync()
+    {
+        using (var context = factory.CreateDbContext()) {
+           return await context.Games.ToArrayAsync();
+        }
+    }
+}
+```
+
+Однако, для этого варианта мне не удалось правильно зарегистрировать IDbContextFactory - при регистрации сервиса PizzaService, приложение не могло найти зарегистрированную зависимость по интерфейсу IDbContextFactory.
+
+### Заработавший вариант внедрения зависимости (НАИВНЫЙ)
+
+В официальной статье от Microsoft - [ASP.NET Core Blazor with Entity Framework Core (EF Core)](https://learn.microsoft.com/en-us/aspnet/core/blazor/blazor-ef-core?view=aspnetcore-8.0) описывается максимально простой вариант встраивания DBContext в Blazor Page. В статье явно указывается на демонстрационный характер пример - он не является Thread-Safe и требует соответствующей доработки. Однако он рабочий и может служить хорошей отправной точкой.
+
+В примере отсутствует определение сервиса PizzaService и он не регистрируется как:
+
+```csharp
+builder.Services.AddScoped<PizzaService>();
+```
+
+Сервис DbContext определён следующим образом:
+
+```csharp
+builder.Services.AddDbContextFactory<BlazoContext>(opt =>
+    opt.UseSqlServer(
+        @"Data Source=ROCKET\SQLEXPRESS;Initial Catalog=Blazo;Integrated Security=True;Encrypt=False;Trust Server Certificate=True;"
+    ));
+```
+
+Это не мешает выполнять загрузку SeedData в систему, см.: `app.Services.GetRequiredService<IServiceScopeFactory>()`.
+
+Самая интересная часть - внедрение DbContext в компонент:
+
+```csharp
+@using Data
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<BlazoContext> DbFactory
+
+@if (todaysPizzas != null)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Pizza Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pizza in todaysPizzas)
+            {
+                <tr>
+                    <td>@pizza.Name</td>
+                    <td>@pizza.Description</td>
+                    <td>@pizza.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Pizza[] todaysPizzas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        {
+            todaysPizzas = await context.Pizzas.ToArrayAsync();
+        }
+    }
+}
+```
 
 ## Подключение SQLite
 
