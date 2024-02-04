@@ -74,7 +74,7 @@ public class PizzaTopping
 
 В Blazor существует возможность передать значение параметра не конкретному дочернему компоненту, а вниз, по всей иерархии от родительского ко всем вложенным дочерним компонентам. Этот механизм называется **Каскадные параметры**.
 
-В родительском компоненте добавляется специальный тэг `CascadingValue`, который указывает, что некоторые параметры следует передать всем дочерним элементам по всех их иерархии. Например:
+В родительском компоненте добавляется специальный тэг `CascadingValue`, который указывает, что некоторые параметры следует передать всем дочерним элементам по всей иерархии. Например:
 
 ```csharp
 @page "/specialoffers"
@@ -94,6 +94,61 @@ public class PizzaTopping
 @code {
     [CascadingParameter(Name="DealName")]
     private string DealName { get; set; }
+}
+```
+
+### Ещё один пример
+
+Родительский компонент:
+
+```csharp
+@using BlazoServerApp.Components.Shared;
+
+<CascadingValue Value="@Style">
+    <ChildComponent></ChildComponent>
+</CascadingValue>
+
+@code {
+    public string Style { get; set; } = "color:green";
+}
+```
+
+Дочерний элемент (ChildComponent.razor):
+
+```csharp
+@using BlazoServerApp.Components.Shared;
+
+<h1 style="@ElementStyle">-Child Component</h1>
+
+<GrandChildComponent></GrandChildComponent>
+
+@code {
+    [CascadingParameter]
+    public string ElementStyle { get; set; }
+}
+```
+
+"Внучатый" элемент (GrandChildComponent.razor):
+
+```csharp
+<h1 style="@ElementStyle">--Grand Child Component Text</h1>
+
+@code {
+    [CascadingParameter]
+    public string ElementStyle { get; set; }
+}
+```
+
+Если мы поменяем переменную Style в родительском элементе, то она поменяется и во всех дочерних элементах:
+
+```csharp
+<button class="btn btn-primary" @onclick="ChangeColor">Click me</button>
+
+@code {
+    private void ChangeColor()
+    {
+        Style = "color:red;";
+    }
 }
 ```
 
