@@ -97,7 +97,9 @@ public class PizzaTopping
 }
 ```
 
-### Ещё один пример
+Стоит повторить: **CascadingValue** - это компонент, а **CascadingParameter** - это атрибут!
+
+### Каскадирование - ещё один пример 
 
 Родительский компонент:
 
@@ -149,6 +151,44 @@ public class PizzaTopping
     {
         Style = "color:red;";
     }
+}
+```
+
+### Каскадирование - практическое применение
+
+Механизм удобно использовать для поддержки тем пользовательского интерфейса:
+
+```csharp
+<CascadingValue Value="@theme">
+    <Router ...>
+        ...
+    </Router>
+</CascadingValue>
+
+@code {
+    private ThemeInfo theme = new() { ButtonClass = "btn-success" };
+}
+```
+
+Можно применять несколько каскадных значений:
+
+```csharp
+<CascadingValue Value="@parentCascadeParameter1" Name="CascadeParam1">
+    <CascadingValue Value="@ParentCascadeParameter2" Name="CascadeParam2">
+        ...
+    </CascadingValue>
+</CascadingValue>
+```
+
+Эти значения будут транслироваться в различные каскадные параметры:
+
+```csharp
+@code {
+    [CascadingParameter(Name = "CascadeParam1")]
+    protected CascadingType? ChildCascadeParameter1 { get; set; }
+
+    [CascadingParameter(Name = "CascadeParam2")]
+    protected CascadingType? ChildCascadeParameter2 { get; set; }
 }
 ```
 
