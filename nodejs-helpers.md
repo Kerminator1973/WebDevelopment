@@ -62,3 +62,9 @@ class Profiler {
 ```shell
 NODE_ENV=production node index.js
 ```
+
+## Быстрая база данных "ключ-значение" в Node.js и браузеров
+
+[LevelUp](https://www.npmjs.com/package/levelup) это wrapper над Google's LevelDB, хранилищем, первоначально разработанном для реализации IndexedDB в браузере Chrome. LevelDB называют "Node.js баз данных" за его минимализм и расширяемость. Rod Vagg - активный участник сообщества разработчиков Node.js, разработал wrapper для LevelDB, который может быть использован также в backend, и который поддерживает in-memory stores, а также другие базы данных: Riak, Redis, web storage engines (indexedDB и localStorage), позволяя использовать один и тот же код для работы с базой данных как в браузере, так и на сервере. Поверх LevelUp разработан ещё целый ряд интересных инструментов, таких как [PouchDB](https://www.npmjs.com/package/pouchdb) и [LevelGraph](https://www.npmjs.com/package/levelgraph).
+
+Больше узнать о LevelUp можно по [ссылке](https://github.com/Level/awesome).
