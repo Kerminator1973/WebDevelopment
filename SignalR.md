@@ -115,3 +115,70 @@ jQuery(function () {
     });
 });
 ```
+
+## Что рекомендует делать Microsoft
+
+Microsoft [рекомендует](https://learn.microsoft.com/ru-ru/training/modules/aspnet-core-signalr-polling-fix/3-refactor-to-signalr) определить интерфейс с методами, на которые будут подписываться клиенты:
+
+```csharp
+namespace BlazingPizza.Server.Hubs;
+
+public interface IOrderStatusHub
+{
+    /// <summary>
+    /// This event name should match <see cref="OrderStatusHubConsts.EventNames.OrderStatusChanged"/>,
+    /// which is shared with clients for discoverability.
+    /// </summary>
+    Task OrderStatusChanged(OrderWithStatus order);
+}
+```
+
+В реализации интерфейса Microsoft предлагает определить два метода, которые позволят пользователям подписываться и отписываться на получение событий:
+
+```csharp
+namespace BlazingPizza.Server.Hubs;
+
+[Authorize]
+public class OrderStatusHub : Hub<IOrderStatusHub>
+{
+    /// <summary>
+    /// Adds the current connection to the order's unique group identifier, where 
+    /// order status changes will be notified in real-time.
+    /// This method name should match <see cref="OrderStatusHubConsts.MethodNames.StartTrackingOrder"/>,
+    /// which is shared with clients for discoverability.
+    /// </summary>
+    public Task StartTrackingOrder(Order order) =>
+        Groups.AddToGroupAsync(
+            Context.ConnectionId, order.ToOrderTrackingGroupId());
+
+    /// <summary>
+    /// Removes the current connection from the order's unique group identifier, 
+    /// ending real-time change updates for this order.
+    /// This method name should match <see cref="OrderStatusHubConsts.MethodNames.StopTrackingOrder"/>,
+    /// which is shared with clients for discoverability.
+    /// </summary>
+    public Task StopTrackingOrder(Order order) =>
+        Groups.RemoveFromGroupAsync(
+            Context.ConnectionId, order.ToOrderTrackingGroupId());
+}
+```
+
+Т.е. когда мы получаем событие в Hub, у нас есть идентификатор клиентской сессии, доступ к которой осуществляется через **Context.ConnectionId**. Также мы можем включать, или исключать соединение из группы, используя методы AddToGroupAsync() и RemoveFromGroupAsync(). Первый параметр вызовов - идентификатор соединения, а второй - имя группы (string).
+
+Соответственно, мы можем отправить некоторое сообщение всем соединениям, которые входят в группу. Например:
+
+```csharp
+await Clients.Group(groupname).SendAsync("Notify", $"{username} вошел в чат");
+```
+
+## Конфигурирование SignalR
+
+Мы модем настроить условия работы SignalR (options), при добавлении сервиса, например:
+
+```csharp
+services.AddSignalR(options => options.EnableDetailedErrors = true)
+    .WithAutomaticReconnect()
+    .AddMessagePackProtocol();
+```
+
+В приведённом выше примере, мы активируем использование MessagePackProtocol, автоматическую переустановку соединения при потере связи и добавляет детализованную информацию об ошибках в работе механизма.
