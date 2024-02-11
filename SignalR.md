@@ -182,3 +182,108 @@ services.AddSignalR(options => options.EnableDetailedErrors = true)
 ```
 
 В приведённом выше примере, мы активируем использование MessagePackProtocol, автоматическую переустановку соединения при потере связи и добавляет детализованную информацию об ошибках в работе механизма.
+
+## Управление пользователями в группах
+
+В соответствии с [рекомендациями Microsoft](https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/working-with-groups) не нужно вручную удалять пользователей из групп. В примерах, Microsoft приводит вот такой код:
+
+```csharp
+public class ContosoChatHub : Hub
+{
+    public Task JoinRoom(string roomName)
+    {
+        return Groups.Add(Context.ConnectionId, roomName);
+    }
+
+    public Task LeaveRoom(string roomName)
+    {
+        return Groups.Remove(Context.ConnectionId, roomName);
+    }
+}
+```
+
+Вот что написано в [старой документации](https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/handling-connection-lifetime-events?source=recommendations) по SignalR: "_SignalR connection refers to a logical relationship between a client and a server URL, maintained by the SignalR API and uniquely identified by a connection ID. The data about this relationship is maintained by SignalR and is used to establish a transport connection. The relationship ends and SignalR disposes of the data when the client calls the Stop method or a timeout limit is reached while SignalR is attempting to re-establish a lost transport connection_". Т.е. как только SignalR понимает, что соединение с клиентом завершилось, он автоматически удаляет всю информацию об этом соединении.
+
+## Что было сделано в Garmr. TODO: Переработать! Отвязать от Garmr!
+
+В конструкторе GarmrHub включены зависимости от: `UserManager<ApplicationUser> userManager, ILogger<GarmrHub> logger`
+
+Реализованы статические методы, которые могут быть вызваны компонентами web-сервера (например, планировщиком CmdActionTask).
+
+```csharp
+GarmrHub.onUpdateRunningTask(actionTask);
+```
+
+На страницах не используется Dependency Injection, всё работает "из коробки". При этом, в реализации глобального статического метода выполняется обязательная проверка на наличие Hub-а:
+
+```csharp
+if (null != _hubContext)
+{
+    // ...некоторый код
+}
+```
+
+Довольно много смешанного кода (синхронный/асинхронный). Переход между ними решается приблизительно так:
+
+```csharp
+static public void onUpdateRunningTask(CmdActionTask obj)
+{
+    // ... какой-то код
+    _hubContext.Clients.Group("TechAdministrators").SendAsync("UpdateTask", sb.ToString()).GetAwaiter().GetResult();
+}
+```
+
+В проекте очень активно используются группы для адресной рассылки сообщений.
+
+Callback-функция OnConnectedAsync() используется для добавления соединения в группу конкретного пользователя, если этот пользователь был успешно аутентифицирован:
+
+```csharp
+/// <summary>
+/// Callback-метод, вызывается при получении запроса на соединение
+/// от браузера. Часть функционала, связанного с библиотекой SignalR
+/// </summary>
+public override Task OnConnectedAsync()
+{
+    string userId = _userManager.GetUserId(this.Context.User);
+    if (null != userId) {
+
+        // При создании соединения, связываем конкретное соединение 
+        // с GUID-пользователя, который подключается к SignalR
+        Groups.AddToGroupAsync(Context.ConnectionId, userId);
+    }
+    
+    return base.OnConnectedAsync();
+}
+```
+
+Таким образом обеспечивается отправка уведомлений, имеющих отношение только к конкретному пользователю со страниц, на которых этот пользователь аутентифицирован.
+
+Регистрация SignalR выполняется также, как и в ASP.NET Core 8:
+
+```csharp
+services.AddSignalR();
+```
+
+Однако, дополнительно выполняется инициализация SignalR:
+
+```csharp
+services.Configure<SignalRConfiguration>(Configuration.GetSection("SignalRConfiguration"));
+```
+
+Настройка выглядит следующим образом:
+
+```json
+"SignalRConfiguration": {
+"Protocol": "LongPolling" //WebSockets
+},
+```
+
+Endpoint для SignalR указывается чуть другим способом:
+
+```csharp
+app.UseEndpoints(endpoints => {
+    endpoints.MapHub<GarmrHub>("/garmr"); // Добавляем Routing для SignalR
+    endpoints.MapRazorPages();
+});
+```
+
