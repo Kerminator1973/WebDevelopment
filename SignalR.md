@@ -287,3 +287,46 @@ app.UseEndpoints(endpoints => {
 });
 ```
 
+### CinnaPages - заработал следующий код
+
+В **CinnaHub** заработал вот такой код:
+
+```csharp
+using Microsoft.AspNetCore.SignalR;
+
+namespace CinnaPages.Hubs
+{
+    public class CinnaHub : Hub
+    {
+        private static IHubContext<CinnaHub>? _hubContext;
+
+        public CinnaHub(IHubContext<CinnaHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
+        // Метод используется для отправки сообщения об изменении состояния ХЦК
+        static public async Task SendStatusChange(int storageId, int status)
+        {
+            if (_hubContext != null)
+            {
+                await _hubContext.Clients.All.SendAsync("onStatusChange", storageId, status);
+            }
+        }
+    }
+}
+```
+
+Крайне важно было использовать модификаторы **static** для IHubContext<> и для асинхронного метода.
+
+После этого можно из любого места вызывать этот метод:
+
+```csharp
+public class EventModel : PageModel
+{
+    public async Task<ActionResult> OnPostChangeStateAsync([FromBody] StorageStateDTO val)
+    {
+        try
+        {
+            await CinnaHub.SendStatusChange(val.storageId, val.state);
+```
