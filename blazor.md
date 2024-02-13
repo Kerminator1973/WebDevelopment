@@ -372,6 +372,13 @@ Blazor поддерживает Ahead-of-Time (AOT) компиляцию, т.е.
 dotnet publish -c Release
 ```
 
+При использовании режима AOT компиляция может быть неуспешной. Вероятная причина - отсутствие интеграционных компонентов, которые описаны с статье [Ahead-of-Time компиляция и Blazor](https://habr.com/ru/articles/548132/) by Яков Лило. Приблизительно всё это выглядит так:
+
+```csharp
+dotnet tool install -g dotnet-install-blazoraot
+dotnet install-blazoraot
+```
+
 Уникальные свойства Blazor Web Assembly:
 
 - Загруженное приложение может в дальнейшем работать без подключения к Интернет
