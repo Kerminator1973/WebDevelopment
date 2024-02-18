@@ -314,3 +314,37 @@ public interface ISettingService
 - OnParametersSet / OnParametersSetAsync: вызываются, когда устанавливаются параметры компонента
 - OnAfterRender / OnAfterRenderAsync: вызывается после "отрисовки" элемента
 - Dispose / DisposeAsync: вызывается при удалении объекта (если реализован интерфейс IDisposable, или IAsyncDisposable)
+
+## Библиотека классов Razor
+
+Библиотека классов Razor — это **тип проекта .NET**, содержащий компоненты Razor, страницы, HTML, файлы Cascading Style Sheet (CSS), JavaScript, изображения и другое статическое веб-содержимое, на которое может ссылаться приложение Blazor.
+
+"Библиотека классов" и "Библиотека классов Razor" — это разные, но связанные вещи. "Библиотека классов Razor" является более специализированной, чем "Библиотека классов".
+
+Проект **Библиотека классов Razor** создаётся из соответствующего шаблона в Visual Studio/Visual Studio Code. Например, командой:
+
+```shell
+dotnet new razorclasslib -o MyProjectName
+```
+
+Типовой компонент, максимально простой - он содержит div и что-то внутри него, например:
+
+```csharp
+<div class="my-component">
+    This component is defined in the <strong>FirstRazorLibrary</strong> library.
+</div>
+```
+
+Мы можем добавить разработанную библиотеку классов Razor в проект, как ссылку (Reference). Сделать это можно, например, командой:
+
+```csharp
+dotnet add reference ../MyClassLibrary
+```
+
+Мы можем оформить компонент, также как и NuGet-package. В этом случае, включить зависимость можно следующей командой:
+
+```csharp
+dotnet add package MyClassLibrary
+```
+
+Хорошими кандидатами на создание библиотек классов Razor являются модальные диалоги.
