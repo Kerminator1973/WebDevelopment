@@ -330,3 +330,52 @@ public class EventModel : PageModel
         {
             await CinnaHub.SendStatusChange(val.storageId, val.state);
 ```
+
+## Использование групп для ограничения рассылки данных
+
+Общая логика работы может быть такая - клиент подписывается на получение информации в конкретной группе и сервер посылает клиенту сообщение только через группу.
+
+Оформления подписки клиентом может выглядеть следующим образом:
+
+```js
+connection.start().then(function () {
+
+    const _thisStorageId = $("#StorageID").text();
+    connection.invoke("StartObservation", _thisStorageId).catch(function (err) {
+        return console.error(err.toString());
+    });           
+
+}).catch(function (err) {
+    return console.error(err.toString());
+});
+```
+
+Соответствующий метод на сервере может выглядеть так:
+
+```csharp
+public class CinnaHub : Hub
+{
+    public async Task StartObservation(string storage)
+    {
+        if (_hubContext != null)
+        {
+            await _hubContext.Groups.AddToGroupAsync(this.Context.ConnectionId, storage);
+        }
+    }
+}
+```
+
+Для отправки сообщения клиенту, может быть использован кот такой код:
+
+```csharp
+public class CinnaHub : Hub
+{
+    static public async Task SendModuleStatusChange(int storageId, int moduleId, int status)
+    {
+        if (_hubContext != null)
+        {
+            await _hubContext.Clients.Groups(storageId.ToString()).SendAsync("onModuleStatusChange", moduleId, status);
+        }
+    }
+}
+```
