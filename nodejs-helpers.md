@@ -92,3 +92,7 @@ NODE_ENV=production node index.js
 Наборы различных адаптеров, совместимых с LevelUP API - [level-stores](https://github.com/Level/awesome#stores).
 
 [JugglingDB](https://github.com/1602/jugglingdb/tree/master) это ORM, совместимая со множеством баз данных.
+
+## Гарантированная доставка сообщений
+
+Для гарантированной доставки сообщений предлагается использовать библиотеку [ZeroMQ](https://zeromq.org/). Библиотека относится к очень популярным. [Аккаунт на GitHub](https://github.com/zeromq).
