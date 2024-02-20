@@ -368,6 +368,8 @@ app.UseCors(policy =>
     .WithHeaders(HeaderNames.ContentType));
 ```
 
+Следует заметить, что разрешением выполнения запросов к другому домену, проблемы с **Cors** могут не завершиться. Если аутентификация в системе построена на использовании **cookie**, а не **JWT**, может потребоваться ещё и соответствующая настройка клиента и сервера. Рекомендуется для прочтения статья [Blazor WASM Hosted App with Cookie-based Authentication and Microsoft Identity](https://www.codeproject.com/Articles/5363405/Blazor-WASM-Hosted-App-with-Cookie-based-Authentic) by Michael Kanios.
+
 <a name="teams"></a>
 
 ## Типы команд разработчиков и архитектурных шаблонов
