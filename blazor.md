@@ -432,6 +432,8 @@ await builder.Build().RunAsync();
 
 Формируется структура документа (на браузере), осуществляется внедрение зависимости (HttpClient), а затем WebAssemblyHostBuilder собирает сборку и запускает её.
 
+Заметим, что _HTTPClient implementation is a wrapper around the browser's Fetch API_.
+
 Внедрение зависимостей имеет ключевое значение - благодаря этому подходу мы можем обращаться к web-серверу с любой страницы вот так:
 
 ```csharp
