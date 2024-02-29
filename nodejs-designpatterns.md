@@ -1,6 +1,6 @@
 # Шаблоны проектирования Node.js
 
-Один из ключевых шаблонов проектирования - **Factory**. Смысл шаблона хорошо иллюстрирует следующий пример:
+Один из ключевых шаблонов проектирования - **Factory**. Смысл шаблона иллюстрирует следующий пример:
 
 ```js
 function createImage (name) {
@@ -16,7 +16,7 @@ function createImage (name) {
 }
 ```
 
-Шаблон позволяет легко скрыть особенности создания объекта необходимого пользователю типа за функцией, или классом. Этот тип шаблонов проектирования относят к **Creational Design Patterns**.
+Шаблон позволяет скрыть особенности создания объекта необходимого пользователю типа за функцией, или классом. Этот тип шаблонов проектирования относят к **Creational Design Patterns**.
 
 Также этот шаблон может быть использован как механизм **инкапсуляции**, т.е. сокрытия реализации (спасибо механизму closures):
 
@@ -47,10 +47,10 @@ function createPerson (name) {
 
 Closures не удинственный механизм, который можно использовать для инкапсуляции. Другие подходы:
 
-- Использование _the hashbang_, начиная с Node.js 12: https://github.com/tc39/proposal-class-fields#private-fields
-- Использование WeakMaps: https://fitzgeraldnick.com/2014/01/13/hiding-implementation-details-with-e6-weakmaps.html
+- Использование [the hashbang](https://github.com/tc39/proposal-class-fields#private-fields), начиная с Node.js 12
+- Использование [WeakMaps](https://fitzgeraldnick.com/2014/01/13/hiding-implementation-details-with-e6-weakmaps.html)
 - Using symbols as keys for private properties: https://2ality.com/2016/01/private-data-classes.html#using-symbols-as-keys-for-private-properties
-- Private-переменные в конструкторе по методике Douglas Crockford: https://www.crockford.com/javascript/private.html
+- Private-переменные в конструкторе по [методике Douglas Crockford](https://www.crockford.com/javascript/private.html)
 - Использвование конвециональных договорённостей (conventions), в частности префикса "_" (underscore) в именах переменных (Python style)
 
 ## Шаблон проектирования Builder
@@ -384,7 +384,7 @@ console.log(evenNumbers[7]);    // 14
 
 Примеры:
 
-- Пример из реальной жизни: есть библиотека [Passport.js](https://www.passportjs.org/), у которой есть разные стратегии аутентификации пользоваля: логин Facebook, логин Twitter, логин/пароль, и т.д.
+- Пример из реальной жизни: есть библиотека [Passport.js](https://www.passportjs.org/), у которой есть разные стратегии аутентификации пользователя: аккаунты Facebook/Twitter/Microsoft, пара логин/пароль, и т.д.
 - Есть автомобиль и у него могут быть заменены колёса. Автомобиль - это контекст, который реализует основную логику, а колёса - подстройка (стратегия)под некоторые условия. Для зимней дороги используется один тип колёс, а для скоростных дорог - другой
 - Конфигурационная система содержит некоторую логику загрузки, изменения и сохранения конфигурационных параметров, но в каком именно формате будут сохраняться данные (JSON, XML, INI, YAML) - зависит от **стратегии**
 
@@ -397,3 +397,5 @@ console.log(evenNumbers[7]);    // 14
 В примере кода используется библиотека [json-over-tcp-2](https://www.npmjs.com/package/json-over-tcp-2). Замечу, что библиотека старая (последнее обновление - 4 года назад) и её нельзя отнести к популярным библиотекам.
 
 ## Template
+
+Шаблон проектирования Template очень похож на Strategy.
