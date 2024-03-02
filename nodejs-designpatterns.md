@@ -409,7 +409,7 @@ console.log(evenNumbers[7]);    // 14
 
 Пример реализации итератора - перечисление всех букв латинского алфавита:
 
-```csharp
+```js
 const A_CHAR_CODE = 65;
 const A_CHAR_CODE = 90;
 
@@ -429,6 +429,16 @@ function createAlphabetIterator() {
                 done: false
             }
         }
+    }
+}
+```
+
+Объекты, по которым можно выполнять итерирование называются **iterable**. Чтобы добавить такой функционал к произвольному объекту, можно реализовать [@@iterator](https://262.ecma-international.org/6.0/#sec-well-known-symbols). Пример:
+
+```js
+class MyIterable {
+    [Symbol.iterator] () {
+        // Здесь нужно вернуть итератор
     }
 }
 ```
