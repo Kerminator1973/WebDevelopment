@@ -468,3 +468,28 @@ console.log(oneOne, oneTwo, twoOne, twoTwo);
 Некоторые встроенные API в JavaScipt также поддерживают работу с **iterable**: Map, WeakMap, Set, WeakSet, Promise.all(), Promise.race(), Array.from().
 
 ## Generators
+
+Генераторы - подвид итераторов, основная особенность которых состоит в том, что у генератора не одна точка входа, а несколько. Ключевые особенности: особая сигнатура функции и использование ключевого слова **yield**. Пример определения генератора:
+
+```js
+function * fruitGenerator() {
+    yield 'peach';
+    yield 'watermelon';
+    return 'summer';
+}
+```
+
+При возвращении управления генератору, ему можно передать параметр:
+
+```js
+function * twoWayGenerator() {
+    const what = yield null;
+    yoeld 'Hello ' + what;
+}
+
+const twoEay = twoWayGenerator();
+twoWay.next();
+console.log(twoWay.next('world'));
+```
+
+Как и итератор, так и генератор можно встроить в произвольный класс.
