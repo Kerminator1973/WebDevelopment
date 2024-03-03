@@ -442,3 +442,29 @@ class MyIterable {
     }
 }
 ```
+
+Далеко не все конструкции JavaScript совместимы с **iterable**, однако, мы можем использовать следующие:
+
+```js
+for (const element of matrix2x2) {
+    console.log(element);
+}
+```
+
+Также с **iterable** совместим **spread operator**:
+
+```js
+const flattenedMatrix = [...matrix2x2];
+console.log(flattenedMatrix);
+```
+
+Похожим образом мы можем использовать **destructuring**:
+
+```js
+const [oneOne, oneTwo, twoOne, twoTwo] = matrix2x2;
+console.log(oneOne, oneTwo, twoOne, twoTwo);
+```
+
+Некоторые встроенные API в JavaScipt также поддерживают работу с **iterable**: Map, WeakMap, Set, WeakSet, Promise.all(), Promise.race(), Array.from().
+
+## Generators

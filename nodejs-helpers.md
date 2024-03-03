@@ -96,3 +96,11 @@ NODE_ENV=production node index.js
 ## Гарантированная доставка сообщений
 
 Для гарантированной доставки сообщений предлагается использовать библиотеку [ZeroMQ](https://zeromq.org/). Библиотека относится к очень популярным. [Аккаунт на GitHub](https://github.com/zeromq).
+
+## Получить массив без дубликатов
+
+Получить новый массив без дубликатов в JavaScript можно используя следующую конструкцию:
+
+```js
+const uniqArray = Array.from(new Set(arrayWithDuplicates));
+```
