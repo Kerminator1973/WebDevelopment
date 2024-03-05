@@ -493,3 +493,31 @@ console.log(twoWay.next('world'));
 ```
 
 Как и итератор, так и генератор можно встроить в произвольный класс.
+
+Для итератора можно использовать конструкцию: `for ... of`.
+
+Генераторы, как и итераторы могут быть асинхронными:
+
+```js
+async function * generatorFunction() {
+    // Тело генератора
+}
+```
+
+Инструкция generator delegation:
+
+```js
+yield * iterable;
+```
+
+Асинхронная итерация выглядит так: `for await ... of`. Типовой пример из библиотек @databases/pg, @databases/mysql и @databases/sqlite:
+
+```js
+for await (const record of db.queryStream(sql`SELECT * FROM my_table`)) {
+    // Делаем что-то с record (записью из базы данных)
+}
+```
+
+Этот подход также активно используется в [ZeroMQ](https://www.npmjs.com/package/zeromq).
+
+## Middleware
