@@ -521,3 +521,24 @@ for await (const record of db.queryStream(sql`SELECT * FROM my_table`)) {
 Этот подход также активно используется в [ZeroMQ](https://www.npmjs.com/package/zeromq).
 
 ## Middleware
+
+Одним из наиболее распространённых примером использования шаблона проектирования Middleware является легковесный web-сервер Express. В Express, фактически, шаблон проектирования Middleware представляет собой множество сервисов, обычно функций, которые организованы в _pipeline_ и отвечают за обработку входящих HTTP-запросов и соответствующих ответов.
+
+Express известен как минималистичный web framework и именно шаблон Middleware является основной причиной этого. Именно простота формирования pipeline позволяет сформировать именно тот pipeline, который наилучшим образом подходит для решения конкретной задачи.
+
+Middleware в Express имеет следующий вид:
+
+```js
+function (req, res, next) { ... }
+```
+
+Примеры задач, которые могут быть решены посредством Middleware в Express:
+
+- разбор тела запроса (body). Например, преобразование тела запроса в JSON
+- Compressing/decompressing запросов и ответов
+- создание лога доступа
+- управление сессиями
+- управление зашифрованными cookies
+- обеспечение Croff-Site Request Forgery (CSRF)
+
+Следует заметить, что Middleware не новый шаблон проектирования. Его можно рассматривать как реализацию шаблонов проектирования [Intercepting Filter](https://en.wikipedia.org/wiki/Intercepting_filter_pattern) и [Chain of Responsibility](https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern).
