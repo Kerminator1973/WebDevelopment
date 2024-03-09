@@ -539,6 +539,12 @@ function (req, res, next) { ... }
 - создание лога доступа
 - управление сессиями
 - управление зашифрованными cookies
-- обеспечение Croff-Site Request Forgery (CSRF)
+- обеспечение Cross-Site Request Forgery (CSRF)
 
 Следует заметить, что Middleware не новый шаблон проектирования. Его можно рассматривать как реализацию шаблонов проектирования [Intercepting Filter](https://en.wikipedia.org/wiki/Intercepting_filter_pattern) и [Chain of Responsibility](https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern).
+
+В книге "Node.js Design Patterns" by Mario Casciaro, Luciano Mammino, приводится реализация Middleware для того, чтобы создать обертку над ZeroMQ для сжатия/разжатия сообщения и сериализации/десериализации контента в/из JSON.
+
+Ещё один хороший пример использования шаблона проектирования Middleware - библиотека [Koa.js](https://koajs.com/), развивающая идеи Express.js, но используя современные языковые возможности.
+
+## Command
