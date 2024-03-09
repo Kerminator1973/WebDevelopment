@@ -274,9 +274,11 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 В качестве альтернатив рассматриваются:
 
 - [Parcel](https://parceljs.org/). Разработчики продукта сфокусировались на *zero configuration*. Простота достигается посредством большого количества default-ных значений. Недостаток: подходит только для простых проектов
-- [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством Paul Sweeney. Разработчики так же стремятся реализовать подход zero configuration, что достигается благодаря использованию ES Modules, нативно поддерживаемому современными браузерами. **Vite 5** базируется на Rollup
+- [Rollup](https://rollupjs.org/guide/en/). Статья [Why I use Rollup, and not Webpack](https://medium.com/@PepsRyuu/why-i-use-rollup-and-not-webpack-e3ab163f4fd3) за авторством _Paul Sweeney_. Разработчики так же стремятся реализовать подход zero configuration, что достигается благодаря использованию ES Modules, нативно поддерживаемому современными браузерами. Также предлагает некоторое количество оптимизаций, включая **tree shaking** и **dead code elimination**. **Vite 5** базируется на Rollup
 - [Vite](https://vitejs.dev/). Использует [Esbuild](https://esbuild.github.io/), разработанный на Go и работает очень быстро. Разработчик - Evan You (автор Vue.js). Критика инструмента в статье [Vite: How to fail on killing Webpack](https://darkghosthunter.medium.com/vite-how-to-fail-on-killing-webpack-16eb1834593c) by Italo Baeza Cabrera. Статья в подержку Vite - [You Should Choose Vite Over CRA for React Apps, Here’s Why](https://medium.com/codex/you-should-choose-vite-over-cra-for-react-apps-heres-why-47e2e7381d13) by Can Durmus. Vite - это не только система сборки, но и генератор шаблонных проектов. Генерация проекта: `npm create vite@latest`
 - [Snowpack](https://www.snowpack.dev/). Статья [Web Developers: Use Snowpack instead of Webpack](https://javascript.plainenglish.io/web-developers-use-snowpack-instead-of-webpack-70e7b04f7853) за авторством Morgan Page
+- [Brunch](https://brunch.io/) - декларируется высокая скорость работы
+- [Microbundle](https://www.npmjs.com/package/microbundle) - bundler для маленьких модулей, базируется на Rollup
 
 Вместе с тем, WebPack 5 может быть лишён многих, озвучиваемых сообществом, недостатков: https://webpack.js.org/blog/2020-10-10-webpack-5-release/
 
