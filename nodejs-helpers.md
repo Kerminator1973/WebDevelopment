@@ -104,3 +104,54 @@ NODE_ENV=production node index.js
 ```js
 const uniqArray = Array.from(new Set(arrayWithDuplicates));
 ```
+
+## Immediately Invoked Function Expression (IIFE)
+
+IIFE (Immediately Invoked Function Expression) это функция на JavaScript, которая выполняется сразу же, как только встречается её определение. Примеры:
+
+```js
+(function () {
+  // …
+})();
+
+(() => {
+  // …
+})();
+
+(async () => {
+  // …
+})();
+```
+
+Основные применения:
+
+### Avoid polluting the global namespace
+
+Переменные firstVariable и secondVariable не попадают в глобальный scope:
+
+```js
+(() => {
+  // some initiation code
+  let firstVariable;
+  let secondVariable;
+})();
+```
+
+### Execute an async function
+
+Выполнение асинхронной функции:
+
+```js
+const getFileStream = async (url) => {
+  // implementation
+};
+
+(async () => {
+  const stream = await getFileStream("https://domain.name/path/file.ext");
+  for await (const chunk of stream) {
+    console.log({ chunk });
+  }
+})();
+```
+
+Дополнительно можно почитать [здесь](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)
