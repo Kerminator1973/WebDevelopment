@@ -705,3 +705,7 @@ destination.write(outBuff);
 ```
 
 Часто используется библиотека [ternary-stream](https://www.npmjs.com/package/ternary-stream).
+
+## Система логирования Pino
+
+[Pino](https://github.com/pinojs/pino) - очень интересная система логирования для JavaScript. Прекрасно работает с Express, Koa и Fastify.
