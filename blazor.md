@@ -25,6 +25,12 @@
 
 Заметим, что и другие инструменты идут по пути трансляции в Wasm для работы в браузерах. В этом направлении движется [Kotlin/Wasm](https://kotlinlang.org/docs/wasm-overview.html) и [Rust/Wasm](https://rustwasm.github.io/book/).
 
+## Обратить внимание - кэширование запросов через HttpClient
+
+На практике мы столкнулись с тем, что корпоративный proxy кэширует http-пакеты, которыми обмениваются Blazor-клиент с сервером. Как результат - данные являются не достоверными и работоспособность системы в целом нарушается. Рекомендуется для ознакомления статья [Bypass HTTP browser cache when using HttpClient in Blazor WebAssembly](https://www.meziantou.net/bypass-browser-cache-using-httpclient-in-blazor-webassembly.htm) by Gérald Barré.
+
+В случае использования https подобных проблем возникать не должно, т.к. proxy не сможет кэшировать шифрованный трафик.
+
 ## Создание первого приложения (в действительности - первых приложений)
 
 Инструкция базируется на [статье на сайте Microsoft.NET](https://dotnet.microsoft.com/en-us/learn/aspnet/blazor-tutorial/create).
