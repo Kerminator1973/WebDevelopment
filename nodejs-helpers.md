@@ -171,3 +171,8 @@ const getFileStream = async (url) => {
 - базируется на использовании схем - JSON Schema используется для проверки routers и сериализации вывода
 - logging. Используется очень быстрая система логирования - [Pino](https://github.com/pinojs/pino)
 - TypeScript ready
+
+## Адаптеры для работы с PostgreSQL
+
+- Non-blocking [PostgreSQL client](https://www.npmjs.com/package/pg) for Node.js
+- [node-postgres](https://github.com/brianc/node-postgres/blob/2013d77b28be5a0d563addb1852eb97e9693e452/packages/pg/lib/client.js#L549)

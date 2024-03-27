@@ -35,6 +35,8 @@
 
 "Simplicity is the ultimate sophistication" - Leonardo da Vinci.
 
+Интересный документальный фильм [Node.js. The Documentary](https://www.youtube.com/watch?v=LB8KwiiUGy0&t=448s&ab_channel=Honeypot) об истории создания Node.js от Honeypot.
+
 ## The Reactor Pattern
 
 Ключевой компонент Node.js - **synchronous event demultiplexer** (также известный как **event notification interface**). Он следит за выполнением блокирующих операций ввода/вывода и, когда какая-нибудь из них (или несколько) завершается, управление передаётся из event demultiplexer в вызывающие его код, который обрабатывает события завершения операций ввода/вывода. После отработки событий (это называется **event loop**), управление снова передаётся demultiplexer-у, который снова отслеживает завершение не блокирующих операций ввода-вывода.
