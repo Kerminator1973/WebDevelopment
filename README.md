@@ -449,6 +449,8 @@ Web-программирование это комбинация ПО работ
 - можно запускать отдельный процесс (процесс уровня операционной системы). Этот подход называется "_Delegating the task to an external process_". Node.js содержит инструменты для взаимодействия между родительским и дочерним процессами (на базе **EventEmitter**()). Для выполнения "тяжёлых" задач обычно используется pool внешних процессов. Создание процесса осуществляется через `child_process.fork()`
 - начиная с Node.js 10.4 можно использовать [API Worker Threads](https://nodejsdev.ru/api/worker_threads/)
 
+Для промышленных применений, в случае потребности создания Worker Pool, могут быть использованы библиотеки: [workerpool](https://www.npmjs.com/package/workerpool) и [piscina](https://www.npmjs.com/package/piscina).
+
 ![Как работает Node.js](./images/nodejs_process.jpg)
 
 Рекомендуется к прочтению статья [Using Node.js for Backend Web Development in 2022](https://medium.com/geekculture/using-node-js-for-backend-web-development-in-2022-f2917c6c0a87) by MobiDev.
