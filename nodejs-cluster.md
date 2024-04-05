@@ -110,3 +110,31 @@ Running 10s test @ http://localhost:8080
 
 3k requests in 10.1s, 394 kB read
 ```
+
+## Имитация сбоя в web-приложении
+
+Это может быть полезно для проверки управлющей инфраструктуры обеспечения высокой доступности приложения:
+
+```sharp
+setTimeout(() => { throw new Error('Ooops'); }, Math.ceil(Math.random() * 3) * 1000);
+```
+
+## Как поднимать нового worker-а, если упал работающий
+
+Для того, чтобы отследить падение worker-а, следует отслеживать событие **exit**. При его получении можнно запустить нового worker-а:
+
+```js
+if (cluster.isMaster) {
+    // ...
+    cluster.on('exit', (worker, code) => {
+        if (code !== 0 && !worker.exitedAfterDisconnect) {
+            console.log(`Wordr ${worker.process.pid} crashed. Starting a new worker`);
+            cluster.fork();
+        }
+    });
+}
+```
+
+В принципе, можно не писать весь этот дополнительный код, а воспользоваться утилитой [pm2](https://github.com/Unitech/pm2).
+
+Я подробно описал [использование pm2](https://github.com/Kerminator1973/RUFServerLite/blob/main/docs/nginx.md) в проекте D820 с Orange Pi.
