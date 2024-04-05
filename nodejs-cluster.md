@@ -18,7 +18,7 @@ const server = createServer((req, res) => {
     // Имитируем интенсивную нагрузку на CPU
     let i = 1e7; while (i > 0) { i--; };
 
-    concole.log(`Handling request from ${pid}`);
+    console.log(`Handling request from ${pid}`);
     res.end(`Hello from ${pid}\n`);
 });
 
@@ -47,7 +47,7 @@ if (cluster.isMaster) {
         // Имитируем интенсивную нагрузку на CPU
         let i = 1e7; while (i > 0) { i--; };
 
-        concole.log(`Handling request from ${pid}`);
+        console.log(`Handling request from ${pid}`);
         res.end(`Hello from ${pid}\n`);
     });
 
@@ -59,4 +59,38 @@ if (cluster.isMaster) {
 
 ```js
 Object.values(cluster.workers).forEach(worker => worke5r.send('Hello from the master'));
+```
+
+Для запуска web-сервера необходимо создать package.json, командой `npm init` и добавить в файл строку:
+
+```json
+"type": "module"
+```
+
+Загрузить зависимости можно командой `npm install`.
+
+При запуске AutoCannon можно увидеть следующий результат:
+
+developer@developer-HP-ENVY-15-Notebook-PC:~/projects/Node-tests$ npx autocannon -c 200 -d 10 http://localhost:8080
+Running 10s test @ http://localhost:8080
+200 connections
+
+```console
+┌─────────┬────────┬─────────┬─────────┬─────────┬────────────┬───────────┬─────────┐
+│ Stat    │ 2.5%   │ 50%     │ 97.5%   │ 99%     │ Avg        │ Stdev     │ Max     │
+├─────────┼────────┼─────────┼─────────┼─────────┼────────────┼───────────┼─────────┤
+│ Latency │ 258 ms │ 1359 ms │ 1487 ms │ 1629 ms │ 1291.43 ms │ 262.13 ms │ 1720 ms │
+└─────────┴────────┴─────────┴─────────┴─────────┴────────────┴───────────┴─────────┘
+┌───────────┬─────────┬─────────┬─────────┬─────────┬─────────┬───────┬─────────┐
+│ Stat      │ 1%      │ 2.5%    │ 50%     │ 97.5%   │ Avg     │ Stdev │ Min     │
+├───────────┼─────────┼─────────┼─────────┼─────────┼─────────┼───────┼─────────┤
+│ Req/Sec   │ 129     │ 129     │ 147     │ 149     │ 144.4   │ 5.54  │ 129     │
+├───────────┼─────────┼─────────┼─────────┼─────────┼─────────┼───────┼─────────┤
+│ Bytes/Sec │ 17.9 kB │ 17.9 kB │ 20.4 kB │ 20.7 kB │ 20.1 kB │ 771 B │ 17.9 kB │
+└───────────┴─────────┴─────────┴─────────┴─────────┴─────────┴───────┴─────────┘
+
+Req/Bytes counts sampled once per second.
+# of samples: 10
+
+2k requests in 10.09s, 201 kB read
 ```
