@@ -150,3 +150,13 @@ if (cluster.isMaster) {
 Для некоторых вариантов сетевого взаимодействия, например, при использовании Socket.io, может быть использован только **sticky load balancing**.
 
 Стоит заметить, что Sticky load balancing не поддерживается в **cluster module**. Но можно использовать другую библиотеку - [sticky-session](https://www.npmjs.com/package/sticky-session).
+
+## Супервизоры для контроля состояния и перезапуска сервисов
+
+Node.js-based supervisors: [forever](https://github.com/foreversd/forever) и [pm2](https://github.com/Unitech/pm2)
+
+OS-based системы мониторинга: [systemd](https://systemd.io/) и [runit](https://smarden.org/runit/)
+
+Коммерческие системы мониторинга: [M/Monit](https://mmonit.com/) и [supervisord](http://supervisord.org/)
+
+Container-based runtimes: Kubernetes, Nomad, Docker Swarm.

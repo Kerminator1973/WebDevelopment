@@ -705,7 +705,9 @@ namespace API.Controllers
 
 Резюмируя: использование Reverse Proxy позволяет значительно увеличить производительность системы, снизить нагрузку на сетевую подсистему, а также улучшить безопасность системы.
 
-В качестве таких прокси часто используются Microsoft Internet Information Server, [nginx](https://nginx.org/ru/) и [HAProxy](http://www.haproxy.org/).
+В качестве таких прокси часто используются Microsoft Internet Information Server, [nginx](https://nginx.org/ru/) и [HAProxy](http://www.haproxy.org/). Также могут быть использованы proxy реализуемые в рамках экосистемы конкретного языка программирования (например: _Node.js-based proxies_), или _Cloud-based proxies_.
+
+Различия между **Reverse Proxy** и **Forward Proxy** приведены в документации по (Apache HTTP server](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html#forwardreverse)
 
 На официальном сайте **nginx** доступна бесплатная книга о защите web-приложений от внешних атак.
 
