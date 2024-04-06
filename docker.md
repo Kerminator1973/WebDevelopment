@@ -16,7 +16,13 @@ const server = createServer((req, res) => {
 server.listen(8080);
 ```
 
-Для того, чтобы запустить этот код, нам нужен файл "package.json".
+Для того, чтобы запустить этот код, нам нужен файл "package.json". Важно добавить в файл "package.json" команду запуска приложения:
+
+```json
+  "scripts": {
+    "start": "node app.js"
+  },
+```
 
 Мы можем разработать специальный скрипт для [Docker](https://www.docker.com/) и сохранить его в специальный файл "Dockerfile":
 
