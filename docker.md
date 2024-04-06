@@ -45,6 +45,16 @@ CMD ["npm", "start"]
 
 Собрать Docker-образ можно командой `docker build .`
 
+Узнать короткий идентификатор образа можно командой `docker images`. Пример вывода:
+
+```console
+developer@developer-HP-ENVY-15-Notebook-PC:~/projects/docker-tests$ docker images
+REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
+<none>                   <none>    6acb3296b4e3   15 seconds ago   119MB
+<none>                   <none>    873dc75a8cac   13 minutes ago   119MB
+<none>                   <none>    9a6e9419ba53   24 minutes ago   119MB
+```
+
 В логе сборки будет указан идентификатор образа, который можно использовать для его запуска, например: 
 
 ```console
@@ -59,6 +69,12 @@ CMD ["npm", "start"]
 
 ```shell
 docker run -it -p 8080:8080 9a6e9419ba53f5fb075e89cfb5686cb177b57e1808f61
+```
+
+Остановить все контейнеры можно командой:
+
+```shell
+docker stop $(docker ps -a -q)
 ```
 
 Чтобы не мучаться с цифровыми идентификаторами образов, мы можем указать имя образа явным образом, например:
