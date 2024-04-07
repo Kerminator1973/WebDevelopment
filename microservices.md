@@ -14,6 +14,12 @@
 - Design for Failure
 - Evolutionary Design
 
+В книге "The Art of Scalability" by Martin L. Abbott и Michael T.Fisher описали модель масштабирования приложения, которую назвали **scale cube**. В этой модели указывается три пространства (dimensions):
+
+- X-axis - Клонирование. Популярные решения: Docker и Kubernetes
+- Y-axis - Decomposition by service/functionality. Обычно имеется ввиду использование **микросервисной архитектуры**
+- Z-axis - Splitting by data partition. Разные сервера обрабатывают данные, связанные с конкретным признаком, например, сервер X105 обрабатывает операции всех пользователей, аккаунт которых начинается с "x"
+
 ## Componentization via Services
 
 Модульный дизайн – это всегда хорошая идея.
