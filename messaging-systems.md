@@ -141,3 +141,52 @@ redisSub.on('message', (channel, msg) => {
 
 ## Peer-to-peer взаимодействие, посредством ZeroMQ
 
+В случае использовать Peer-to-peer взаимодействия, каждый сервер должен открыть один порт для подключения всех других серверов к нему (publish) и сам должен подписаться на сообщения всех остальных серверов (subscribe). Например, при запуске трёх экземплятров сервера следует выполнить три команды:
+
+```js
+node index.js --http 8080 --pub 5000 ---sub 5001 --sub 5002
+node index.js --http 8081 --pub 5001 ---sub 5000 --sub 5002
+node index.js --http 8082 --pub 5002 ---sub 5000 --sub 5001
+```
+
+Для создания канала публикации сообщений, может быть использова следующий код:
+
+```js
+import zmq from 'zeromq';
+
+let pubSocker;
+pubSocket = new zmq.Publisher();
+await pubSocket.bind(`tcp://127.0.0.1:${yargs.argv.pub}`);
+//...
+pubSocket.send(`chat ${msg}`);
+```
+
+Подписка и получение сообщений от нескольких серверов может выглядеть так:
+
+```js
+async function initializeSockets() {
+	const subSocket = new zmq.Subscriber();
+	const subPorts = [].concat(yargs.argv.sub);
+	for (const port of subPorts) {
+		subSocket.connect(`tcp://127.0.0.1:${port}`);
+	}
+	subSocket.subscribe('chat');
+	for await (const [msg] of subSocket) {
+		// Обрабатываем сообщение от другого сервера
+	}
+}
+
+// Здесь мы вызываем асинхронную инициализацию socket-а, но не ждём
+// её завершения
+initializeSockets();
+
+// Далее мы запускает WebSockets-сервер и реализуем функционал рассылки сообщения своим клиентам
+```
+
+Достаточно необычно выглядит следующая строка:
+
+```js
+for await (const [msg] of subSocket) {
+```
+
+На самом деле, subSocket является генератором будет работать бесконечно и асинхронно.

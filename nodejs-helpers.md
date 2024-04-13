@@ -186,3 +186,24 @@ const getFileStream = async (url) => {
 ## NanoID
 
 Крошечный, безопасный, удобный для программистов генератор уникальных строковый ID для JavaScript - [nanoid](https://www.npmjs.com/package/nanoid).
+
+## Разбор параметров командной строки
+
+Для разбора параметров командной строки может быть использована библиотека [yargs](https://www.npmjs.com/package/yargs). В случае использования yargs, параметры передаются парами имя/значение, например: `--http 8080`
+
+Пример использования:
+
+```js
+#!/usr/bin/env node
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv)).argv
+
+if (argv.ships > 3 && argv.distance < 53.5) {
+  console.log('Plunder more riffiwobbles!')
+} else {
+  console.log('Retreat from the xupptumblers!')
+}
+```
+
+Функция hideBin() является аналогом `process.argv.slice(2)`.
