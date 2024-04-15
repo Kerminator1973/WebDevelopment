@@ -730,6 +730,9 @@ namespace API.Controllers
 10. [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode) by SonarSource - мощный Link для разных языков программирования, включая JavaScript/TypeScript
 11. [Polacode](https://marketplace.visualstudio.com/items?itemName=pnp.polacode) by P & P - сделать красивую картинку с выделенным кодом приложения
 12. [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) by GitKraken - позволяет посмотреть Commit Graph, визуализировать историю изменений кода, "кто исправлял текущую строку кода"
+13. [MSBuild project tools](tintoy/msbuild-project-tools-server) by tinytoy. Предоставляет IntelliSense при редактировании файлов проектов C#
+14. [REST Client](humao.rest-client) by humao. HTTP client для VSCode, альтернатива Postman. Последнее обновление - 2019 год
+15. [ILSpy Decompiler](ilspy-vscode) by SharpDevelop Team. Декомпилирует сборки MSIL
 
 Один из моих любимых plugin-ов **Bracket Pair Colorizer 2** вошел в состав Visual Studio Code. Чтобы активировать его, следует включить в settings.json строки:
 
