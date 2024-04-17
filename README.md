@@ -9,7 +9,7 @@
 Содержимое статьи:
 
 - Технологии [Front-End](#frontend)
-- Альтернативы JavaScript: [WebAssembly](#webassembly), [TypeScript](#typescript)
+- Альтернативы и развитие JavaScript: [WebAssembly](#webassembly), [TypeScript](#typescript)
 - [Основные проблемы](#problems) web-приложений
 - [Решение проблем](#frameworks) при помощи фреймворков
 - [Bundler-ы](#bundler). WebPack и другие
@@ -142,7 +142,16 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
 В последние годы появляется много приложений поддерживающих **The WebSocket Protocol**. Его ключевое отличие от http состоит в том, что WebSocket является двунаправленным протоколом с постоянно установленным соединением. Это значит, что при необходимости отправки сообщения не нужно выполнять handshake, а сервер может отправить сообщение любому из активных web-приложений, исполняющихся в браузере, в произвольный момент времени. Этот протокол позволят динамически обновлять HTML-контент со стороны сервера. Наиболее популярными библиотеками для работы с WebSocket являются [Socket.io](https://socket.io/) и [SignalR](https://github.com/SignalR/SignalR).
 
-## Альтернативы JavaScript
+## Альтернативы и развитие JavaScript
+
+По мере появления всё более изощрённых JavaScript-приложений явным образом стали проявляться проблемы в дизайне этого языка программирования, наиболее серьёзной проблемой которого является слабая типизация. Проблемы стали носить драматический характер когда крупные корпорации (в первую очередь, Microsoft) начали портировать в облака свои офисные пакеты. Фактически, специалистам Microsoft пришлось переписывать MS Office с C++ на JavaScript. См. [TypeScript Origins: The Documentary](https://www.youtube.com/watch?v=U6s2pdxebSo&ab_channel=OfferZenOrigins) by OfferZen Origins на YouTube.
+
+На апрель 2024 года обозначены следующие направления развития JavaScript:
+
+- Стандартизация JavaScript в [ECMA](https://ecma-international.org/publications-and-standards/standards/ecma-262/). Текущий стандарт - ECMAScript 2023 (14 редакция)
+- Microsoft "исправляет ошибки" JavaScript посредством транспайлера TypeScript
+- Google разработал и развивает альтернативу JavaScript - Dart
+- Microsoft развивает инструмент Blazor, который обеспечивает трансляцию .NET-приложений в WebAssembly, для нативного исполнения в браузере. Blazor поддерживает interop с JavaScript, а также имеет доступ к DOM
 
 <a name="webassembly"></a>
 
