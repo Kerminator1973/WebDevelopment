@@ -77,6 +77,9 @@ public class EventModel : PageModel
 ```csharp
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();  // <--
+// ...
+var app = builder.Build();
+// ...
 app.MapHub<CinnaHub>("/monitoringHub"); // <--
 app.Run();
 ```
@@ -100,7 +103,8 @@ builder.Services.AddSignalR();
 В клиентском JavaScript-коде следует добавить следующие команды:
 
 ```js
-jQuery(function () {
+document.addEventListener('DOMContentLoaded', function (event) {
+
     // Взаимодействие посредством SignalR
     var connection = new signalR.HubConnectionBuilder().withUrl("/monitoringHub").build();
 
@@ -110,6 +114,11 @@ jQuery(function () {
 
     connection.start().then(function () {
         
+        // Здесь можно отправить стартовое сообщение. Например:
+        connection.invoke("SendMessage", "Petrov", "Hello, SignalR!").catch(function (err) {
+            return console.error(err.toString());
+        });
+
     }).catch(function (err) {
         return console.error(err.toString());
     });
