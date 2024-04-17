@@ -390,3 +390,7 @@ public class CinnaHub : Hub
     }
 }
 ```
+
+## Клиент SignalR в приложении на C\#
+
+Ключевая [статья](https://learn.microsoft.com/ru-ru/aspnet/core/signalr/dotnet-client?view=aspnetcore-8.0&tabs=visual-studio)
