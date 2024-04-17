@@ -376,7 +376,7 @@ public class CinnaHub : Hub
 }
 ```
 
-Для отправки сообщения клиенту, может быть использован кот такой код:
+Для отправки сообщения клиенту, может быть использован вот такой код:
 
 ```csharp
 public class CinnaHub : Hub
@@ -394,3 +394,51 @@ public class CinnaHub : Hub
 ## Клиент SignalR в приложении на C\#
 
 Ключевая [статья](https://learn.microsoft.com/ru-ru/aspnet/core/signalr/dotnet-client?view=aspnetcore-8.0&tabs=visual-studio)
+
+## Создать рабочий поток в приложении ASP.NET Core
+
+В приложении ASP.NET Core 8 можно создать класс-Singleton, который создаст поток исполнения и будет циклически выполнять некоторое действие. Для этого необходимо определить класс, в котором есть метод, запускающий отдельный поток и вызывать этот метод из конструктора:
+
+```csharp
+public interface ITaskSingleton
+{
+    public void Loop();
+}
+
+public class TaskSingleton : ITaskSingleton
+{
+    public void Loop()
+    {
+        Task TimerTask = Task.Run(async () => {
+            try
+            {
+                for (;;)
+                {
+                    await Task.Delay(10 * 1000);
+                }
+            }
+            catch
+            {
+                await Task.Delay(00 * 1000);
+                // В случае возникновения исключения, мы выйдем из цикла for(;;)
+                Loop();
+            }
+        });
+    }
+}
+```
+
+Затем, необходимо в "Program.cs" зарегистрировать Singleton:
+
+```csharp
+builder.Services.AddSingleton<ITaskSingleton, TaskSingleton>();
+```
+
+После этого, нужно создать экземпляр singleton-а, и вызвать у него метод Loop:
+
+```csharp
+var service = app.Services.GetService<ITaskSingleton>();
+service?.Loop();
+```
+
+Время жизни singleton-а соответствует времени жизни приложения. Цикл внутри задачи будет выполняться до завершения приложения.
