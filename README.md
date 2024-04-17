@@ -742,6 +742,8 @@ namespace API.Controllers
 13. [MSBuild project tools](tintoy/msbuild-project-tools-server) by tinytoy. Предоставляет IntelliSense при редактировании файлов проектов C#
 14. [REST Client](humao.rest-client) by humao. HTTP client для VSCode, альтернатива Postman. Последнее обновление - 2019 год
 15. [ILSpy Decompiler](ilspy-vscode) by SharpDevelop Team. Декомпилирует сборки MSIL
+16. [Tokyo Night](Tokyo Night) by **enkia**. Тема для VSCode
+17. [PurpleSchool Theme](https://github.com/PurpleSchool/vscode-theme) by **PurpleSchool**. Тема для VSCode
 
 Один из моих любимых plugin-ов **Bracket Pair Colorizer 2** вошел в состав Visual Studio Code. Чтобы активировать его, следует включить в settings.json строки:
 
