@@ -538,3 +538,36 @@ public async Task SendMessage()
 ```
 
 ВНИМАНИЕ! В приведённом выше примере отражается только часть файла "\Properties\launchSettings.json".
+
+## Заготовки для тестирования кода
+
+Разметка для отправки сообщения концентратору SignalR:
+
+```html
+<div class="row p-1">
+    <div class="col-1">User</div>
+    <div class="col-5"><input type="text" id="userInput" /></div>
+</div>
+<div class="row p-1">
+    <div class="col-1">Message</div>
+    <div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
+</div>
+<div class="row p-1">
+    <div class="col-6 text-end">
+        <input type="button" id="sendButton" value="Send Message" />
+    </div>
+</div>
+```
+
+JavaScript-код для отправки введённого текста через концентратор SignalR:
+
+```js
+document.getElementById("sendButton").addEventListener("click", function (event) {
+    var user = document.getElementById("userInput").value;
+    var message = document.getElementById("messageInput").value;
+    connection.invoke("SendMessage", user, message).catch(function (err) {
+        return console.error(err.toString());
+    });
+    event.preventDefault();
+});
+```
