@@ -391,10 +391,6 @@ public class CinnaHub : Hub
 }
 ```
 
-## Клиент SignalR в приложении на C\#
-
-Ключевая [статья](https://learn.microsoft.com/ru-ru/aspnet/core/signalr/dotnet-client?view=aspnetcore-8.0&tabs=visual-studio)
-
 ## Создать рабочий поток в приложении ASP.NET Core
 
 В приложении ASP.NET Core 8 можно создать класс-Singleton, который создаст поток исполнения и будет циклически выполнять некоторое действие. Для этого необходимо определить класс, в котором есть метод, запускающий отдельный поток и вызывать этот метод из конструктора:
@@ -419,7 +415,7 @@ public class TaskSingleton : ITaskSingleton
             }
             catch
             {
-                await Task.Delay(00 * 1000);
+                await Task.Delay(300 * 1000);
                 // В случае возникновения исключения, мы выйдем из цикла for(;;)
                 Loop();
             }
@@ -442,3 +438,103 @@ service?.Loop();
 ```
 
 Время жизни singleton-а соответствует времени жизни приложения. Цикл внутри задачи будет выполняться до завершения приложения.
+
+## Клиент SignalR в приложении на C\#
+
+Ключевая [статья](https://learn.microsoft.com/ru-ru/aspnet/core/signalr/dotnet-client?view=aspnetcore-8.0&tabs=visual-studio)
+
+Для подключения клиента SignalR к SignalR-концентратору необходимо установить зависимость:
+
+```csharp
+Microsoft.AspNetCore.SignalR.Client
+```
+
+Нам следует создать Singleton, в котором создаётся экземпляр HubConnection, например:
+
+```csharp
+public class TaskSingleton : ITaskSingleton
+{
+    HubConnection? connection = null;
+
+    public TaskSingleton()
+    {
+        connection = new HubConnectionBuilder()
+                        .WithUrl("wss://localhost:8080/adapterHub")
+                        .Build();
+
+        connection.Closed += async (error) =>
+        {
+            await Task.Delay(new Random().Next(0, 5) * 1000);
+            await connection.StartAsync();
+        };
+    }
+```
+
+В конструкторе мы формируем соединение, указывая IP-адрес и порт компьютера, к которому мы подключаемся, протокол подключения (wss) и Endpoint (/adapterHub).
+
+Далее, нам следует определить метод, который откроет соединение и подпишется на некоторые сообщения от SignalR-концентратора:
+
+```csharp
+public interface ITaskSingleton
+{
+    public Task Start();
+}
+
+public async Task Start()
+{
+    if (connection != null)
+    {
+        if (connection.State != HubConnectionState.Connected)
+        {
+            connection.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                Console.WriteLine($"I has got a message ({message}) from {user}");
+            });
+
+            await connection.StartAsync();
+        }
+    }
+}
+```
+
+Ключевым является вызов `connection.StartAsync()`, который устанавливает соединение с SignalR-концентратором. После того, как соединение будет установлено, можно будет отправлять сообщения, или получить их по подписке:
+
+```csharp
+public async Task SendMessage()
+{
+    if (connection != null)
+    {
+        try
+        {
+            await connection.InvokeAsync("SendMessage", "Monitoring", "Here is the monitoring!");
+        }
+        catch (Exception)
+        {
+        }
+    }
+}
+```
+
+### Настройка коммуникационного порта для SignalR-концентратора
+
+Для SignalR не создаётся какого-то особенного порта, он использует тот же самый порт, который устанавливается для http/https Endpoint-ов web-сервера. Если мы запускаем приложение из под Visual Studio, то этот инструмент выделяет некоторый порт "по умолчанию". Чтобы установить конкретный, фиксированный номер порта, следует создать **профиль запуска**. Для это следует перейти в свойства Solution-а, найти раздел "Debug -> General" и нажать на ссылку "Open debug launch profiles UI". Откроется форма, в которой можно настроить параметры профилей http, https, "IIS Express". Если мы, например, запускаем приложение по https, то следует выбрать профиль https, найти в нём параметр "App URL" и установить нужный нам порт, например: "https://localhost:8080;http://localhost:5086"
+
+При изменении параметров Visual Studio создаст файл "\Properties\launchSettings.json", в котором будет сохранена соответствующая настройка, например:
+
+```json
+{
+  "profiles": {
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:8080;http://localhost:5086"
+    }
+  }
+}
+```
+
+ВНИМАНИЕ! В приведённом выше примере отражается только часть файла "\Properties\launchSettings.json".
