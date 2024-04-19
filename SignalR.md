@@ -675,3 +675,22 @@ await _hubContext.Clients.Group(u).SendAsync("Send", message);
 ```
 
 Однако, чтобы список групп не разрастался, можно систематически находить пустые группы (в которых нет реальных соединений) и удалять их.
+
+## Обработка завершения вызова
+
+Клиентская JavaScript-библиотека SignalR позволяет обработать успешную доставку конкретного сообщения используя метод then() из Promise, который возвращает метод `connection.invoke()`:
+
+```js
+const obj = {
+    user: "Petrov",
+    message: "Hello, SignalR!"
+}
+
+connection.invoke("SendMessage", obj)
+    .then(function () {
+        console.log("AcceptedProcessed");
+    })
+    .catch(function (err) {
+        console.error(err.toString());
+    });
+```
