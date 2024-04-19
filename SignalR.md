@@ -652,3 +652,26 @@ await Clients.All.SendAsync("ReceiveMessage", answer);
 	}]
 }
 ```
+
+## Отправка сообщений конкретному аутентифицированному пользователю по его имени
+
+Мы можем использовать Context.ConnectionId для того, чтобы создать группу подключения для конкретного пользователя:
+
+```csharp
+public override Task OnConnectedAsync()
+{
+    string userId = _userManager.GetUserId(this.Context.User);
+    if (null != userId) {
+
+        // При создании соединения, связываем конкретное соединение 
+        // с GUID-пользователя, который подключается к SignalR
+        await Groups.AddToGroupAsync(Context.ConnectionId, userId);
+```
+
+Отправить сообщение такому пользователю можно было бы выбрав группу с его/её именем:
+
+```csharp
+await _hubContext.Clients.Group(u).SendAsync("Send", message);
+```
+
+Однако, чтобы список групп не разрастался, можно систематически находить пустые группы (в которых нет реальных соединений) и удалять их.
