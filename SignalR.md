@@ -571,3 +571,84 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     event.preventDefault();
 });
 ```
+
+## Настройка дополнительных параметров
+
+Настройка дополнительных параметров работы SignalR выполняется следующим образом:
+
+```csharp
+builder.Services.AddSignalR(hubOptions =>
+{
+    // Настройка параметров концентратора SignalR
+    hubOptions.EnableDetailedErrors = true;
+});
+```
+
+К сожалению, параметров не много - преимущественно, это настройка тайм-аутов и детальной отладочной информации.
+
+## Подтверждение получения сообщения
+
+Используя Developer Console, можно увидеть много интересных вещей:
+
+- В обе стороны ходят сообщения типа 6 (ping)
+- В сообщениях есть поле "invocationId", который может быть использован для чего?
+- Аргументы вызова функции передаются в массиве
+
+Сообщение от js-клиента серверу:
+
+```js
+const obj = {
+    user: "Petrov",
+    message: "Hello, SignalR!"
+};
+
+connection.invoke("SendMessage", obj)
+    .then(function () {
+        console.log("AcceptedProcessed");
+    })
+    .catch(function (err) {
+    return console.error(err.toString());
+});
+```
+
+```json
+{
+	"arguments": [{
+		"user": "Petrov",
+		"message": "Hello, SignalR!"
+	}],
+	"invocationId": "2",
+	"target": "SendMessage",
+	"type": 1
+}
+```
+
+Ответ сервера клиенту:
+
+```json
+{
+	"type": 3,
+	"invocationId": "2",
+	"result": null
+}
+```
+
+Как мы видим, сервер возвращает клиенту **invocationId**, что позволяет предположить, что SignalR использует механизм подтверждения обработки сообщения, т.е. постарается гарантированно доставить сообщение серверу.
+
+Сообщение сервера клиенту:
+
+```csharp
+var answer = new MessageWrapper { user = $"{wrapper.user} -> Server", message = wrapper.message };
+await Clients.All.SendAsync("ReceiveMessage", answer);
+```
+
+```json
+{
+	"type": 1,
+	"target": "ReceiveMessage",
+	"arguments": [{
+		"user": "Petrov -> Server",
+		"message": "Hello, SignalR!"
+	}]
+}
+```
