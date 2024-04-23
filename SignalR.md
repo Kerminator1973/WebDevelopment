@@ -109,7 +109,7 @@ public override async Task OnConnectedAsync()
     catch (Exception ex)
     {
         Console.WriteLine($"{connectionIdSafe} failed to connect: {ex.Message}");
-        throw;  // Пробрасываем исключение выше по коду, не изменяя "Call Stack"
+        throw;  // Пробрасываем исключение выше по коду, не изменяя Stack information
     }
     finally
     {
