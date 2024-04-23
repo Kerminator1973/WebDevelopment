@@ -97,11 +97,24 @@ app.MapHub<AnotherSignalRHub>("/anotherHub");
 ```csharp
 public override async Task OnConnectedAsync()
 {
-    Debug.WriteLine($"New connection: {Context.ConnectionId}");
-    await base.OnConnectedAsync();
+    string connectionIdSafe = (Context?.ConnectionId ?? "Unknown");
 
-    // Отправляем сообщение клиенту при подключении клиента к серверу
-    await Clients.Client(Context.ConnectionId).SendAsync("onInit");
+    try
+    {
+        Debug.WriteLine($"New connection: {connectionIdSafe}");
+
+        // Отправляем сообщение клиенту при подключении клиента к серверу
+        await Clients.Client(connectionIdSafe).SendAsync("onInit");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"{connectionIdSafe} failed to connect: {ex.Message}");
+        throw;  // Пробрасываем исключение выше по коду, не изменяя "Call Stack"
+    }
+    finally
+    {
+        await base.OnConnectedAsync();
+    }
 }
 ```
 
