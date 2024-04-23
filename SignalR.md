@@ -90,6 +90,21 @@ app.Run();
 app.MapHub<AnotherSignalRHub>("/anotherHub");
 ```
 
+## Отправить сообщение по ConnectionId
+
+При получении сообщения о подключении нового пользователя мы можем узнать уникальный номер подключённого (**ConnectionId**) и даже отправить сообщение этому потребителю:
+
+```csharp
+public override async Task OnConnectedAsync()
+{
+    Debug.WriteLine($"New connection: {Context.ConnectionId}");
+    await base.OnConnectedAsync();
+
+    // Отправляем сообщение клиенту при подключении клиента к серверу
+    await Clients.Client(Context.ConnectionId).SendAsync("onInit");
+}
+```
+
 ## Получение сообщений в клиентской части
 
 В клиентском JavaScript-коде следует добавить следующие команды:
