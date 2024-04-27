@@ -584,6 +584,38 @@ public async Task SendMessage()
 }
 ```
 
+### Соединение с повторными попытками подключения
+
+Вызов метод StartAsync() может завершиться по тайм-ауту без установки соединения. Проверить, что соединение не удалось установить можно проверкой текущего состояния соединения `connection.State` значению `HubConnectionState.Disconnected`. Для того, чтобы в подобной ситуации установить соединение, следует периодически вызывать метод StartAsync(). Пример реализации:
+
+```csharp
+public static async Task<bool> ConnectWithRetryAsync(HubConnection connection, CancellationToken token)
+{
+    // Keep trying to until we can start or the token is canceled.
+    while (true)
+    {
+        try
+        {
+            await connection.StartAsync(token);
+            Debug.Assert(connection.State == HubConnectionState.Connected);
+            return true;
+        }
+        catch when (token.IsCancellationRequested)
+        {
+            return false;
+        }
+        catch
+        {
+            // Failed to connect, trying again in 5000 ms.
+            Debug.Assert(connection.State == HubConnectionState.Disconnected);
+            await Task.Delay(5000);
+        }
+    }
+}
+```
+
+Этот пример взят из статьи [ASP.NET Core SignalR .NET Client](https://learn.microsoft.com/en-us/aspnet/core/signalr/dotnet-client?view=aspnetcore-8.0&tabs=visual-studio) by Microsoft.
+
 ### Настройка коммуникационного порта для SignalR-концентратора
 
 Для SignalR не создаётся какого-то особенного порта, он использует тот же самый порт, который устанавливается для http/https Endpoint-ов web-сервера. Если мы запускаем приложение из под Visual Studio, то этот инструмент выделяет некоторый порт "по умолчанию". Чтобы установить конкретный, фиксированный номер порта, следует создать **профиль запуска**. Для это следует перейти в свойства Solution-а, найти раздел "Debug -> General" и нажать на ссылку "Open debug launch profiles UI". Откроется форма, в которой можно настроить параметры профилей http, https, "IIS Express". Если мы, например, запускаем приложение по https, то следует выбрать профиль https, найти в нём параметр "App URL" и установить нужный нам порт, например: "https://localhost:8080;http://localhost:5086"
