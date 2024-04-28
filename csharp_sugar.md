@@ -51,3 +51,28 @@ ImmutableVehicle car = new()
 ```csharp
 ImmutableVehicle repaintedCart = car with { Color = "Metallic Red" };
 ```
+
+## Deconstruct record
+
+Предположим, что у нас есть запись (record) определённая следующим образом:
+
+```csharp
+public record ImmutableAnimal(string Name, string Species);
+```
+
+C\# автоматически сгенерирует для нас конструктор и деконструктор, так, что можно "из коробки" использовать следующий код:
+
+```csharp
+ImmutableAnimal link = new("Link", "Dachshund");
+var (who, what) = oscar;    // Здесь будет вызван Deconstruct method
+```
+
+**Deconstruct method** работает следующим образом:
+
+```csharp
+public void Deconstruct(out string name, out string species)
+{
+    name = Name;
+    species = Species;
+}
+```
