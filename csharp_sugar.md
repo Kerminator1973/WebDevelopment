@@ -1,6 +1,62 @@
 # Синтаксический сахар в C\#
 
-В этом документе описываются синтаксические конструкции, которые я редко использовал в своем коде, но хотел бы использовать чаще.
+В этом документе описываются синтаксические конструкции, которые я редко использовал в своем коде, но хотел бы использовать чаще. Так же в документе описываются термины, применяемые при разработке кода на C\#, не привычные к использованию в других языках программирования.
+
+## Термины
+
+В C\# методы могут быть **static** и **instance**. **Instance method** - это метод, который может быть вызван у конкретного экземляра класса. **Static method** - это метод, который может быть вызван без создания экземпляра класса.
+
+## Switch Expression (C\# 9)
+
+Простой вариант реализации switch expression:
+
+```csharp
+public static Orientation ToOrientation(Direction direction) => direction switch
+{
+    Direction.Up    => Orientation.North,
+    Direction.Right => Orientation.East,
+    Direction.Down  => Orientation.South,
+    Direction.Left  => Orientation.West,
+    _ => throw new ArgumentOutOfRangeException(nameof(direction), $"Not expected direction value: {direction}"),
+};
+```
+
+Также могут быть использованы т.н. **Case guards**, т.е. дополнительные условия, требующие ключевого слова **when**:
+
+```csharp
+public readonly struct Point
+{
+    public Point(int x, int y) => (X, Y) = (x, y);
+    
+    public int X { get; }
+    public int Y { get; }
+}
+
+static Point Transform(Point point) => point switch
+{
+    { X: 0, Y: 0 }                    => new Point(0, 0),
+    { X: var x, Y: var y } when x < y => new Point(x + y, y),
+    { X: var x, Y: var y } when x > y => new Point(x - y, y),
+    { X: var x, Y: var y }            => new Point(2 * x, 2 * y),
+};
+```
+
+В C\# 9 механизм switch expression был улучшен, появилась возможность использовать тип, как значение оператора switch, а также использовать вложенные switch:
+
+```csharp
+decimal flightCost = passenger switch
+{
+    FirstClassPassenger p => p.AirMiles switch {
+        > 35000 => 1500M,
+        > 15000 => 1750M,
+        - => 2000M
+    },
+    BusinessClassPassenger => 1000M,
+    CoachClassPassenger p when p.CarryOnKG < 10.0 => 500M,
+    CoachClassPassenger => 650M,
+    _ => 800M
+};
+```
 
 ## Init-only properties (C\# 10)
 
