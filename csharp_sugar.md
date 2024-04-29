@@ -58,6 +58,36 @@ decimal flightCost = passenger switch
 };
 ```
 
+## Строгое позиционирование параметров в string.Format()
+
+Пример использования:
+
+```csharp
+var value = string.Format("Command is {0}, numer is {1}, active is {2}",
+    arg0: command,
+    arg1: number,
+    arg2: active);
+```
+
+Однако, **string interpolation** читается проще.
+
+## Упрощённая декларация пространства имён (C\# 10)
+
+Начиная с C\#10 уже не обязательно вкладывать классы в пространство явным образом - теперь можно делать это не явно. Если раньше мы писали код так:
+
+```csharp
+namespace MyNameSpace {
+    public class Person {
+```
+
+То теперь мы можем не делать лишний отступ, что позволяет читать код легче:
+
+```csharp
+namespace MyNameSpace;
+
+public class Person {
+```
+
 ## Init-only properties (C\# 10)
 
 Ключевое слово **readonly** позволяет указать на свойство, которое может быть установлено только при инициализации объекта в конструкторе. Ключевое слово **init** используется точно для таких же целей, но применяется к свойству:
@@ -108,7 +138,7 @@ ImmutableVehicle car = new()
 ImmutableVehicle repaintedCart = car with { Color = "Metallic Red" };
 ```
 
-## Deconstruct record
+## Deconstruct types
 
 Предположим, что у нас есть запись (record) определённая следующим образом:
 
