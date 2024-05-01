@@ -198,7 +198,14 @@ public delegate void EventHandler<TEventArgs>(object? sender, TEventArgs e);
 
 ```csharp
 
-public EventHandler? Shout
+public event EventHandler? Shout
 ...
-Shout(this, EventArgs.Empty);
+// Вывоз внешнего обработчика события из реализации класса
+Shout?.Invoke(this, EventArgs.Empty);
+```
+
+Связать обработчик с экземпляром класса можно вот так:
+
+```csharp
+harry.Shout += Harry_Shout;
 ```
