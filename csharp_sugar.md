@@ -162,3 +162,43 @@ public void Deconstruct(out string name, out string species)
     species = Species;
 }
 ```
+
+## Делегаты (delegates)
+
+Определить сигнатуру вызываемого метода можно следующим образом:
+
+```csharp
+delegate int DelegateWithMatchingSignature(string s);
+```
+
+Предположим, что в экземпляре некоторого класса (p1) у нас есть метод с такой сигнатурой - MethodIWantToCall(). Создать экземпляр делегата, через который можно вызвать метод конкретного экземпляра классам можно вот так:
+
+```csharp
+DelegateWithMatchingSignature d = new(p1.MethodIWantToCall);
+```
+
+Соответственно, чтобы вызвать метод класса через _delegate instance_ достаточно написать вот такой код:
+
+```csharp
+int answer = d("Frog");
+```
+
+Ключевое свойство делегата - встроенная поддержка асинхронный операций, которые выполняются в разных потоках.
+
+### Уменьшить количество определений делегатов
+
+Microsoft уже определила два делегата для использования в качестве событий (Events):
+
+```csharp
+public delegate void EventHandler(object? sender, EventArgs e);
+public delegate void EventHandler<TEventArgs>(object? sender, TEventArgs e);
+```
+
+Когда вы хотите определить событие для свого собственного типа, постарайтесь использовать один из уже предопределённых типов. Например:
+
+```csharp
+
+public EventHandler? Shout
+...
+Shout(this, EventArgs.Empty);
+```
