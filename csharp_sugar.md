@@ -209,3 +209,17 @@ Shout?.Invoke(this, EventArgs.Empty);
 ```csharp
 harry.Shout += Harry_Shout;
 ```
+
+## Null-forgiving operator (C\# 8)
+
+Начиная с C\#8 инициализация переменной _ссылочного типа_ (в частности - string) значения null вызывает предупреждение компилятора. Т.е. если написать `string a = null;`, это будет считаться лёгким нарушением синтаксиса. Для того, чтобы компилятор не выводил предупреждение, можно использовать постфиксный оператор !:
+
+```csharp
+var person = new Person(null!);
+```
+
+Ещё вариант:
+
+```csharp
+public DbSet<MyType> MyData { get; set; } = null!;
+```
