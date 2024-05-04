@@ -1,8 +1,14 @@
 # Использование библиотеки BCrypt в JavaScript
 
-Библиотека [bcrypt](https://www.npmjs.com/package/bcrypt) является одной из наболее популярных при разработке функций вычисления хэш-кода пароля при регистрации пользователя и при проверке пароля при повторной аутентификации.
+Библиотека [bcrypt](https://www.npmjs.com/package/bcrypt) является одной из наболее популярных при разработке функций вычисления хэш-кода пароля при регистрации пользователя и при проверке пароля при повторной аутентификации. Т.е. в первую очередь, bcrypt - это алгоритм вычисления hash-функции, а во вторую - библиотека, реализующая этот алгоритм.
 
-Альтернативные функции/библиотеки для вычисленя Hash-кода: [scrypt](https://nodejs.org/api/crypto.html#crypto_crypto_scrypt_password_salt_keylen_options_callback) - API Node.js, [PBKDF2](https://nodejs.org/api/crypto.html#crypto_crypto_pbkdf2_password_salt_iterations_keylen_digest_callback) - API Node.js, [Argon2](https://www.npmjs.com/package/argon2).
+Альтернативные функции/библиотеки для вычисления Hash-кода: [scrypt](https://nodejs.org/api/crypto.html#crypto_crypto_scrypt_password_salt_keylen_options_callback) - API Node.js, [PBKDF2](https://nodejs.org/api/crypto.html#crypto_crypto_pbkdf2_password_salt_iterations_keylen_digest_callback) - API Node.js, [Argon2](https://www.npmjs.com/package/argon2).
+
+## Критика алгоритма
+
+Был разработан Нильсом Провосом и David Mazières в 1999 году и на то время являлся криптостойким. Однако, в наше время его можно взломать используя ПЛИСы/ASIC. Однако, для борьбы с ASIC-ами алгоритм модифицируется таким образом, чтобы он требовал значительный объём оперативной памяти со случайным доступом. Важно иметь возможность настраивать необходимый объём памяти для того, чтобы иметь возможность реагировать на появление новых архитектур ПЛИС/ASIC. Алгоритм bcrypt был соответствующим образом изменён в 2009 году и получил название **scrypt**. В отвественных приложениях часто используется алгоритм **PBKDF2**, использование которого в Российской Федерации регламентируется рекомендациями по стандартизации Р 50.1.111-2016 «Парольная защита ключевой информации».
+
+## Общее описание
 
 Схема защиты состоит в том, что в базе данных, в таблице "информация о пользователях" хранится не пароль, а хэш-код, вычисляемый посредством односторонней криптографической функции. В случае утечки данных из базы, злоумышленники не пароль, и hash-код, для которого не существует алгоритма обратного преобразования.
 
@@ -46,7 +52,7 @@ First 22 remaining characters (uuIKmW3Pvme9tH8qOn/H7u) -> generated salt.
 
 Вычисления hash-а пароля с использованием соли (используется async/await):
 
-``` js
+```js
 const bcrypt = require('bcrypt');
 ...
 const saltRounds = await bcrypt.genSalt(10);
@@ -55,10 +61,9 @@ const hashedPassword = await bcrypt.hash(user_pwd, saltRounds)
 
 Проверка указанного пароля:
 
-```
+```js
 const passwordValid = await bcrypt.compare(plainTextPasswoed, passwordHashFromTheDatabase);
 ```
-
 
 ### Совмещение асинхронного и синхронного кода
 
@@ -66,7 +71,7 @@ const passwordValid = await bcrypt.compare(plainTextPasswoed, passwordHashFromTh
 
 Т.к. функция, внутри которой мы работаем является синхронной (Middleware Passport.js), то мы не можем использовать внутри неё await:
 
-``` js
+```js
 passport.use(new LocalStrategy(
 	function(username, password, done) {
 		user.isPasswordValid(username, password).then(error => {
