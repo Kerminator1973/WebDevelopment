@@ -86,3 +86,9 @@ passport.use(new LocalStrategy(
 	}
 ));
 ```
+
+## ГОСТ-овые алгоритмы
+
+Использование ГОСТ-овых алгоритмов в приложениях Node.js вполне возможно. Рекомендуется для ознакомления статья [Интеграция с ЕСИА на Node.js без CryptoPro (2024)](https://habr.com/ru/articles/811389/) by @musaevonline.
+
+Особенность - скачивать библиотеку нужно из [репозитария GitHub](https://github.com/musaevonline/nodejs-gost-crypto), а не через npm.
