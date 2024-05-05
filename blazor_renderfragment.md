@@ -96,3 +96,7 @@
 ```
 
 Мы используем **Items** как атрибут компонента и присваиваем ему список `List<Pet> pets`. Заметим, что атрибут имеет тип `IReadOnlyList<TItem> Items { get; set; }`.
+
+## Есть ли что-то подобное в React
+
+Рекомендуется к прочтению статья [React component as prop: the right way](https://www.developerway.com/posts/react-component-as-prop-the-right-way) by Nadia Makarevich.
