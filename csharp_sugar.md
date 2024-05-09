@@ -257,3 +257,36 @@ int? n = null;
 ```
 
 Этот трюк чаще всего используется, когда нам нужно определить модель в рамках Entity Framework, в которой поле в базе данных должно хранить простой тип, но при этом может быть установлено в NULL.
+
+Начиная с C\# 0 можно использовать следующий синтаксис:
+
+```csharp
+if (thisCouldBeNull is not null)
+{
+```
+
+Ещё один интересный синтаксический сахар - возможность задать в тип пераметра указание на невозможность получения нулевого параметра. Допустим, раньше мы использовали следующий код:
+
+```csharp
+public void Hire(Person manager, Person employee)
+{
+    if (manager == null)
+    {
+        throw new ArgumentNullException(nameof(manager));
+    }
+    if (employee == null)
+    {
+        throw new ArgumentNullException(nameof(employee));
+    }
+    // ...
+}
+```
+
+В C\# 11 можно написать более компактную конструкцию, которая заменит приведённые выше две проверки со сбрасыванием исключения:
+
+```csharp
+public void Hire(Person manager!!, Person employee!!)
+{
+    // ...
+}
+```
