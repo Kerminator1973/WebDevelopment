@@ -290,3 +290,19 @@ public void Hire(Person manager!!, Person employee!!)
     // ...
 }
 ```
+
+## Overriding members
+
+C\# является ООП языков и любой метод класса, определённый как **virtual** может быть перегружен в производном классе:
+
+```csharp
+public override string ToString()
+{
+```
+
+Однако, C\# позволяет заменить и не виртуальный метод. Для этого следует использовать ключевое слово **new**:
+
+```csharp
+public nre void WriteToConsole()
+{
+```
