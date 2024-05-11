@@ -99,7 +99,7 @@ private ToastMessage CreateToastMessage(ToastType toastType)
 
 Скачать исходные тексты библиотеки можно из репозитария [GitHub](https://github.com/vikramlearning/blazorbootstrap).
 
-В Solution-е библиотеке есть несколько проектов - следует собирать проект blazorbootstrap. Поскольку мы собирает библиотеку, предварительно можно выбрать целевую платформу. По умолчанию, платформа - .NET 6. Заметим, что в мае 2024 г. шаблоны приложений создавались под .NET 7.
+В Solution-е библиотеке есть несколько проектов - следует собирать проект blazorbootstrap. Поскольку мы собираем библиотеку, предварительно можно выбрать целевую платформу. По умолчанию, платформа - .NET 6. Заметим, что в мае 2024 г. шаблоны приложений создавались под .NET 7.
 
 Сборка библиотеки проходит без проблем - результирующая библиотека находится в папке `\blazorbootstrap\bin\Debug\net6.0\BlazorBootstrap.dll`
 
@@ -109,7 +109,7 @@ private ToastMessage CreateToastMessage(ToastType toastType)
 - В контекстном меню "Add -> Project Reference... "
 - Нажимаем кнопку "Browse..." и находим BlazorBootstrap.dll
 
-Добавить BlazorBootstrap.dll как зависимость не достаточно. Необходимо так же скопировать файлы из папки "wwwroot" проекта Blazor.Bootstrap в соответствующую папку нового проекта: "\[приложение]\wwwroot_content\Blazor.Bootstrap". 
+Добавить BlazorBootstrap.dll как зависимость не достаточно. Необходимо так же скопировать файлы из папки "wwwroot" проекта Blazor.Bootstrap в соответствующую папку нового проекта: "\[приложение]\wwwroot\_content\Blazor.Bootstrap". 
 
 После этого проект запускается и отладчик позволяет входить из нашего приложения в исходные тексты BlazorBootstrap и выполнять его отладку.
 
