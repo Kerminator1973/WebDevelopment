@@ -318,3 +318,18 @@ public sealed class ScroogeMcDuck
 {
 }
 ```
+
+## Наследование от класса Exception
+
+При создании своего собесенного класса-исключения рекомендуется наследовать его от класса Exception. Также важно переопределить все три конструктора класса:
+
+```csharp
+public class PersonException : Exception
+{
+    public PersonException() : base() { }
+
+    public PersonException(string message) : base(message) { }
+
+    public PersonException(string message, Exception innerException) : base(message, innerException) { }
+}
+```
