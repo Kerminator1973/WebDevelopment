@@ -70,7 +70,7 @@
 
 В крупных проектах возникает проблема избыточных CSS, которая влияет как на объём передаваемых по сети данных, так и на простоту сопровождения web-приложения. Для решения проблемы можно использовать специализированные пред-процессоры SaSS/SCSS, [LESS](http://lesscss.org/), [Stylus](https://stylus-lang.com/) и другие. [Syntactically Awesome Stylesheets (SASS)](http://sass-lang.com/) является одним из наболее популярных инструментов для описания каскадных таблиц с элементами языка программирования. Пример определения каскадных таблиц на **SCSS** - новой версии SaSS:
 
-```sass
+```css
 $font-stack:    Helvetica, sans-serif
 $primary-color: #333
 body
@@ -78,7 +78,18 @@ body
     color: $primary-color
 ```
 
-Ещё один инструмент - [Tailwind CSS](https://tailwindcss.com/) считается одним из наиболее перспективных инструментов предобработки CSS. К достоинствам продукта осносятся: versatile, user-friendly, responsive, reliable, fast. Tailwind совместим с Next.js, Vite, Angular, React. 
+SaSS-компилятор преобразует определение в следующий CSS:
+
+```css
+body {
+    font: 100% Helvetica, sans-serif;
+    color: #333;
+}
+```
+
+Для исследования рекомендуется [Playground](https://sass-lang.com/playground/) с сайта SASS.
+
+Ещё один продукт - [Tailwind CSS](https://tailwindcss.com/) считается одним из наиболее перспективных инструментов предобработки CSS. К его достоинствам отсносятся: versatile, user-friendly, responsive, reliable, fast. Tailwind совместим с Next.js, Vite, Angular, React.
 
 Рекомендуется к прочтению статья [Обзор фреймворка TailwindCSS: чем он хорош и кому будет полезен](https://timeweb.com/ru/community/articles/chto-takoe-tailwindcss-zachem-nuzhen-i-chem-horosh) за авторством Space Police. Идея заключается в том, чтобы прописывать стили напрямую в директиву class, а не под селекторами в CSS-файле. Это выглядит так:
 
