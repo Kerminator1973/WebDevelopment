@@ -333,3 +333,14 @@ public class PersonException : Exception
     public PersonException(string message, Exception innerException) : base(message, innerException) { }
 }
 ```
+
+## Extension methods
+
+Пример определения **Extension methods**:
+
+```csharp
+public static class StringExtensions 
+{
+    public static bool IsValidEmail(this string input)
+    {
+```
