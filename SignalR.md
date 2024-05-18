@@ -534,7 +534,7 @@ var service = app.Services.GetService<ITaskSingleton>();
 service?.Loop();
 ```
 
-Время жизни singleton-а соответствует времени жизни приложения. Цикл внутри задачи будет выполняться до завершения приложения.
+Время жизни singleton-а соответствует времени жизни приложения. Цикл внутри задачи будет выполняться до завершения приложения. Стоит заметить, что Singleton будет создан при первом его запросе посредством GetService(). Вызывать конкретный метод singleton-а не обязательно.
 
 ## Клиент SignalR в клиентском приложении на C\# (WPF, Avalonia, и т.д.)
 
@@ -643,6 +643,8 @@ public static async Task<bool> ConnectWithRetryAsync(HubConnection connection, C
 ```
 
 Этот пример взят из статьи [ASP.NET Core SignalR .NET Client](https://learn.microsoft.com/en-us/aspnet/core/signalr/dotnet-client?view=aspnetcore-8.0&tabs=visual-studio) by Microsoft.
+
+Стоит отметить, что получить CancellationToken можно используя экземпляр класса CancellationTokenSource. Класс CancellationTokenSource - позволяет остановить асинхронную операцию посредством вызова метода Cancel(). Эксземпляр класса CancellationToken используется внутри Task-а для того, чтобы определить, было ли запрошено прерывания задачи (task-а) внешним кодом.
 
 ### Настройка коммуникационного порта для SignalR-концентратора
 
