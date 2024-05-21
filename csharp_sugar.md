@@ -344,3 +344,13 @@ public static class StringExtensions
     public static bool IsValidEmail(this string input)
     {
 ```
+
+## Новые типы данных (BigInteger, DateOnly, TimeOnly)
+
+В современных версиях C\# появился тип данных BigInteger, предназначенный для работы с большими целочисленными значениями. Пример определения переменной:
+
+```csharp
+BigInteger bigger = BigInteger.Parse("123456789012345678901234567890");
+```
+
+В .NET 6 появились новые типы данных для работы с датой и временем: DateOnly и TimeOnly. Тип **DateOnly** лучше транслируется (mapping) в тип колонки в базах данных. Тип **TimeOnly** хорош для установки alarm-ов и настройки планировщиков.
