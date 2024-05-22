@@ -809,6 +809,7 @@ namespace API.Controllers
 15. [ILSpy Decompiler](ilspy-vscode) by SharpDevelop Team. Декомпилирует сборки MSIL
 16. [Tokyo Night](Tokyo Night) by **enkia**. Тема для VSCode
 17. [PurpleSchool Theme](https://github.com/PurpleSchool/vscode-theme) by **PurpleSchool**. Тема для VSCode
+18. [StyleCopAnalyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) - статический анализатор кода .NET. В частности, рекомендуется для использования Марком Прайсом в его серии книг "C# XX и .NET YY. Expert Insight"
 
 Один из моих любимых plugin-ов **Bracket Pair Colorizer 2** вошел в состав Visual Studio Code. Чтобы активировать его, следует включить в settings.json строки:
 
@@ -912,9 +913,9 @@ Cheatsheet [Regular Expressions](https://cheatography.com/davechild/cheat-sheets
 
 ## Вспомогательные библиотеки
 
-- [SweetAlert2](https://sweetalert2.github.io/) - очень красивые информационные сообщения. Актуальная библиотека
-- [Alertify.js](https://alertifyjs.com/) - всплывающие информационные сообщения. Устаревшая. Последняя модификация кода 5 лет назад
+- [Alertify.js](https://alertifyjs.com/) - всплывающие информационные сообщения. Устаревшая. Последняя модификация кода 5 лет назад. **Update 2024 года**: автор вернулся к сопровождению и развитию продукта через 5 лет забвения
 - [DataTables.net](https://datatables.net/) - очень удобный инструмент работы с таблицами. Актуальная библиотека, часть функционала коммерческий
+- [SweetAlert2](https://sweetalert2.github.io/) - очень красивые информационные сообщения. Актуальная библиотека. **Update 2024 года**: относится к protestware и при обнаружении работы на компьютере с IP-адресом РФ, или Белоруссии проигрывает гимн Украины, блокирует навигационную панель. Критически не рекомендуется к использованию - в помойку!
 
 ## Heroku
 
