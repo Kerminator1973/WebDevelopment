@@ -354,3 +354,39 @@ BigInteger bigger = BigInteger.Parse("123456789012345678901234567890");
 ```
 
 В .NET 6 появились новые типы данных для работы с датой и временем: DateOnly и TimeOnly. Тип **DateOnly** лучше транслируется (mapping) в тип колонки в базах данных. Тип **TimeOnly** хорош для установки alarm-ов и настройки планировщиков.
+
+## Span<T>, Index и Range
+
+Одно из наиболее значимых улучшений в .NET Core 2.1 было появление Span<T>, который позволяет работать с подмножеством строки/массива, без создания дополнительной копии.
+
+В C\# 8 появились две дополнительные сущности, которые позволяют идентифицировать индекс в массиве и диапазон, используя два индекса.
+
+Примеры:
+
+```csharp
+Index i1 = new(value:3);    // Третий элемент в списке от начала
+Index i2 = 3;               // Тоже самое
+```
+
+```csharp
+Index i3 = new(value:5, fromEnd: true); // Считаем элемент с конца
+Index i4 = ^5;              // Тоже самое
+```
+
+```csharp
+Range r1 = new(start: new Index(3), end: new Index(7));
+Range r2 = new(start: 3, end: 7);   // Используется преобразование из int
+Range r3 = 3..7;    // Используется синтаксис C\# 8
+Range r4 = Range.StartAt(3);
+Range r5 = 3..;
+Range r6 = Range.EndAt(3);
+Range r7 = ..3;
+```
+
+Использование ReadOnlySpan:
+
+```csharp
+byte[] w = new byte[] { 0x00, 0x0B };
+device1.Write(w);
+ReadOnlySpan<byte> ff = device1.ReadTimeout(65, 1000);
+```
