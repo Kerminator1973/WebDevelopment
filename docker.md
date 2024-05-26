@@ -146,6 +146,12 @@ CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS      
 0926cd3bed8e   postgres   "docker-entrypoint.s…"   18 minutes ago   Up 18 minutes   5432/tcp   pglocal
 ```
 
+Если контейнер будет создан, но не запущен, мы можем запустить его командой:
+
+```shell
+sudo docker start pglocal
+```
+
 Подключиться к контейнеру и запустить управляющую консоль можно следующей командой:
 
 ```shell
