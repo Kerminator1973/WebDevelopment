@@ -181,6 +181,23 @@ SELECT datname FROM pg_database;
 
 Мы можем выполнить ping виртуальной машины с host-компьютера командой `ping 192.168.133.130`.
 
+Для настройки сетевого взаимодействия мы можем создать простое приложение на Node.js и попробовать получить к нему доступ через браузер. Пример приложения (файл "app.js"):
+
+```js
+const http = require("http");
+http.createServer(function(request,response){
+     
+    response.end("Hello NodeJS!");
+     
+}).listen(3000, "127.0.0.1",function(){
+    console.log("Сервер начал прослушивание запросов на порту 3000");
+});
+```
+
+Запустить приложение можно командой: `node app.js`. Соответственно, обратиться к этому приложению через браузер можно по адресу: `localhost:3000`.
+
+Для того, чтобы убедиться в том, что firewall не запущен, следует выполнить команду `sudo ufw disable`. Состояние "inactive" означает, что fire wall отключен.
+
 ### Compose-файл
 
 Стартовый Compose-файл из статьи [Запускаем PostgreSQL в Docker: от простого к сложному](https://habr.com/ru/articles/578744/) by IvanVakhrushev:
