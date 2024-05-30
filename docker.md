@@ -281,3 +281,7 @@ services:
 ```shell
 docker pull gitlab.com/my-group/dependency_proxy/containers/nginx:latest
 ```
+
+### Ответ на уход Docker из России
+
+Инструкция и зеркало на [Хуёкер.ио](https://huecker.io/)
