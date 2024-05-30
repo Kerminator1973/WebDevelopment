@@ -242,3 +242,42 @@ services:
     ports:
       - "5432:5432"
 ```
+
+## DockerHub перестал работать в России
+
+Ключевая статья [Docker hub перестал работать в России](https://habr.com/ru/news/818177/) by freehabr.
+
+Решением проблемы - использовать зеркала. Примеры:
+
+- https://gallery.ecr.aws/
+- https://mirror.gcr.io
+- https://cloud.google.com/artifact-registry/docs/pull-cached-dockerhub-images
+- https://daocloud.io
+- https://c.163.com/
+- https://registry.docker-cn.com
+- https://quay.io/
+
+Настройка в Docker (файл - "/etc/docker/daemon.json") выглядит так:
+
+```json
+"registry-mirrors": ["https://daocloud.io", "https://c.163.com/", "https://registry.docker-cn.com"]
+```
+
+Либо в файле "/etc/containerd/config.toml":
+
+```
+[plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+    endpoint = ["https://registry-1.docker.io", "https://mirror.gcr.io"]
+```
+
+Статьи о настройки прокси-кэша (TTL кеша выкручивается в бесконечность):
+
+- Настройка прокси-кеша - must-have в пайпайнах уже давно (вспоминаем введённые лимиты на pull с hub.docker.io): https://docs.docker.com/docker-hub/mirror/
+- Комбинируем с настройкой search-name по умолчанию (для образов с коротким именем): https://www.redhat.com/en/blog/be-careful-when-pulling-images-short-name - получаем вполне прозрачный workaround
+
+Можно использовать [GitLab Dependency Proxy](https://docs.gitlab.com/ee/user/packages/dependency_proxy/). Нужно создать PAT с правами read_registry и write_registry, а затем можно выполнять команды:
+
+```shell
+docker pull gitlab.com/my-group/dependency_proxy/containers/nginx:latest
+```
