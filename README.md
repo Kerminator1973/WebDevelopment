@@ -130,7 +130,7 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
 Из-за использования пользователями разных браузеров и их разных версий, существует проблема технологической фрагментации - какие-то технологические возможности браузера могут быть недоступны конкретному пользователю. Чтобы решить подобные проблемы обычно используются вспомогательные инструменты/библиотеки.
 
-В течение долгого времени, доминировала библиотека [jQuery](https://jquery.com/), но в последние пять-десять лет популярность jQuery начала сильно снижаться. Основной проблемой jQuery считаются высокая дополнительные вычислительная нагрузка (например, проверка типа селектора для подбора соответствующей реализации алгоритма поиска DOM-элементов).
+В течение долгого времени, доминировала библиотека [jQuery](https://jquery.com/), но в последние пять-десять лет популярность jQuery начала снижаться. Основной проблемой jQuery считается дополнительная вычислительная нагрузка (например, проверка типа селектора для подбора соответствующей реализации алгоритма поиска DOM-элементов).
 
 Применение jQuery требует загрузки файла размеров от 200 до 500 килобайт, что тоже является издержками. В реальности, этот недостаток можно компенсировать (отчасти) умелым кэшированием ресурсов.
 
@@ -143,6 +143,8 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 - Доступна большая библиотека вспомогательных органов управления jQuery/UI, DataTables.NET и т.д.
 
 Считается, что новых промышленных приложений с использованием jQuery уже почти не создаётся, хотя всё ещё встречаются крупные приложения построенные на jQuery. Например, решения корпорации [Atlassian](https://www.atlassian.com/ru).
+
+**Update 2024**: следует заметить, что некоторые свойства jQuery UI, например, привязка обработчиков к pre-rendered HTML-компонентам, оценивается многими web-разработчиками, как хорошее решение даже в 2024 году.
 
 Вместе с тем, снижение популярности происходит скорее не из-за jQuery как таковой, а из-за перехода от Multi-Page Applications к Single-Page Applications. SPA даёт следующие потенциальные преимущества:
 
@@ -276,7 +278,7 @@ C другой стороны, если в проекте используетс
 
 **Update 2023**: Даниил Абрамов [покинул Facebook/Meta](https://thenewstack.io/dev-news-16m-javascript-devs-reacts-abramov-leaves-meta/) в июля 2023 года (перешёл в Twitter). Учитывая тот факт, что Даниил разработал Redux и Create-React-App - он один из ключевых разработчиков в проекте React, Facebook охладевает к open source-проектам. Как написал _Tom Smykowski_: "It’s maybe not so surprising in the current economy, but may be perceived as Meta being less enthusiastic in financing their open source offering".
 
-**Update 2024**: очень интересное видео об отказе Microsoft от использования React в Ednge [Microsoft Regrets Using React (For Edge)](https://www.youtube.com/watch?v=Bm8Ga07BOnI&t=381s&ab_channel=Theo-t3%E2%80%A4gg) by Theo - t3․gg. Microsoft использует [@ReactNativeMSFT](https://microsoft.github.io/react-native-windows/) во многих проектах требующих работы в Windows, macOS и XBox. В Edge практически все встроенные компоненты были разработаны на React Native как React mini-apps. Однако, в актуальных версиях Edge Microsoft отказалась от React Native из-за низкой скорости и большого расхода памяти. Theo ссылается на блок - [An even faster Microsoft Edge](https://blogs.windows.com/msedgedev/2024/05/28/an-even-faster-microsoft-edge/). Таким образом, с одной стороны, React - зрелая технология, которую активно использует лидер рынка, но с другой стороны - у React серьёзные проблемы с производительностью и памятью и, похоже, что эти проблемы не решаемые.
+**Update 2024**: очень интересное видео об отказе Microsoft от использования React в Edge [Microsoft Regrets Using React (For Edge)](https://www.youtube.com/watch?v=Bm8Ga07BOnI&t=381s&ab_channel=Theo-t3%E2%80%A4gg) by Theo - t3․gg. Microsoft использует [@ReactNativeMSFT](https://microsoft.github.io/react-native-windows/) во многих проектах требующих работы в Windows, macOS и XBox. В Edge практически все встроенные компоненты были разработаны на React Native как React mini-apps. Однако, в актуальных версиях Edge Microsoft отказалась от React Native из-за низкой скорости и большого расхода памяти. Theo ссылается на блог - [An even faster Microsoft Edge](https://blogs.windows.com/msedgedev/2024/05/28/an-even-faster-microsoft-edge/). Таким образом, с одной стороны, React - зрелая технология, которую активно использует лидер рынка, но с другой стороны - у React серьёзные проблемы с производительностью и памятью. По мнению Theo, проблема не столько в React (который работает отлично, если он работает в одном приложении), сколько в Microsoft, которые встроили в Edge около 17 React-приложений.
 
 В статье [The JavaScript framework war is over. And there is only one winner.](https://medium.com/codex/the-javascript-framework-war-is-over-bd110ddab732) by David Rodenas, Ph. D., перечислены слабые и сильные стороны различных Framework-ов. Довольно интересны отсылки к библиотекам [StencilJS](https://stenciljs.com/) и [Metosis](https://mitosis.builder.io/), которые транслируют описание компонентов в одну из "больших" библиотек.
 
