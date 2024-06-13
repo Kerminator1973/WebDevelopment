@@ -592,6 +592,10 @@ NavLink - это особенный компонент Blazor, который б
 
 В качестве альтернативы форматированию посредством `@bind:format` могут быть [реализованы setter и getter](https://learn.microsoft.com/ru-ru/training/modules/interact-with-data-blazor-web-apps/8-bind-control-data-blazor-applications).
 
+## Fluent UI Blazor components library
+
+В 2024 году появился мощный набор готовых компонентов [Fluent UI Blazor components library](https://www.fluentui-blazor.net/). Этот продукт можно расценивать как один из наиболее перспективных и в новых приложениях, в качестве базового набора компонентов, использовать именно его.
+
 ## Встраивание Bootstrap в Blazor-приложение (Standalone)
 
 В сгенерированном по шаблону приложению, в папке /wwwroot/css/bootstrap находится файл "bootstrap.min.css", версии v5.1.0. Там же находится map-файл. Однако, в папке отсутстует js-файл, что не позволяет использовать динамическое поведение Twitter Bootstrap.
