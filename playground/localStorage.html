@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localStorage - Example</title>
+
+    <script>
+        let nIntervId;
+
+        // При загрузке документа устанавливаем в localStorage флаг входа
+        // и начинаем контролировать его изменение
+        document.addEventListener('DOMContentLoaded', function (event) {
+
+            localStorage.setItem("client_session", "Some content");
+
+            // Раз в секунду проверяем, что флаг в localStorage ещё существует
+            nIntervId = setInterval(() => {
+
+                const itemSet = (localStorage.getItem('client_session') !== null);
+                if (!itemSet)  {
+
+                    clearInterval(nIntervId);
+                    nIntervId = null;            
+
+                    //
+                    console.log("Другая копия документа завершила работу и удалила флаг в localStorage");
+                }            
+
+            }, 1000);
+        });
+
+        // При выходе из формы, удаляем флаг входа
+        window.onbeforeunload = function() {
+
+            // Отключаем систематическую проверку доступности флага в localStorage
+            if (nIntervId !== null) {
+                clearInterval(nIntervId);
+                nIntervId = null;            
+            }
+
+            // Удаляем флаг из localStorage
+            localStorage.removeItem("client_session");
+
+            console.log("Клиентская сессия удалена");
+            return true;
+        };
+    </script>
+    
+</head>
+<body>
+    Этот документ иллюстрирует использование localStorage для обмена сессионной информацией между
+    разными копиями документа. Смотреть нужно в Developer Console (F12).
+</body>
+</html>
