@@ -50,7 +50,7 @@ app.get('', (req, res) => {
 
 Handlebars считается очень популярным, но относительно медленным: [The Battle of Express.js Templating Engines — Which One Is the Fastest?](https://javascript.plainenglish.io/handlebars-eta-ejs-1623a6140e56) by Louis Petrik. Часто вместо него рассматривают [Eta](https://eta.js.org/), или [EJS](https://ejs.co/). 
 
-## ASP.NET Core 3 + Razer
+## ASP.NET Core 3 + Razor
 
 В ASP.NET Core 3 осуществляется разделение страницы на верстку (cshtml) и компонент подготовки модели данных (cs).
 
@@ -83,6 +83,14 @@ Handlebars считается очень популярным, но относи
 
             return Page();
         }     
+```
+
+Следует заметить, что использовать cs-файл не обязательно. Большинство действий можно выполнить непосредственно на cshtml. В частности, можно добавить Dependency Injection не через конструктор в cs-файле, а через директиву @inject:
+
+```csharp
+@inject NorthwindContext db
+...
+<div>@db.Orders.Count()</div>
 ```
 
 Подключение модели выглядит следующим образом:
