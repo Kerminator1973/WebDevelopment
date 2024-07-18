@@ -813,7 +813,7 @@ Blazor Server (?!): ссылки на загружаемые js-файлы сл�
 <script src="_framework/blazor.server.js"></script>
 ```
 
-В качестве примера библиотеки в [курсе обучения Blazor](https://learn.microsoft.com/ru-ru/training/modules/blazor-build-rich-interactive-components/3-exercise-use-javascript-libraries-blazor-apps) используется библиотека, которая выводит информационные сообщения - [SweetAlert2](https://sweetalert2.github.io/).
+В качестве примера библиотеки в [курсе обучения Blazor](https://learn.microsoft.com/ru-ru/training/modules/blazor-build-rich-interactive-components/3-exercise-use-javascript-libraries-blazor-apps) используется библиотека, которая выводит информационные сообщения - [SweetAlert2](https://sweetalert2.github.io/). КРИТИЧЕСКИ НЕ РЕКОМЕНДУЕТСЯ К ИСПОЛЬЗОВАНИЮ - Protestware.
 
 Также возможно совместно использовать DataTables.NET и Blazor. Рекомендуется для ознакомления статья [Blazor Web Assembly – Two Methods For Using DataTables.net JavaScript Library](https://www.intertech.com/blazor-web-assembly-two-methods-for-using-datatables-net-javascript-library/) by Sean Woodward.
 
