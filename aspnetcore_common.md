@@ -37,3 +37,45 @@ dotnet CinnaPages.dll --urls http://*:3001/
 ```
 
 В параметре `--urls` мы можем указать несколько URL и портов, разделяя их через точку с запятой.
+
+## Правильное использование Http client через HttpClientFactory
+
+В случае, если web-приложение должно с web-сервера обратиться к какому-то другому серверу, обычно используется HttpClientFactory. Регистрация сервиса при запуске приложения выглядит следующим образом:
+
+```csharp
+using System.Net.Http.Headers;  // Используется определение MediaTypeWithQualityHeaderValue
+// ...
+builder.Services.AddHttpClient(name: "Northwind.WebApi",
+    configureClient: options =>
+    {
+        options.BaseAddress = new Uri("https://localhost:5002/");
+        options.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json", 1.0)
+        );
+    });
+```
+
+Внедрить сервис в контроллер можно так:
+
+```csharp
+private readonly IHttepClientFactory clientFactory;
+// ...
+public HomeController(ILogger<HomeController> logger, 
+    NorthwindContext injectedContext, IHttpClientFactory httpClientFactory)
+{
+    _logger = logger;
+    db = injectedContext;
+    clientFactory = httpClientFactory;    
+}
+```
+
+Соответственно, использование внедренной фабрики Http-клиентов может выглядеть так:
+
+```csharp
+HttpClient client = clientFactory.CreateClient(name: "Northwind.WebApi");
+HttpRequestMessage request = new(
+    method: HttpMethod.Get, requestUri: "/api/customers"
+);
+HttpResponseMessage response = await client.SendAsync(request);
+IEnumerable<Customer>? model = await response.Content.ReadFromJsonAsync<IEnumerable<Customer>>();
+```
