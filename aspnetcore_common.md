@@ -97,3 +97,11 @@ HttpRequestMessage request = new(
 HttpResponseMessage response = await client.SendAsync(request);
 IEnumerable<Customer>? model = await response.Content.ReadFromJsonAsync<IEnumerable<Customer>>();
 ```
+
+## Добавление GraphQL в приложение ASP.NET Core
+
+В дополнительных главах (только online, в печатной книге они отсутствуют) "C# 10 and .NET 6. Modern Cross-Platform Development" by Mark J. Price есть раздел, посвящённый использованию GraphQL в приложениях на ASP.NET Core. В Visual Studio отсутствует шаблон приложения, который позволяет генерировать код такого стандартного приложения, однако есть NuGET Packages, которые позволяют добавить соответствующую поддержку:
+
+- GraphQL.Server.Transports.AspNetCore
+- GraphQL.Server.Transports.AspNetCore.SystemTextJson
+- GraphQL.Server.Ui.Playground (нужен только для фазы Development; лишний в Production)
