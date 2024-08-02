@@ -105,3 +105,41 @@ IEnumerable<Customer>? model = await response.Content.ReadFromJsonAsync<IEnumera
 - GraphQL.Server.Transports.AspNetCore
 - GraphQL.Server.Transports.AspNetCore.SystemTextJson
 - GraphQL.Server.Ui.Playground (нужен только для фазы Development; лишний в Production)
+
+Клиент приложения использует заголовок mediaType со значением "application/graphql", для того, чтобы отправить запрос на сервер, например:
+
+```graphql
+{
+    products (categoryId: 8) {
+        productId
+        productName
+        unitsInStock
+    }
+}
+```
+
+## Использование gRPC в приложениях C\#
+
+Контракт между клиентом и сервером описывается в файле ".proto" и затем, по этому файлу можно сгенерировать программный код на разных языках программирования, в том числе и на C\#.
+
+Основные преимущества использования gRPC состоят в том, что передаются бинарно-сериализованные данные (очень компактно), а в качестве транспорта используется HTTP/2. Браузеры не поддерживают gRPC, но есть решения, которые создают необходимую обёртку, в частности - существует инициатива  **gRPC-Web**.
+
+Для того, чтобы работать с файлами ".proto" в Visual Studio Code, потребуется специальная обёртка -  **vscode-proto3**.
+
+В дополнительных главах книги "C# 10 and .NET 6. Modern Cross-Platform Development" by Mark J. Price, так же есть пример приложения ASP.NET Core, в котором демонстрируется обработка запросов gRPC. Для этого используется Package ="Grpc.AspNetCore" (60 млн. загрузок).
+
+Для разработки клиентского приложения (консоль) используется Packages "Google.Protobuf" (500 млн. загрузок), "Grpc.Net.Client" (220 млн. загрузкок) и "Grpc.Tools" (нужен только для Development).
+
+И в клиенте, и в серверном приложении, необходимо включить ".proto" в csproj:
+
+```csproj
+<ItemGroup>
+ <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+</ItemGroup>
+```
+
+```csproj
+<ItemGroup>
+ <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
+</ItemGroup>
+```
