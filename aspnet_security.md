@@ -86,3 +86,41 @@ private static string SaltAndHashPassword(string password, string salt)
     }
 }
 ```
+
+## Формирование электронной подписи
+
+Многие разработчики идёт по следующуему пути: создают hash с помощью SHA256, а затем используют алгоритм RSA для его формирования цифровой подписи hash-а.
+
+Также некоторые разработчики используют DSA для хэширования и формирования подписи. DSA быстрее, чем RSA для формирования ЭЦП, но медленнее, чем RSA при проверке подписи. Поскольку, в общем случае, ЭЦП генерируется только один раз, а проверяет множество раз, то следует выбирать алгоритм, который быстрее проверяет, чем формирует подпись.
+
+Основная рекомендация: следует использовать **Elliptic Curve DSA**. Это улучшенный вариант DSA. Хотя ECDSA медленнее, чем RSA, он генерирует подпись меньшего размера, при том же уровне информационной беззопасности.
+
+Ниже приведены примеры кода для создания и проверки ЭЦП:
+
+```csharp
+public static string? PublicKey;
+
+public static string GenerateSignature(string data)
+{
+    byte[] dataBytes = Encoding.Unicode.GetBytes(data);
+    SHA256 sha = SHA256.Create();
+    byte[] hashedData = sha.ComputeHash(dataBytes);
+
+    RSA rsa = RSA.Create();
+    PublicKey = rsa.ToXmlString(false); // Исключаем из подписи приватный ключ
+    return ToBase64String(rsa.SignHash(hashedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1));
+}
+
+public static bool ValidateSignature(string data, string signature)
+{
+    if (PublicKey is null) return false;
+    byte[] dataBytes = Encoding.Unicode.GetBytes(data);
+    SHA256 sha = SHA256.Create();
+    byte[] hashedData = sha.ComputeHash(dataBytes);
+    byte[] signatureBytes = FromBase64String(signature);
+    
+    RSA rsa = RSA.Create();
+    rsa.FromXmlString(PublicKey);
+    return rsa.VerifyHash(hashedData, signatureBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+}
+```
