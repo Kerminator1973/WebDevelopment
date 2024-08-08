@@ -49,3 +49,40 @@ using (Aes aes = Aes.Create()) // abstract class factory method
  }
  return ToBase64String(encryptedBytes);
  ```
+
+## Вычисление HASH-кода
+
+Следует избегать использовать алгоритмов MD5 и SHA1 из-за их известных уязвимостей (weaknesses).
+
+Чтобы уменьшить вероятность совпадения (collision) hash-ей следует выбирать больший размер хэша.
+
+Первая известная ситуация с сопавдением хэн-кода для MD5 произошла в 2010 году, в для SHA1 - в 2017 году.
+
+Пример кода, который генерирует "соль" и вычисляет hash-код пароля с солью:
+
+```csharp
+private static Dictionary<string, User> Users = new();
+
+public static User Register(string username, string password)
+{
+    // Генерируем случайную "соль"
+    RandomNumberGenerator rng = RandomNumberGenerator.Create();
+    byte[] saltBytes = new byte[16];
+    rng.GetBytes(saltBytes);
+    string saltText = ToBase64String(saltBytes);
+
+    // Генерируем "засолёный" (salted) и захэшированный пароль пользователя
+    string saltedhashedPassword = SaltAndHashPassword(password, saltText);
+    User user = new(username, saltText, saltedhashedPassword);
+    Users.Add(user.Name, user);
+    return user;
+}
+
+private static string SaltAndHashPassword(string password, string salt)
+{
+    using (SHA256 sha = SHA256.Create()) {
+        string saltedPassword = password + salt;
+        return ToBase64String(sha.ComputeHash(Encoding.Unicode.GetBytes(saltedPassword)));
+    }
+}
+```
