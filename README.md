@@ -891,6 +891,8 @@ Google Chrome сам по себе является очень мощным ин
 
 Платный, но очень мощный инструмент - [JetBrains WebStorm](https://www.jetbrains.com/webstorm/). В России оплата продукта не доступна.
 
+[GIGA IDE от СБЕРа](https://gitverse.ru/home/) - сборка, основанная на JetBrains IntelliJ Idea/Pycharm Community. Содержит более 70 дополнительных инструментов разработки, тестирования, администрирования, а также AI-ассистент. Благодаря использованию дополнительных инструментов, по функциональным возможностям приближается к платным версиям IDE от JetBrains.
+
 Облачные IDE: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/), [Github Codespaces](https://github.com/features/codespaces). CodeAnywhere и Codespaces являются платными - в России не доступны.
 
 Облачный редактор [VS Code](https://vscode.dev/) - оплата за фактические время использования - в России не доступны.
