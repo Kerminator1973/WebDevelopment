@@ -107,6 +107,32 @@ openssl pkcs12 -in localhost.pfx -clcerts -nokeys -out cert.pem
 
 Рекомендуется установить "режим запуска" web-приложения "Always Running".
 
+## Подключение приложения .NET
+
+Подключение приложения .NET осуществляется посредством файла "Web.config". В этом файле указывается имя исполняемого файла, который должен обрабатывать запросы клиентов, а также модель запуска этого файла.
+
+Пример содержимого файла:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <location path="." inheritInChildApplications="false">
+    <system.webServer>
+      <handlers>
+        <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+      </handlers>
+      <aspNetCore processPath="dotnet"
+                  arguments=".\MyApp.dll"
+                  stdoutLogEnabled="false"
+                  stdoutLogFile=".\logs\stdout"
+                  hostingModel="inprocess" />
+    </system.webServer>
+  </location>
+</configuration>
+```
+
+В этом файле указываются обработчики запросов - в разделе "handlers". В разделе "aspNetCore" указывается имя исполняемого dotnet-файла, а также модель хостинга - inprocess/outprocess.
+
 ## На что ещё обратить внимание - типовые ошибки
 
 В файле "Web.config" могут быть указаны переменные окружения, например:
