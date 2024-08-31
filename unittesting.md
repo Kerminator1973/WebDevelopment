@@ -93,3 +93,62 @@ npx jest
 ## Тестирование кода работы с DOM
 
 Для проверки кода работы с DOM часто используется библиотека JSDOM.
+
+Одной из наиболее распространённых задач JavaScript кода, исполняемого браузером является манипулирование DOM: создание, удаление, или изменение DOM-элементов.
+
+Допустим, в нашем коде есть некоторая функция, которая добавляет элемент в DOM:
+
+```js
+function addElement(containerId, text) {
+    const container = document.getElementById(containerId);
+    if (container) {
+        const newDiv = document.createElement('div');
+        newDiv.textContent = text;
+        container.appendChild(newDiv);
+    }
+}
+
+window.addElement = addElement;
+```
+
+В приведённом выше коде мы используем традиционный Vanilla JavaScript, без jQuery. Тесты, которые проверяют работу с DOM, с использованием библиотеки JSDOM, могут выглядеть следующим образом:
+
+```js
+describe('addElement', () => {
+    let container;
+
+    beforeEach(() => {
+        // Set up a DOM element before each test
+        container = document.createElement('div');
+        container.id = 'test-container';
+        document.body.appendChild(container);
+    });
+
+    afterEach(() => {
+        // Clean up after each test
+        document.body.removeChild(container);
+    });
+
+    test('should add a new div to the container', () => {
+        window.addElement('test-container', 'Hello, World!');
+
+        // Check if the new div was added
+        const newDiv = container.querySelector('div');
+        expect(newDiv).not.toBeNull();
+        expect(newDiv.textContent).toBe('Hello, World!');
+    });
+
+    test('should not add a div if the container does not exist', () => {
+        window.addElement('non-existent-container', 'This should not be added');
+
+        // Check that no new divs were added
+        const divs = container.querySelectorAll('div');
+        expect(divs.length).toBe(0);
+    });
+});
+```
+
+До выполнения теста мы создаём в body документа некоторый DOM-элемент, а после выполнения теста удалим его, чтобы не ломать схему выполнения тестов. Затем мы вызываем функцию из js-файла выполняемого в браузере. Далее мы выполняем два теста:
+
+- добавить элемент в DOM к существующему элементу и проверить, что добавленный элемент существует
+- попытаться добавить элемент к не существующему элементу и убедится, что DOM не был изменён
