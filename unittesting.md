@@ -82,6 +82,12 @@ Consider using the "jsdom" test environment.
 npx jest
 ```
 
+Запустить один тест можно командой:
+
+```shell
+jest domManipulation.test.js
+```
+
 ## Другие варианты
 
 Довольно часто рассматривается библиотека Karma, у которой есть интеграция с Jenkins CI. Однако, этот библиотека получила статус **deprecated** и больше не развивается.
