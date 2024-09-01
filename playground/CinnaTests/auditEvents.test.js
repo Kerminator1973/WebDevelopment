@@ -1,5 +1,10 @@
 require('./auditEvents'); // Load the JavaScript file
 
+// Функция проверяет, что некоторый объект является пустым
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
 describe('getClientSideAjax', () => {
     let container;
    
@@ -32,10 +37,10 @@ describe('getClientSideAjax', () => {
 });
 
 describe('appendParamsToRequest', () => {
-    let container;
    
-    beforeEach(() => {
-        // Initialize the document with your HTML
+    test('Extract entered values to an object', () => {
+
+        // Инициализируем HTML-документ тестируемыми элементами верстки
         document.body.innerHTML = `
             <select id="selectEventTypeId">
                 <option value="0">Любое событие</option>
@@ -54,9 +59,6 @@ describe('appendParamsToRequest', () => {
             <input type="text" id="beginPeriodTimeId" value="18:05">
             <input type="text" id="endPeriodId" value="29.6.2024">
             <input type="text" id="endPeriodTimeId" value="9:00">`;
-    });
-
-    test('Extract entered values to an object', () => {
         
         // Получаем функцию, которая формирует список параметров фильтрации
         // для DataTables.NET
@@ -64,7 +66,44 @@ describe('appendParamsToRequest', () => {
         window.appendParamsToRequest(d);
 
         // Проверяем, что ожидаемые параметры присутствуют в выборке
+        expect(d.FilterEventType).toBe(2);
+        expect(d.FilterStorage).toBe(1);
         expect(d.UserName).toBe('Ivanov');
         expect(d.FilterModuleId).toBe('7');
+        expect(d.FilterSafeId).toBe('205');
+        expect(d.BeginPeriodDate).toBe('28.6.2024');
+        expect(d.BeginPeriodTime).toBe('18:05');
+        expect(d.EndPeriodDate).toBe('29.6.2024');
+        expect(d.EndPeriodTime).toBe('9:00');
+    });
+
+    test('Check empty inputs', () => {
+
+        // В данном тесте никакие из полей не установлены, т.е.
+        // результирующий документ должен быть пустым
+        document.body.innerHTML = `
+            <select id="selectEventTypeId">
+                <option value="0" selected>Любое событие</option>
+                <option value="1">Авторизация</option>
+                <option value="2">Создание ХЦК</option>
+            </select>
+            <select id="selectStorageId">
+                <option value="0" selected>Любое ХЦК</option>
+                <option value="1">Московское</option>
+                <option value="2">Санкт-Петербург</option>
+            </select>
+            <input type="text" id="moduleNumberId">
+            <input type="text" id="safeNumberId">
+            <input type="text" id="userNameId">
+            <input type="text" id="beginPeriodId">
+            <input type="text" id="beginPeriodTimeId">
+            <input type="text" id="endPeriodId">
+            <input type="text" id="endPeriodTimeId">`;
+        
+        let d = {};
+        window.appendParamsToRequest(d);
+
+        // Проверяем, что ни одно из полей не было добавлено в выходной объект
+        expect(isEmpty(d)).toBe(true);
     });
 });
