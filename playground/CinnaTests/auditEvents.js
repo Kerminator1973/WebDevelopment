@@ -186,16 +186,11 @@ function appendServerSideHandlers() {
     $('#ShowReport').on("click", function () {
 
         // Включаем все указанные пользователем параметры фильтрации в запрос
-        // на формирование отчёта
+        // на формирование отчёта и открываем запрос в новом окне
         let d = {};
         appendParamsToRequest(d);
-
-        let link = "/AuditEventsReport?";
-        for (const key in d) {
-            link += `${key}=${d[key]}&`
-        }
-
-        window.open(link, "_blank");
+        window.open(`/AuditEventsReport?${new URLSearchParams(d).toString()}`,
+            "_blank");
     });
 
     // Добавляем элементы DatePicker для ускоренного ввода диапазона дат
