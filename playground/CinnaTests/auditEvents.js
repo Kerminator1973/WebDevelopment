@@ -2,6 +2,24 @@ let gAuditEventTable = undefined;
 let gAuditEventTypes = new Map();   // Список типов событий
 let gStorageIds = new Map();
 
+// Список выпадающих списков в блоке фильтрации пользовательского интерфейса
+const gIntegerParams = [
+    { id: "selectEventTypeId", name: "FilterEventType" },   // Тип события
+    { id: "selectStorageId", name: "FilterStorage" }        // Идентификатор ХЦК
+];
+
+// Список строк для ввода значений фильтрации данных
+const gStringParams = [
+    { id: "userNameId", name: "UserName" },                 // Имя пользователя
+    { id: "moduleNumberId", name: "FilterModuleId" },       // Номер модуля
+    { id: "safeNumberId", name: "FilterSafeId" },           // Номер сейфа сквозной
+    { id: "beginPeriodId", name: "BeginPeriodDate" },       // Дата начала периода
+    { id: "beginPeriodTimeId", name: "BeginPeriodTime" },   // Время начала периода
+    { id: "endPeriodId", name: "EndPeriodDate" },           // Дата завершения периода
+    { id: "endPeriodTimeId", name: "EndPeriodTime" }        // Время завершения периода
+];
+
+
 document.addEventListener('DOMContentLoaded', function (event) {
 
     // Заполняем вспомогательные НСИ
@@ -60,8 +78,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             topStart: {
                 buttons: ['copy', 'csv', 'excel', 'print']
             }
-        };
-
+        }
     }
     
     datatable_settings["ajax"] = {
@@ -113,60 +130,27 @@ function getServerSideAjax() {
 }
 
 /**
- * Функция добавляет в http-запрос данные из полей, имеющих какое-либо значение
+ * Функция добавляет в http-запрос данные из полей блока фильтрации. В запрос
+ * добавляем только те поля, в которых есть значимые значения.
+ *  @param {object} d - объект, в который следует добавить параметры фильтрации
  */
 function appendParamsToRequest(d) {
 
-    // Тип события
-    const _val = parseInt($('#selectEventTypeId').val(), 10);
-    if (!isNaN(_val) && _val > 0) {
-        d.FilterEventType = _val;
+    // Извлекаем целочисленные значения полей ввода и обрабатываем их
+    for (const item of gIntegerParams) {
+        const _str = document.getElementById(item.id).value;
+        const _val = parseInt(_str, 10);
+        if (!isNaN(_val) && _val > 0) {
+            d[item.name] = _val;
+        }
     }
 
-    // Фильтрация по имени хранилища
-    const _st = parseInt($('#selectStorageId').val(), 10);
-    if (!isNaN(_st) && _st > 0) {
-        d.FilterStorage = _st;
-    }
-
-    // Фильтрация по имени пользователя
-    const _username = $('#userNameId').val();
-    if (_username.length > 0) {
-        d.UserName = _username;
-    }
-
-    // Фильтрация по номеру модуля
-    const _moduleId = $('#moduleNumberId').val();
-    if (_moduleId.length > 0) {
-        d.FilterModuleId = _moduleId;
-    }
-
-    // Фильтрация по номеру сейфа. Номер сейфа сквозной
-    const _safeId = $('#safeNumberId').val();
-    if (_safeId.length > 0) {
-        d.FilterSafeId = _safeId;
-    }
-
-    // Фильтрация по началу временного периода
-    const _begin = $('#beginPeriodId').val();
-    if (_begin.length > 0) {
-        d.BeginPeriodDate = _begin;
-    }
-
-    const _beginTime = $('#beginPeriodTimeId').val();
-    if (_beginTime.length > 0) {
-        d.BeginPeriodTime = _beginTime;
-    }
-
-    // Фильтрация по завершению временного периода
-    const _end = $('#endPeriodId').val();
-    if (_end.length > 0) {
-        d.EndPeriodDate = _end;
-    }
-
-    const _endTime = $('#endPeriodTimeId').val();
-    if (_endTime.length > 0) {
-        d.EndPeriodTime = _endTime;
+    // Извлекаем строчные значения полей ввода
+    for (const item of gStringParams) {
+        const _str = document.getElementById(item.id).value;
+        if (_str.length > 0) {
+            d[item.name] = _str;
+        }
     }
 }
 
@@ -190,13 +174,11 @@ function appendServerSideHandlers() {
 
         $('#selectEventTypeId').prop('selectedIndex', 0);
         $('#selectStorageId').prop('selectedIndex', 0);
-        $('#userNameId').val("");
-        $('#moduleNumberId').val("");
-        $('#safeNumberId').val("");
-        $('#beginPeriodId').val("");
-        $('#beginPeriodTimeId').val("");
-        $('#endPeriodId').val("");
-        $('#endPeriodTimeId').val("");
+
+        // Сбрасываем значения полей ввода
+        for (const item of gStringParams) {
+            document.getElementById(item.id).value = "";
+        }
 
         $('#ApplyFilter').trigger("click");
     });
@@ -323,3 +305,4 @@ function initAuditEventMaps() {
 
 // Определяем функции, которые используются в Unit-тестах
 window.getClientSideAjax = getClientSideAjax;
+window.appendParamsToRequest = appendParamsToRequest;
