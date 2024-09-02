@@ -296,8 +296,12 @@ function initAuditEventMaps() {
     for (let st of storages) {
         gStorageIds.set(st.value, st.text);
     }
+
+    // Возвращаем массив (по сути - tuple) заполненных объектов, для выполнения Unit-тестов
+    return [gAuditEventTypes, gStorageIds];
 }
 
 // Определяем функции, которые используются в Unit-тестах
 window.getClientSideAjax = getClientSideAjax;
 window.appendParamsToRequest = appendParamsToRequest;
+window.initAuditEventMaps = initAuditEventMaps;

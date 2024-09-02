@@ -107,3 +107,33 @@ describe('appendParamsToRequest', () => {
         expect(isEmpty(d)).toBe(true);
     });
 });
+
+describe('initAuditEventMaps', () => {
+
+    test('Check the extraction algorithm', () => {
+
+        // В данном тесте выполняется проверка извлечения пар ключ/значение
+        // из DOM-элементов select/option
+        document.body.innerHTML = `
+            <select id="selectEventTypeId">
+                <option value="0" selected>Любое событие</option>
+                <option value="1">Авторизация</option>
+            </select>
+            <select id="selectStorageId">
+                <option value="0" selected>Любое ХЦК</option>
+                <option value="1">Московское</option>
+                <option value="2">Санкт-Петербург</option>
+            </select>`;
+
+        const tuple = window.initAuditEventMaps();
+
+        expect(tuple[0].size).toBe(2);
+        expect(tuple[0].get('0')).toBe("Любое событие");
+        expect(tuple[0].get('1')).toBe("Авторизация");
+
+        expect(tuple[1].size).toBe(3);
+        expect(tuple[1].get('0')).toBe("Любое ХЦК");
+        expect(tuple[1].get('1')).toBe("Московское");
+        expect(tuple[1].get('2')).toBe("Санкт-Петербург");
+    });
+});
