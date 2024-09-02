@@ -158,3 +158,101 @@ describe('addElement', () => {
 
 - добавить элемент в DOM к существующему элементу и проверить, что добавленный элемент существует
 - попытаться добавить элемент к не существующему элементу и убедится, что DOM не был изменён
+
+### Подготовка базового HTML для каждого теста
+
+Если нам нужно подготовить уникальный HTML для конкретного теста, то достаточно просто присвоить строку с этой HTML-версткой `document.body.innerHTML`:
+
+```js
+describe('initAuditEventMaps', () => {
+
+    test('Check the extraction algorithm', () => {
+
+        // В данном тесте выполняется проверка извлечения пар ключ/значение
+        // из DOM-элементов select/option
+        document.body.innerHTML = `
+            <select id="selectEventTypeId">
+                <option value="0" selected>Любое событие</option>
+                <option value="1">Авторизация</option>
+            </select>
+            <select id="selectStorageId">
+                <option value="0" selected>Любое ХЦК</option>
+                <option value="1">Московское</option>
+                <option value="2">Санкт-Петербург</option>
+            </select>`;
+
+        const tuple = window.initAuditEventMaps();
+
+        expect(tuple[0].size).toBe(2);
+        expect(tuple[0].get('0')).toBe("Любое событие");
+        expect(tuple[0].get('1')).toBe("Авторизация");
+
+        expect(tuple[1].size).toBe(3);
+        expect(tuple[1].get('0')).toBe("Любое ХЦК");
+        expect(tuple[1].get('1')).toBe("Московское");
+        expect(tuple[1].get('2')).toBe("Санкт-Петербург");
+    });
+});
+```
+
+## Вычисление покрытия кода тестами
+
+Из-за особенностей реализации Jest (framework тестирования JavaScript-кода), файл с описанием проекта на JavaScript (package.json) должен быть размещён в корневом каталоге проекта. В той же самой папке, что файл проекта CinnaPages (CinnaPages.csproj") для основного проекта на ASP.NET Core.
+
+К Unit-тестам относятся следующие файлы и папки:
+
+- package.json - это файл проекта на JavaScript
+- jest.config.js - конфигурационные параметры Jest
+- test - папка с тестами
+- coverage.md - данное руководство
+
+Для выполнения тестов необходимо загрузить зависимости следующей командой:
+
+```shell
+npm install
+```
+
+После загрузки зависимостей, в основной папке появятся:
+
+- package-lock.json - файл с фиксацией конкретных версий зависимостей (нужен для стабильного исполнения приложения)
+- node_modules - зависимости основного JavaScript-проекта, которые необходимы для выполнения Jest
+
+Выполнение тестов и сборка информации по покрытию кода тестами выполняется командой:
+
+```shell
+npx jest --coverage
+```
+
+Результатом работы является подкаталог "coverage", который содержит статический HTML-сайт с информацией о покрытии кода тестами, а так же ряд дополнительных экспортируемых файлов.
+
+### Особенности настройки сборки матрик покрытия кода тестами
+
+Для определения покрытия кода тестами необходимо указать папки с исходными текстами приложения, а также исключениями. Сделать это можно как в файле "jest.config.js", так и в "package.json" в разделе "jest". Ниже приведён примитивный пример настройки параметров оценки покрытия кода тестами:
+
+```js
+// jest.config.js
+module.exports = {
+    testEnvironment: 'jsdom',
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
+    coverageReporters: ['lcov', 'text'],
+    collectCoverageFrom: ['wwwroot/js/*.js']
+};
+```
+
+## Включить покрытие кода тестами в SonarQube
+
+Файл содержащий информацию о покрытии "coverage\lcov.info" следует добавить в конфигурационные параметры SonarQube.
+
+Пример изменения в конфигурационном файле "sonar-project.properties":
+
+```config
+sonar.javascript.lcov.reportPaths=/home/developer/projects/RUFServerLite/lcov.info
+```
+
+Исключить из статистики покрытия "лишние" файлы можно настройкой:
+
+```config
+sonar.coverage.exclusions=**/test/**,**/playground/**,**/public/**,**/scripts/**,**/src/swagger-docs.js,**/src/run.js
+```
+
