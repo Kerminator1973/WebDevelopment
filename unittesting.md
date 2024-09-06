@@ -195,6 +195,32 @@ describe('initAuditEventMaps', () => {
 });
 ```
 
+### Пример с использованием DOM
+
+```js
+describe('updateIconState', () => {
+
+    test('Check results of update state', () => {
+
+        // В данном тесте выполняется проверка корректности визуализации состояния свойства модуля
+        document.body.innerHTML = `
+            <div id="iconSilentAlarm">
+                <span id="iconSilentAlarmText">Тихая тревога</span>
+            </div>`;
+
+        window.updateIconState("iconSilentAlarm", 1, "Тревоги нет");
+
+        const iconElement = document.getElementById('iconSilentAlarm');
+        const textElement = document.getElementById('iconSilentAlarmText');
+
+        expect(iconElement.classList.contains('icon-big-red')).toBe(false);
+        expect(iconElement.classList.contains('icon-big-green')).toBe(true);
+        expect(iconElement.classList.contains('icon-big-gray')).toBe(false);
+        expect(textElement.innerText).toBe("Тревоги нет");
+    });
+});
+```
+
 ## Вычисление покрытия кода тестами
 
 Из-за особенностей реализации Jest (framework тестирования JavaScript-кода), файл с описанием проекта на JavaScript (package.json) должен быть размещён в корневом каталоге проекта. В той же самой папке, что файл проекта CinnaPages (CinnaPages.csproj") для основного проекта на ASP.NET Core.
