@@ -377,3 +377,21 @@ sudo ./taiga-manage.sh sendtestemail user@mail.ru
 from django.core.mail import send_mail
 send_mail("subject", "body", "SP..@....shq", ["ker...@...ru"])
 ```
+
+Настройки конкретного Docker-контейнера можно посмотреть командой:
+
+```shell
+sudo docker inspect taiga-docker-taiga-back-1
+```
+
+Команда даёт информацию о привязках (Mount), портах и Alias-ах, например:
+
+```config
+"Aliases": [
+  "taiga-docker-taiga-back-1",
+  "taiga-back"
+],
+"Ports": {
+  "8000/tcp": null
+},
+```
