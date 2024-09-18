@@ -375,5 +375,5 @@ sudo ./taiga-manage.sh sendtestemail kermit@mail.ru
 
 ```shell
 from django.core.mail import send_mail
-send_mail("subject", "body", "SPCD@dpr.msk.shq", ["kermit@mail.ru"])
+send_mail("subject", "body", "SP..@....shq", ["ker...@...ru"])
 ```
