@@ -336,7 +336,7 @@ python3 manage.py shell
 
 ```python
 from taiga.users.models import User
-user = User.objects.create_user(username='max', password='38Gjgeuftd', email='m.rozhkov@dors.ru')
+user = User.objects.create_user(username='max', password='Любимый пароль', email='Почта пользователя')
 ```
 
 Настройки параметров системы осуществляется в файле ".env", который находится в папке запуска контейнеров.
@@ -368,7 +368,7 @@ echo $DEFAULT_FROM_EMAIL
 Проверить отправку сообщения по электронной почте можно выполнив команду:
 
 ```shell
-sudo ./taiga-manage.sh sendtestemail kermit@mail.ru
+sudo ./taiga-manage.sh sendtestemail user@mail.ru
 ```
 
 Можно попытаться подключиться к контейнеру с Backend-ом командой: `python manage.py shell`, а затем выполнить следующий код:
