@@ -1,6 +1,6 @@
 # Контейнеризация
 
-Понятие **Linux контейнер** стадартизовано организацией Open Container Initiative [OCI](https://opencontainers.org/) и определено как "стандартная единица программного обеспечения, которая упаковывает код и его зависимости таким образом, чтобы программное обеспечение могло работать быстро и надёжно на разных компьютерах".
+Понятие **Linux контейнер** стандартизовано организацией Open Container Initiative [OCI](https://opencontainers.org/) и определено как "стандартная единица программного обеспечения, которая упаковывает код и его зависимости таким образом, чтобы программное обеспечение могло работать быстро и надёжно на разных компьютерах".
 
 Наиболее распространёнными решениями являются:
 
@@ -273,7 +273,7 @@ services:
 
 Либо в файле "/etc/containerd/config.toml":
 
-```
+```config
 [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
     endpoint = ["https://registry-1.docker.io", "https://mirror.gcr.io"]
@@ -293,3 +293,105 @@ docker pull gitlab.com/my-group/dependency_proxy/containers/nginx:latest
 ### Ответ на уход Docker из России
 
 Инструкция и зеркало на [Хуёкер.ио](https://huecker.io/)
+
+Update 2024: всё снова работает.
+
+## Практика - Taiga SCRUM
+
+[Taiga.io](https://taiga.io/) - SCRUM доска с открытыми исходными текстами, которая может быть использована в режиме self-hosted.
+
+Доступ к исходным текстам Taiga доступен на [GitHub](https://github.com/taigaio).
+
+Основная модель развертывания self-hosted варианта - использование Docker и Docker-Compose. Базовая статья по развертыванию доступна по [ссылке](https://community.taiga.io/t/taiga-30min-setup/170).
+
+У приложения есть архитектура, оно горизонтально масштабируется и состоит из типовых блоков: база данных на Postgres, Bаckend на Django + Python, Frontend (Angular с CoffeeScript), RabbitMQ (управление очередями сообщений), Async (система обмена сообщениями), Gateway. Компоненты системы являются контейнерами Docker. Для запуска работоспособной системы используется 9 Docker-контейнеров, которые "поднимаются" посредством Docker Compose.
+
+Для запуска контейнеров используется команда:
+
+```shell
+sudo ./launch-taiga.sh
+```
+
+После запуска приложения, подключиться к нему можно из браузера: `http://localhost:9000/`
+
+Остановить все контейнеры можно командой:
+
+```shell
+sudo docker-compose down
+```
+
+Подключиться к запущенному контейнеру можно командой:
+
+```shell
+sudo docker exec -it taiga-docker-taiga-back-1 bash
+```
+
+Внутри запущенного контейнера можно запустить консоль Python 3 и выполнять в ней некоторые команды:
+
+```shell
+python3 manage.py shell
+```
+
+Пример команды добавления в систему нового пользователя:
+
+```python
+from taiga.users.models import User
+user = User.objects.create_user(username='max', password='Любимый пароль', email='Почта пользователя')
+```
+
+Настройки параметров системы осуществляется в файле ".env", который находится в папке запуска контейнеров.
+
+После внесения изменения изменений в конфигурационные параметры (отключение телеметрии и изменение секретного слова), следует пересобрать образы:
+
+```shell
+sudo docker compose up –d --build
+```
+
+Перезапустить контейнеры можно командой:
+
+```shell
+sudo docker-compose restart 
+```
+
+Для создания супер-пользователя следует использовать специализированный скрипт:
+
+```shell
+sudo ./taiga-manage.sh createsuperuser
+```
+
+Проверить корректность настройки параметров можно находясь внутри контейнера, выполнив команду:
+
+```shell
+echo $DEFAULT_FROM_EMAIL
+```
+
+Проверить отправку сообщения по электронной почте можно выполнив команду:
+
+```shell
+sudo ./taiga-manage.sh sendtestemail user@mail.ru
+```
+
+Можно попытаться подключиться к контейнеру с Backend-ом командой: `python manage.py shell`, а затем выполнить следующий код:
+
+```shell
+from django.core.mail import send_mail
+send_mail("subject", "body", "SP..@....shq", ["ker...@...ru"])
+```
+
+Настройки конкретного Docker-контейнера можно посмотреть командой:
+
+```shell
+sudo docker inspect taiga-docker-taiga-back-1
+```
+
+Команда даёт информацию о привязках (Mount), портах и Alias-ах, например:
+
+```config
+"Aliases": [
+  "taiga-docker-taiga-back-1",
+  "taiga-back"
+],
+"Ports": {
+  "8000/tcp": null
+},
+```
