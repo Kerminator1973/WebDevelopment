@@ -33,3 +33,11 @@
 Louis Petrik: [Is Deno Already Dead?](https://medium.com/javascript-in-plain-english/is-deno-already-dead-661ce807338a)
 
 Dan Halperin: [Top 5 Reasons Javascript Developers Prefer Deno Over Node](https://levelup.gitconnected.com/top-5-reasons-javascript-developers-prefer-deno-over-node-b1ff01734811).
+
+## Октябрь 2024 года - вышел Release-кандидат Deno 2.0
+
+Ключевая особенность Deno 2.0 - декларируется 100% совместимость с npm. При этом, в экосистеме Deno развивается свой собственный аналог npm - JSR, ключевой особенностью которого является 100% поддержка TypeScript "из коробки".
+
+Разработчики Deno так же создали фреймворк для разработки web-приложений - FRESH. По своей сути он очень поход на React/Preact.
+
+Deno 2.0, несомненно, шаг вперёд, но экосистема Deno всё ещё мало значимая и для ускорения существующих приложений более разумным кажется - [Bun.js](https://github.com/Kerminator1973/RUFServerLite/blob/main/docs/bun.md).
