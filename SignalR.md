@@ -230,7 +230,7 @@ services.AddSignalR(options => {
 ```csharp
 connection.Closed += async (error) =>
 {
-    await Task.Delay(new Random().Next(0, 5) * 1000);
+    await Task.Delay(Random.Shared.Next(2000, 5000));
 
     // Запускаем метод мультиплексора, которой многократно пытается подключиться
     // к адаптеру, пока не преуспеет в этом
@@ -597,7 +597,7 @@ public class TaskSingleton : ITaskSingleton
 
         connection.Closed += async (error) =>
         {
-            await Task.Delay(new Random().Next(0, 5) * 1000);
+            await Task.Delay(Random.Shared.Next(2000, 5000));
             await connection.StartAsync();
         };
     }
