@@ -395,3 +395,9 @@ sudo docker inspect taiga-docker-taiga-back-1
   "8000/tcp": null
 },
 ```
+
+## Оптимизация размера контейнеров Docker
+
+[dive](https://github.com/wagoodman/dive) - инструмент для просмотра содержимого контейнеров Docker. Цель - поиск избыточности и минимизация размера.
+
+Рекомендуется к прочтению статья [Mount — ещё один способ уменьшения размера Docker-образа](https://habr.com/ru/articles/851384/) by WondeRu. В статье приведены способы уменьшения размера контейнера Docker.
