@@ -65,7 +65,14 @@ SELECT * FROM users;
 
 В моём случае был создан контейнера на Debian 17.0.1.
 
-При создании контейнера было выдано предупреждение о том, что не рекомендуется использовать инструкции ARG и ENV для чувствительных данных. В частности, проблемной является строка Dockerfile:
+При создании контейнера было выдано предупреждение о том, что не рекомендуется использовать инструкции ARG и ENV для чувствительных данных:
+
+```output
+1 warning found (use docker --debug to expand):
+SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "POSTGRES_PASSWORD") (line 7)
+```
+
+В частности, проблемной является строка Dockerfile:
 
 ```Dockerfile
 ENV POSTGRES_PASSWORD=38Gjgeuftd
@@ -106,6 +113,48 @@ dotnet publish -c Release -o ./publish -p:PublishSingleFile=true -p:PublishTrimm
 ```
 
 Кроме этого, следует обратить внимание на идентификатор Runtime. В приведённом выше примере - это Microsoft Windows x64, но для работы в Docker следует использовать `-p:RuntimeIdentifier=linux-x64`
+
+При сборке приложения на Linux x64, был создан подкаталог с рядом файлов, включевым из которых является "CinnaPages" (без расширения имени файла). Мы можем запустить файл этот файл, как обычный исполняемый файл: `./CinnaPages`
+
+На моём стенде, при первом запуске было получено сообщение об отсутствии файла "CinnaPages.runtimeconfig.json". Основываясь на подсказках из интернет, файл был сформирован следующим образом:
+
+```json
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "8.0.110"
+    },
+    "rollForward": "latestMinor"
+  }
+}
+```
+
+После создания файла приложение запустилось, но развалилось с исключением:
+
+```output
+Unhandled exception. System.TypeLoadException: Could not load type 'Microsoft.AspNetCore.Mvc.ApplicationParts.ConsolidatedAssemblyApplicationPartFactory' from assembly 'Microsoft.AspNetCore.Mvc.Razor, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'.
+   at System.Reflection.RuntimeAssembly.GetTypeCore(String, ReadOnlySpan`1, Boolean, Boolean)
+   at System.Reflection.TypeNameParser.GetType(String, ReadOnlySpan`1, String)
+   at System.Reflection.TypeNameParser.NamespaceTypeName.ResolveType(TypeNameParser&, String)
+   at System.Reflection.TypeNameParser.Parse()
+   at System.Reflection.TypeNameParser.GetType(String, Func`2, Func`4, Assembly, Boolean , Boolean , Boolean )
+   at System.Reflection.TypeNameParser.GetType(String, Assembly, Boolean , Boolean )
+   at System.Type.GetType(String typeName, Boolean throwOnError)
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ProvideApplicationPartFactoryAttribute.GetFactoryType()
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartFactory.GetApplicationPartFactory(Assembly)
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager.PopulateDefaultParts(String)
+   at Microsoft.Extensions.DependencyInjection.MvcCoreServiceCollectionExtensions.GetApplicationPartManager(IServiceCollection, IWebHostEnvironment)
+   at Microsoft.Extensions.DependencyInjection.MvcCoreServiceCollectionExtensions.AddMvcCore(IServiceCollection)
+   at Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllersCore(IServiceCollection)
+   at Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions.AddControllers(IServiceCollection)
+   at Program.<Main>$(String[]) in /home/developer/projects/ProIDC3/source/CinnaPages/Program.cs:line 84
+   at Program.<Main>(String[])
+Aborted (core dumped)
+```
+
+Пока полноценно запустить приложение в работу, в режиме Single File не удалось.
 
 ## Dockerfile для приложения на ASP.NET Core 8
 
