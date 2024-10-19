@@ -178,7 +178,7 @@ builder.Services.AddControllers();
 
 **Under construction!**
 
-Стартовый пример Dockerfile:
+Стартовый Dockerfile, сгенерированный ChatGPT, выглядит весьма _creepy_. Это совсем не похоже на промышленное решение:
 
 ```Dockerfile
 # Use the official .NET SDK image to build the application
