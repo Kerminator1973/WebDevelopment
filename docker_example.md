@@ -73,6 +73,80 @@ ENV POSTGRES_PASSWORD=38Gjgeuftd
 
 TODO: _необходимо рассмотреть альтернативы_.
 
+## Создание реальной структуры базы данных
+
+В приложениях на ASP.NET Core 8 часто используется подход Code First для Entity Framework. Это означает, что модель базы данных содержится в программном коде и её можно импортировать (как схему в виде SQL-скрипта) используя консольную команду:
+
+```shell
+dotnet ef migrations script
+```
+
+Генерация скрипта потребует компиляции приложения и завершится выводом скрипта в пользовательскую консоль. Мы можем использовать команду перенаправления вывода в файл.
+
+Заметим, что если в нашем проекте есть несколько миграций, то скрипт будет содержать "сомнения и ошибки" разработчиков, например, вот такие команды:
+
+```sql
+ALTER TABLE "CriticalIssues" DROP COLUMN "HasProcessed";
+```
+
+Если продукт ещё не вводился в промышленную эксплуатацию, то может иметь смысл удалить все старые миграции и создать одну новую, чистую.
+
+## Подготовка web-приложения для развертывании в Docker-контейнера
+
+Сборка приложения для публикации, в общем случае, осуществляется следующей командой:
+
+```shell
+dotnet publish -c Release -o ./publish
+```
+
+Однако может быть использован режим **Publish Single Page**, который позволяет уменьшить количество файлов в папке публикации:
+
+```shell
+dotnet publish -c Release -o ./publish -p:PublishSingleFile=true -p:PublishTrimmed=true -p:RuntimeIdentifier=win-x64
+```
+
+Кроме этого, следует обратить внимание на идентификатор Runtime. В приведённом выше примере - это Microsoft Windows x64, но для работы в Docker следует использовать `-p:RuntimeIdentifier=linux-x64`
+
+## Dockerfile для приложения на ASP.NET Core 8
+
+**Under construction!**
+
+Стартовый пример Dockerfile:
+
+```Dockerfile
+# Use the official .NET SDK image to build the application
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+
+# Copy the project files and restore dependencies
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the rest of the application files and publish
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Use the official .NET runtime image to run the application
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/out ./
+
+# Specify the entry point for the application
+ENTRYPOINT ["dotnet", "CinnaPages.dll"]
+```
+
+Сборка контейнера:
+
+```shell
+docker build -t cinna-pages .
+```
+
+Запуск контейнера:
+
+```shell
+docker run -d -p 8080:80 cinna-pages
+```
+
 ## Как будет выглядеть docker-compose.yml
 
 **Under construction!**
