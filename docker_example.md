@@ -78,7 +78,23 @@ SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (EN
 ENV POSTGRES_PASSWORD=38Gjgeuftd
 ```
 
-TODO: _необходимо рассмотреть альтернативы_.
+На самом деле, встраивать директивы ENV в Dockerfile - на самая лучшая идея. Более разумно устанавливать их при запуске Docker-контейнера, например:
+
+```shell
+docker run --name my_postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+```
+
+Вынести пароли можно во внешний .env-файл и передавать не пароль в явном виде, а файл:
+
+```shell
+docker run --name my_postgres --env-file .env -d postgres
+```
+
+Пример ".env":
+
+```env
+POSTGRES_PASSWORD=mysecretpassword
+```
 
 ## Создание реальной структуры базы данных
 
