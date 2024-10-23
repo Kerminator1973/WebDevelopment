@@ -194,29 +194,29 @@ builder.Services.AddControllers();
 
 **Under construction!**
 
-Стартовый Dockerfile, сгенерированный ChatGPT, выглядит весьма _creepy_. Это совсем не похоже на промышленное решение:
+Стартовый Dockerfile можно взять с [сайта Learn Microsoft](https://learn.microsoft.com/ru-ru/dotnet/core/docker/build-container?source=recommendations&tabs=linux&pivots=dotnet-8-0):
 
 ```Dockerfile
-# Use the official .NET SDK image to build the application
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+WORKDIR /App
 
-# Copy the project files and restore dependencies
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy the rest of the application files and publish
+# Copy everything
 COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
 RUN dotnet publish -c Release -o out
 
-# Use the official .NET runtime image to run the application
+# Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /app
-COPY --from=build /app/out ./
+WORKDIR /App
+COPY --from=build-env /App/out .
 
 # Specify the entry point for the application
 ENTRYPOINT ["dotnet", "CinnaPages.dll"]
 ```
+
+В этом скрипте приложение собирается из исходников в папку -out контейнера **build-env**, а затем создаётся новый компактный контейнер, в котором есть только ASP.NET Core 8 Runtime и наше собранное приложение. Если мы используем внешнюю сборку, т.е. уже имеем результаты сборки, то можно ограничиться четырьмя последними строчками, но корректно указав исходную папку "publish".
 
 Сборка контейнера:
 
