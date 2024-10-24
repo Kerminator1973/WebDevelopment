@@ -230,6 +230,28 @@ docker build -t cinna-pages .
 docker run -d -p 8080:80 cinna-pages
 ```
 
+## Размещение Docker Image у провайдера
+
+**Under construction!**
+
+После того, как мы собрали Docker images, мы можем разместить их на сервере провайдера. По умолчанию, провайдером является DockerHub, но мы можем использовать и российские IT-компании, например, Selectel. Команда подключения к репозитарию:
+
+```shell
+docker login registry.selectel.ru -u your-username -p your-password
+```
+
+Создание тэга:
+
+```shell
+docker tag your-image-name registry.selectel.ru/your-selectel-username/your-image-name:your-tag
+```
+
+Загрузка образа в репозитарий провайдера:
+
+```shell
+docker push registry.selectel.ru/your-selectel-username/your-image-name:your-tag
+```
+
 ## Как будет выглядеть docker-compose.yml
 
 **Under construction!**
