@@ -252,6 +252,8 @@ docker tag your-image-name registry.selectel.ru/your-selectel-username/your-imag
 docker push registry.selectel.ru/your-selectel-username/your-image-name:your-tag
 ```
 
+Ещё одна важная команда Docker - `commit`. Она берет верхний уровень контейнера, тот, что для записи и превращает его в слой для чтения. После этого мы можем выполнить push и залить получившийся контейнер в репозитарий. Эта операция позволяет сохранять в образе правки образа, выполненные вручную.
+
 ## Как будет выглядеть docker-compose.yml
 
 **Under construction!**
