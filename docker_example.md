@@ -192,8 +192,6 @@ builder.Services.AddControllers();
 
 ## Dockerfile для приложения на ASP.NET Core 8
 
-**Under construction!**
-
 Стартовый Dockerfile можно взять с [сайта Learn Microsoft](https://learn.microsoft.com/ru-ru/dotnet/core/docker/build-container?source=recommendations&tabs=linux&pivots=dotnet-8-0):
 
 ```Dockerfile
@@ -216,7 +214,14 @@ COPY --from=build-env /App/out .
 ENTRYPOINT ["dotnet", "CinnaPages.dll"]
 ```
 
-В этом скрипте приложение собирается из исходников в папку -out контейнера **build-env**, а затем создаётся новый компактный контейнер, в котором есть только ASP.NET Core 8 Runtime и наше собранное приложение. Если мы используем внешнюю сборку, т.е. уже имеем результаты сборки, то можно ограничиться четырьмя последними строчками, но корректно указав исходную папку "publish".
+В этом скрипте приложение собирается из исходников в папку -out контейнера **build-env**, а затем создаётся новый компактный контейнер, в котором есть только ASP.NET Core 8 Runtime и наше собранное приложение. Если мы используем внешнюю сборку, т.е. уже имеем результаты сборки, то можно ограничиться четырьмя последними строчками, но корректно указав исходную папку "publish":
+
+```Dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY publish/ /app/
+ENTRYPOINT ["dotnet", "CinnaPages.dll"]
+```
 
 Сборка контейнера:
 
