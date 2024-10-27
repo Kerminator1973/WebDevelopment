@@ -55,17 +55,28 @@ docker build -t my-postgres-app .
 docker run --name my-postgres-container -d my-postgres-app
 ```
 
+Если запуск контейнера выполнен успешно, мы можем выполнить команду `docker ps` и увидим, что контейнер работает и обрабатывает запроса на порту 5432:
+
+```shell
+CONTAINER ID   IMAGE            COMMAND                  CREATED        STATUS         PORTS      NAMES
+0a8946720f3a   cinna-postgres   "docker-entrypoint.s…"   16 hours ago   Up 8 minutes   5432/tcp   proidc3-db-1
+```
+
 Чтобы проверить, что Seed-данные применились, можно подключиться к контейнеру и запросить добавленные данные:
 
 ```shell
 docker exec -it my-postgres-container psql -U postgres -d proidc3
 ```
 
+Список таблиц можно получить командой `\d`, либо можно просто запросить данные из конкретной таблицы:
+
 ```sql
 SELECT * FROM users;
 ```
 
 В моём случае был создан контейнер на Debian 17.0.1.
+
+### Проблемы, которые следует решить
 
 При создании контейнера было выдано предупреждение о том, что не рекомендуется использовать инструкции ARG и ENV для чувствительных данных:
 
