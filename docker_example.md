@@ -336,3 +336,59 @@ services:
 ```shell
 docker-compose up
 ```
+
+### Более полный пример конфигурационного скрипта
+
+Для решения проблемы взаимодействия между контейнерами при использовании Docker Compose, может потребоваться добавить ещё и определение общей сети, см. `networks`:
+
+```yaml
+name: proidc3
+
+services:
+  db:
+    image: cinna-postgres
+    environment:
+      POSTGRES_DB: proidc3
+      POSTGRES_PASSWORD: 38Gjgeuftd
+    networks:
+      - cinna_network      
+    ports:
+      - "5432:5432"      
+  app:
+    image: cinna-pages
+    networks:
+      - cinna_network      
+    ports:
+      - "8080:8080"
+      
+networks:
+  cinna_network:
+    driver: bridge
+```
+
+Кроме этого, для того, чтобы web-приложение подключалось не к хосту, а к конкретному сервису, именно имя сервиса следует указывать в строке подключения к базе данных:
+
+```json
+"ConnectionStrings": {
+  "psql": "Host=db;Username=postgres;Password=38Gjgeuftd;Database=proidc3"
+},
+```
+
+Альтернативный (заработавший) вариант состоит в том, чтобы убрать "ConnectionString" из "appsettings.json" и передавать их через переменные окружения:
+
+```yaml
+  app:
+    image: cinna-pages
+    environment:
+      ConnectionStrings__psql: "Host=db;Username=postgres;Password=38Gjgeuftd;Database=proidc3"
+    networks:
+      - cinna_network
+    ports:
+      - "8080:8080"
+```
+
+Чтобы пересобрать скрипт и запустить контейнеры, можно использовать флаг `--build`:
+
+```shell
+docker-compose up --build
+```
