@@ -444,3 +444,34 @@ sudo docker logs 7f09ada49711
 ```shell
 docker-compose up --build
 ```
+
+## Сохранение данных на хостовом диске
+
+Для того, чтобы сохранять данные в базе данных, следует добавить раздел **volumes** в свойство сервиса СУБД, а также добавить **volumes**, как сервис:
+
+```yaml
+name: ProIDC3
+
+services:
+  db:
+    image: cinna-postgres
+    environment:
+      POSTGRES_DB: proidc3
+      POSTGRES_PASSWORD: 38Gjgeuftd
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    image: cinna-pages
+    environment:
+      ConnectionStrings__psql: "Host=db;Username=postgres;Password=38Gjgeuftd;Database=proidc3"
+    ports:
+      - "5000:8080"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+```
