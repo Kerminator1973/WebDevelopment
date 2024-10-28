@@ -211,19 +211,22 @@ builder.Services.AddControllers();
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /App
 
-# Copy everything
+# Копируем из внешней папки исходные тексты
 COPY . ./
-# Restore as distinct layers
+# Загружаем внешние зависимости (NuGet-пакеты)
 RUN dotnet restore
-# Build and publish a release
+# Собираем приложение в Release-режиме
 RUN dotnet publish -c Release -o out
 
-# Build runtime image
+# Создаём новый образ, который не будет включать артефакты сборк
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 COPY --from=build-env /App/out .
 
-# Specify the entry point for the application
+# Через порт 8080 (default) мы планируем получать http-запросы
+EXPOSE 8080
+
+# Указываем командую строку, которая будет выполняться при запуске контейнера
 ENTRYPOINT ["dotnet", "CinnaPages.dll"]
 ```
 
@@ -233,6 +236,7 @@ ENTRYPOINT ["dotnet", "CinnaPages.dll"]
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY publish/ /app/
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "CinnaPages.dll"]
 ```
 
@@ -248,7 +252,7 @@ docker build -t cinna-pages .
 docker run -d -p 8080:80 cinna-pages
 ```
 
-### Как указать портs, которые будет обрабатывать Kestrel
+### Как указать порты, которые будет обрабатывать Kestrel
 
 Одним из вариантов указания портов, которые будет слушать web-сервер Kestrel - указать их явным образом в файле "appsettings.json". Например, так:
 
@@ -351,19 +355,30 @@ services:
       POSTGRES_DB: proidc3
       POSTGRES_PASSWORD: 38Gjgeuftd
     networks:
-      - cinna_network      
+      - cinna_network
     ports:
-      - "5432:5432"      
+      - "5432:5432"
+      
   app:
     image: cinna-pages
+    environment:
+      ConnectionStrings__psql: "Host=db;Port=5432;Username=postgres;Password=38Gjgeuftd;Database=proidc3"
     networks:
-      - cinna_network      
+      - cinna_network
     ports:
       - "8080:8080"
+    depends_on:
+      - db
       
 networks:
   cinna_network:
-    driver: bridge
+```
+
+Критически важно, чтобы контейнер с web-приложением запускался строго после того, как будет запущен контейнер с базой данных. Указать зависимость можно следующим строками в yaml-файле:
+
+```yaml
+depends_on:
+  - db
 ```
 
 Кроме этого, для того, чтобы web-приложение подключалось не к хосту, а к конкретному сервису, именно имя сервиса следует указывать в строке подключения к базе данных:
@@ -405,6 +420,12 @@ sudo docker network inspect proidc3_cinna_network
       "IPv6Address": ""
   }
 },
+```
+
+Посмотреть логи контейнера можно следующим образом:
+
+```shell
+sudo docker logs 7f09ada49711
 ```
 
 Чтобы пересобрать скрипт и запустить контейнеры, можно использовать флаг `--build`:
