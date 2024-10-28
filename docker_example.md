@@ -28,6 +28,15 @@ COPY ./seed.sql /docker-entrypoint-initdb.d/
 EXPOSE 5432
 ```
 
+Важно заметить, что мы можем определить параметры создания базы данных через переменные окружения в Docker Compose. В этом случае, рекомендуется удалить следующие строки:
+
+```dockerfile
+# Set environment variables for PostgreSQL
+ENV POSTGRES_DB=proidc3
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=38Gjgeuftd
+```
+
 Пример тестового SQL-скрипта:
 
 ```sql
