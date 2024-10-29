@@ -479,3 +479,9 @@ volumes:
 ## Как создать локальное хранилище Docker-образов
 
 [How to Use Your Own Registry](https://www.docker.com/blog/how-to-use-your-own-registry-2/) by Peter McKee.
+
+[Paketo Buildpacks](https://paketo.io/docs/) позволяет создать запускаемый Docker-контейнер с вашим приложением, используя лишь файл проекта. Позволяет создавать контейнеры с приложениями для следующих сред исполнения: .NET Core, Java, Node.js, Python. Также есть поддержка (нужно читать дополнительно) для Golang, Ruby и PHP.
+
+Дополнительная статья на Habr - [Используем Buildpacks вместо Dockerfile](https://habr.com/ru/companies/beeline_cloud/articles/850026/) от Александра Бархатова.
+
+Важная информация о Buildpack - именно это решение используется в Heroku.
