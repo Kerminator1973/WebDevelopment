@@ -475,3 +475,7 @@ services:
 volumes:
   db_data:
 ```
+
+## Как создать локальное хранилище Docker-образов
+
+[How to Use Your Own Registry](https://www.docker.com/blog/how-to-use-your-own-registry-2/) by Peter McKee.
