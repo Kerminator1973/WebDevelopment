@@ -482,6 +482,10 @@ volumes:
 
 Одно из наиболее популярных решений для хранения зависимостей и Docker-контейнеров - Sonatype Nexus. Рекомендуется к прочтению статья [Установка Sonatype Nexus с SSL](https://habr.com/ru/companies/first/articles/661465/) by FirstVDS.
 
+[Harbor](https://goharbor.io/) - open source registry для Docker-образов. [Демо-сервер](https://demo.goharbor.io/) позволяет эксперементировать с технологией и загружать на него образы, которые будут доступны две недели. Registry можно установить и локально, используя [инструкции](https://goharbor.io/docs/2.11.0/install-config/). Дополнительная документация по тестовому серверу [доступна здесь](https://goharbor.io/docs/2.11.0/install-config/demo-server/).
+
+Особенности **Harbor**: есть [plugin для Jenkins](https://plugins.jenkins.io/harbor/). В Harbor включен популярный сканер безопасности [Trivy](https://trivy.dev/).
+
 [Paketo Buildpacks](https://paketo.io/docs/) позволяет создать запускаемый Docker-контейнер с вашим приложением, используя лишь файл проекта. Позволяет создавать контейнеры с приложениями для следующих сред исполнения: .NET Core, Java, Node.js, Python. Также есть поддержка (нужно читать дополнительно) для Golang, Ruby и PHP.
 
 Дополнительная статья на Habr - [Используем Buildpacks вместо Dockerfile](https://habr.com/ru/companies/beeline_cloud/articles/850026/) от Александра Бархатова.
