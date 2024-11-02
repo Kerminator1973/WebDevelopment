@@ -484,7 +484,11 @@ volumes:
 
 [Harbor](https://goharbor.io/) - open source registry для Docker-образов. [Демо-сервер](https://demo.goharbor.io/) позволяет эксперементировать с технологией и загружать на него образы, которые будут доступны две недели. Registry можно установить и локально, используя [инструкции](https://goharbor.io/docs/2.11.0/install-config/). Дополнительная документация по тестовому серверу [доступна здесь](https://goharbor.io/docs/2.11.0/install-config/demo-server/).
 
-Особенности **Harbor**: есть [plugin для Jenkins](https://plugins.jenkins.io/harbor/). В Harbor включен популярный сканер безопасности [Trivy](https://trivy.dev/).
+Особенности **Harbor**: есть [plugin для Jenkins](https://plugins.jenkins.io/harbor/). В Harbor включен популярный сканер безопасности [Trivy](https://trivy.dev/). Пример анализа от **Trivy**:
+
+<img src="./images/Trivy.png">
+
+Как можно увидеть, Trivy ищет уязвимости в исполняемых файлах операционной системы.
 
 [Paketo Buildpacks](https://paketo.io/docs/) позволяет создать запускаемый Docker-контейнер с вашим приложением, используя лишь файл проекта. Позволяет создавать контейнеры с приложениями для следующих сред исполнения: .NET Core, Java, Node.js, Python. Также есть поддержка (нужно читать дополнительно) для Golang, Ruby и PHP.
 
