@@ -388,6 +388,7 @@ input::-webkit-slider-runnable-track {
 - [Snowpack](https://www.snowpack.dev/). Статья [Web Developers: Use Snowpack instead of Webpack](https://javascript.plainenglish.io/web-developers-use-snowpack-instead-of-webpack-70e7b04f7853) за авторством Morgan Page
 - [Brunch](https://brunch.io/) - декларируется высокая скорость работы
 - [Microbundle](https://www.npmjs.com/package/microbundle) - bundler для маленьких модулей, базируется на Rollup
+- [Rspack](https://rspack.dev/) - совместимый с WebPack bundler, разработанный на Rust. Обеспечивает более высокую скорость работы (на порядок), чем WebPack 5
 
 Вместе с тем, WebPack 5 может быть лишён многих, озвучиваемых сообществом, недостатков: https://webpack.js.org/blog/2020-10-10-webpack-5-release/
 
@@ -896,6 +897,10 @@ namespace API.Controllers
 ```
 
 В 2023 году много хайпа получил Linter [Biome](https://biomejs.dev/). Особенность продукта - написан на Rust и обладает высокой производительностью. Также интересным является [OxLint](https://oxc-project.github.io/docs/guide/usage/linter.html), также разработанный на Rust. Декларируется, что он в 50-100 раз быстрее, чем ESLint и содержит более 200 правил для проверки кода. См. статью [Oxlint — более быстрая альтернатива ESLint](https://habr.com/ru/companies/domclick/articles/783150/) by Игорь Карелин.
+
+Интересным продуктом может быть конфигуратор ESLint [Sherif](https://www.eslint-config-sheriff.dev/docs/introduction). Особенность - написан на Rust, поддержка Typescript-first.
+
+> Имеет смысл обратить пристальное внимание на язык программирования Rust, который стал очень активно использоваться как язык для Tooling-а, т.е. для разработки вспомогательных инструментальных средств.
 
 Дополнительно рекомендуется установить параметры:
 
