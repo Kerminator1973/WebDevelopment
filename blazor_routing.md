@@ -239,3 +239,15 @@
 ```
 
 Список используемых типов [доступен по ссылке](https://learn.microsoft.com/ru-ru/training/modules/use-pages-routing-layouts-control-blazor-navigation/4-explore-route-parameters-effect-apps-routing).
+
+Параметров в URL может быть несколько, например:
+
+```csharp
+@page "/page1/{ExampleParam1}/{ExampleParam2}"
+<p>page 1</p>
+@code {
+    [Parameter]
+    public string ExampleParam1 { get; set; }
+    public string ExampleParam2 { get; set; }
+}
+```
