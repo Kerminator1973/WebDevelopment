@@ -482,7 +482,9 @@ volumes:
 
 Одно из наиболее популярных решений для хранения зависимостей и Docker-контейнеров - Sonatype Nexus. Рекомендуется к прочтению статья [Установка Sonatype Nexus с SSL](https://habr.com/ru/companies/first/articles/661465/) by FirstVDS.
 
-[Harbor](https://goharbor.io/) - open source registry для Docker-образов. [Демо-сервер](https://demo.goharbor.io/) позволяет эксперементировать с технологией и загружать на него образы, которые будут доступны две недели. Registry можно установить и локально, используя [инструкции](https://goharbor.io/docs/2.11.0/install-config/). Дополнительная документация по тестовому серверу [доступна здесь](https://goharbor.io/docs/2.11.0/install-config/demo-server/).
+[Harbor](https://goharbor.io/) - open source registry для Docker-образов. [Демо-сервер](https://demo.goharbor.io/) позволяет эксперементировать с технологией и загружать на него образы. Registry можно установить и локально, используя [инструкции](https://goharbor.io/docs/2.11.0/install-config/). Дополнительная документация по тестовому серверу [доступна здесь](https://goharbor.io/docs/2.11.0/install-config/demo-server/).
+
+> Следует заметить, что доступен 1 GB дискового пространства на Harbor.io, а образы будут удаляться после двух недель бездействия.
 
 Особенности **Harbor**: есть [plugin для Jenkins](https://plugins.jenkins.io/harbor/). В Harbor включен популярный сканер безопасности [Trivy](https://trivy.dev/). Пример анализа от **Trivy**:
 
@@ -495,3 +497,66 @@ volumes:
 Дополнительная статья на Habr - [Используем Buildpacks вместо Dockerfile](https://habr.com/ru/companies/beeline_cloud/articles/850026/) от Александра Бархатова.
 
 Важная информация о Buildpack - именно это решение используется в Heroku.
+
+## Пример - передача подготовленного образа через Registry
+
+В качестве registry выбран Harbor.io.
+
+Первый шаг - подготовка образа с Postrges и применение к нему SQL-скриптов, т.к. создание структуры базы данных. Описание решения данной задачи есть в начале данного документа.
+
+Создать образ и запустить контейнер можно командами:
+
+```shell
+docker build -t my-postgres-app .
+docker run --name my-postgres-container -d my-postgres-app
+```
+
+Список образов можно посмотреть командой `docker images`
+
+Затем мы подключаемся к контейнеру:
+
+```shell
+docker exec -it my-postgres-container psql -U postgres -d proidc3
+```
+
+Добавляем ещё одну запись (после применения seed.sql их должно быть три):
+
+```sql
+INSERT INTO users(name, email) VALUES('Max', 'go@mail.ru');
+```
+
+Проверяем успешность:
+
+```sql
+SELECT * FROM users;
+```
+
+Выходим из контейнера (`\q`) и сохраняем сделанные в нём изменения:
+
+```shell
+sudo docker commit cb61fc13fafc postrges-kermit
+```
+
+Первый параметр - это идентификатор запущенного контейнера, а второй - имя нового образра, в котором сохранены изменения. Мы можем проконтролировать создание этого образа командой `docker images`. Подробнее о команде commit можно почитать на [официальном сайте Docker](https://docs.docker.com/reference/cli/docker/container/commit/).
+
+Далее мы должны создать tag, в котором будет привязка к репозитарию, используя команду tag:
+
+```shell
+sudo docker tag postrges-kermit demo.goharbor.io/storage_system/postgres-kermit
+```
+
+Затем следует пройти аутентификацию в репозитарии:
+
+```shell
+sudo docker login demo.goharbor.io
+```
+
+После этого мы можем загрузить наш образ в репозитарий, используя команду push:
+
+```shell
+sudo docker push demo.goharbor.io/storage_system/postgres-kermit
+```
+
+> Корректные форматы команд tag и push доступны в выпадающем меню "PUSH COMMAND" в списке репозитариев проекта на Harbor.io.
+
+Как результат, мы можем увидеть, что наш образо появился в списке, в проекте "storage_system".
