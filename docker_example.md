@@ -560,3 +560,50 @@ sudo docker push demo.goharbor.io/storage_system/postgres-kermit
 > Корректные форматы команд tag и push доступны в выпадающем меню "PUSH COMMAND" в списке репозитариев проекта на Harbor.io.
 
 Как результат, мы можем увидеть, что наш образо появился в списке, в проекте "storage_system".
+
+### Контроль исполнения
+
+Остановить работающие контейнеры можно командой stop:
+
+```shell
+docker stop cb61fc13fafc 
+```
+
+Удалять не используемые контейнеры следует командой:
+
+```shell
+docker container prune
+```
+
+Для удаления отдельных образов контейнеров можно использовать команду:
+
+```shell
+docker rmi postrges_kermit <имя-образа>
+```
+
+Для проверки удаления всех контейнеров и образов следует выполнить команды:
+
+```shell
+docker ps
+docker images
+```
+
+Загрузить ранее сформированный образ можно командой pull:
+
+```shell
+docker pull demo.goharbor.io/storage_system/postgres-kermit
+```
+
+Запустить загруженный контейнер и назначить ему имя "my-postgres-container" можно командой run:
+
+```shell
+sudo docker run --name my-postgres-container -d demo.goharbor.io/storage_system/postgres-kermit 
+```
+
+Подключиться к контейнеру можно командой exec -it:
+
+```shell
+docker exec -it my-postgres-container psql -U postgres -d proidc3
+```
+
+> Мой результат: в базе данных были записи об Alice и Bob, но не было Max. Скорее всего, команда `commit` сохраняет не все данные в работающем контейнере, а только те, которые были добавлены при выполнении команды `docker build`.
