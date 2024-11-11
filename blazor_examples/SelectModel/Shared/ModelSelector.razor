@@ -1,0 +1,51 @@
+﻿<h3>ModelSelector</h3>
+
+@* Определяем выпадающие списки *@
+<select @bind="selectedModel">
+    @foreach (var model in models)
+    {
+        <option value="@model">@model</option>
+    }
+</select>
+
+<select @bind="selectedCountry">
+    @foreach (var country in countries)
+    {
+        <option value="@country">@country</option>
+    }
+</select>
+
+<select @bind="selectedVersion">
+    @foreach (var version in versions)
+    {
+        <option value="@version">@version</option>
+    }
+</select>
+
+@code {
+    // Список доступных для выбора моделей приборов
+    private List<string> models = new List<string>
+    {
+        "Model A",
+        "Model B",
+        "Model C"
+    };
+
+    private string? selectedModel;
+
+    // Список доступных для выбора стран
+    private List<string> countries = new List<string>
+    {
+        "Пока не доступно"
+    };
+
+    private string? selectedCountry;
+
+    // Список доступных для выбора исполнений прибора
+    private List<string> versions = new List<string>
+    {
+        "Пока не доступно"
+    };
+
+    private string? selectedVersion;
+}
