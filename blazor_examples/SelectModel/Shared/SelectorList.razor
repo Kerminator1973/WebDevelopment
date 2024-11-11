@@ -1,0 +1,29 @@
+﻿<select @bind="selectedItem">
+    @if (Items != null) {
+        @foreach (var item in Items)
+        {
+            <option value="@item">@item</option>
+        }
+    }
+</select>
+
+@code {
+    // Текстовое сообщение, отображаемое в списке выбора, если не был выбран
+    // элемент в предыдущей списке
+    [Parameter]
+    public string? DefaultItem { get; set; }
+
+    // Список отображаемых в списке элементов
+    [Parameter]
+    public List<string> Items { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        if (!String.IsNullOrEmpty(DefaultItem) && Items.Count == 0)
+        {
+            Items.Add(DefaultItem);
+        }
+    }
+
+    private string? selectedItem;
+}
