@@ -1,4 +1,6 @@
-﻿<select @onchange="OnSelectionChanged">
+﻿@inject IJSRuntime JSRuntime
+
+<select id="@GenerateId()" @onchange="OnSelectionChanged">
     @if (Items != null) {
         @foreach (var item in Items)
         {
@@ -6,6 +8,15 @@
         }
     }
 </select>
+
+<script>
+    // Функция устанавливает фокус на указанный орган управления и раскрывает 
+    // выпадающий список
+    function setFocusOnChildInput(id) {
+        const dropdown = document.getElementById(id);
+        dropdown.focus();
+    }
+</script>
 
 @code {
     // Текстовое сообщение, отображаемое в списке выбора, если список пустой
@@ -20,6 +31,9 @@
     [Parameter]
     public EventCallback<string> SelectEvent { get; set; }
 
+    // Сгенерированный при вызове GenerateId() уникальный идентификатор списка (select)
+    private string selectId = String.Empty;
+
     protected override void OnInitialized()
     {
         // После того, как орган управления создан, если не был указан список
@@ -28,6 +42,17 @@
         {
             Items.Add(DefaultItem);
         }
+    }
+
+    public void SetFocus()
+    {
+        JSRuntime.InvokeVoidAsync("setFocusOnChildInput", selectId).GetAwaiter().GetResult();
+    }
+
+    private string GenerateId()
+    {
+        selectId = $"{Guid.NewGuid()}";
+        return selectId;
     }
 
     private void OnSelectionChanged(ChangeEventArgs e)
