@@ -1,7 +1,7 @@
 ﻿<h3>ModelSelector</h3>
 
 @* Определяем выпадающие списки *@
-<SelectorList Items="itemList" />
+<SelectorList Items="itemList" SelectEvent="onSelectModel" />
 <SelectorList DefaultItem="Выберите модель" />
 <SelectorList DefaultItem="Выберите страну" />
 
@@ -14,4 +14,9 @@
         "D800",
         "D820"
     };
+
+    private void onSelectModel(string model)
+    {
+        Console.WriteLine($"Selected model: {model}"); // Отладочный вывод
+    }
 }

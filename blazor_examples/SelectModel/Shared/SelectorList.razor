@@ -1,4 +1,4 @@
-﻿<select @bind="selectedItem">
+﻿<select @onchange="OnSelectionChanged">
     @if (Items != null) {
         @foreach (var item in Items)
         {
@@ -8,8 +8,7 @@
 </select>
 
 @code {
-    // Текстовое сообщение, отображаемое в списке выбора, если не был выбран
-    // элемент в предыдущей списке
+    // Текстовое сообщение, отображаемое в списке выбора, если список пустой
     [Parameter]
     public string? DefaultItem { get; set; }
 
@@ -17,13 +16,25 @@
     [Parameter]
     public List<string> Items { get; set; } = new();
 
+    // Событие - выбран элемент списка
+    [Parameter]
+    public EventCallback<string> SelectEvent { get; set; }
+
     protected override void OnInitialized()
     {
+        // После того, как орган управления создан, если не был указан список
+        // добавляемых элементов, отображаем единственный доступный элемент
         if (!String.IsNullOrEmpty(DefaultItem) && Items.Count == 0)
         {
             Items.Add(DefaultItem);
         }
     }
 
-    private string? selectedItem;
+    private void OnSelectionChanged(ChangeEventArgs e)
+    {
+        // Передаём родительскому элементу информацию о выбранном элементе списка
+        if (e?.Value != null) {
+            SelectEvent.InvokeAsync(e.Value.ToString());
+        }
+    }
 }
