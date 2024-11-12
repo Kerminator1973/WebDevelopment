@@ -2,8 +2,8 @@
 
 @* Определяем выпадающие списки *@
 <SelectorList Items="itemList" SelectEvent="onSelectModel" />
-<SelectorList DefaultItem="Выберите модель" />
-<SelectorList DefaultItem="Выберите страну" />
+<SelectorList DefaultItem="Выберите модель" SelectEvent="onSelectCountry" @ref="countrySelector" />
+<SelectorList DefaultItem="Выберите страну" @ref="versionSelector" />
 
 @code {
     // Список доступных для выбора моделей приборов
@@ -15,8 +15,33 @@
         "D820"
     };
 
+    private SelectorList? countrySelector;
+    private SelectorList? versionSelector;
+
     private void onSelectModel(string model)
     {
         Console.WriteLine($"Selected model: {model}"); // Отладочный вывод
+
+        // Обновляем список элементов дочернего компонента
+        countrySelector?.ReplaceItems(new List<string>
+        {
+            "Russia",
+            "Iran",
+            "China",
+            "North Korea"
+        });
+    }
+
+    private void onSelectCountry(string country)
+    {
+        Console.WriteLine($"Selected country: {country}");
+
+        versionSelector?.ReplaceItems(new List<string>
+        {
+            "T",
+            "OK",
+            "T2",
+            "OK2"
+        });
     }
 }

@@ -37,4 +37,11 @@
             SelectEvent.InvokeAsync(e.Value.ToString());
         }
     }
+
+    public void ReplaceItems(List<string> newItems)
+    {
+        Items.Clear();
+        Items.AddRange(newItems);
+        StateHasChanged();
+    }
 }
