@@ -141,3 +141,47 @@ builder.Services
 При использовании шаблонного класса Option<T>, добавление
 
 ## Попытка полноценного решения задачи с раскрытием выпадающего меню
+
+Списки select удалось успешно заменить на FluentSelect, но проблема с установкой и автоматическим переключением фокуса ещё не решена.
+
+Оптимальным был бы полный уход от использования `@JSRuntime`.
+
+К сожалению, имеющийся набор возможностей FluentSelect не позволяет добиться поставленной цели. Однако, используя механизм получения ссылок на элементы разметки - @ref, можно создать у конкретного органа управления идентификатор и получить доступ к этому элементу в JavaScript-коде:
+
+```csharp
+<FluentSelect Items=@Items
+            OptionText="@(i => i.Text)"
+            OptionValue="@(i => i.Value)"
+            OptionSelected="@(i => i.Selected)"
+            @ref="fluentSelect"
+            @onchange="OnSelectionChanged" />
+```
+
+```csharp
+@code {
+    // ...
+
+    private FluentSelect<Option<string>>? fluentSelect;
+
+    public void SetFocus()
+    {
+        if (fluentSelect != null)
+        {
+            JSRuntime.InvokeVoidAsync("setFocusOnChildInput", fluentSelect.Id).GetAwaiter().GetResult();
+        }
+    }
+}
+```
+
+```js
+<script>
+    window.setFocusOnChildInput = (id) => {
+        const dropdown = document.getElementById(id);
+        console.dir(dropdown);
+    }
+</script>
+```
+
+В функции setFocusOnChildInput уже можно пытаться работать с DOM, используя JavaScript.
+
+> Следует заменить, что данный подход плох тем, что при создании каждого дочернего элемента SelectorList, будет создаваться функция setFocusOnChildInput(). Это легко проверить, если разместить перед ней `console.log('Определена функция setFocusOnChildInput');`. Т.е. в решение закладывается дополнительная, не вынуженная вычислительная нагрузка.

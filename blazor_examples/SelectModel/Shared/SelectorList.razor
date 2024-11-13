@@ -1,23 +1,24 @@
-﻿@inject IJSRuntime JSRuntime
-@using Microsoft.Fast.Components.FluentUI
+﻿@using Microsoft.Fast.Components.FluentUI
+@inject IJSRuntime JSRuntime
 
 <FluentSelect Items=@Items
             OptionText="@(i => i.Text)"
             OptionValue="@(i => i.Value)"
             OptionSelected="@(i => i.Selected)"
-            @onchange="OnSelectionChanged"
-            id="@GenerateId()" />
+            @ref="fluentSelect"
+            @onchange="OnSelectionChanged" />
 
-@*
 <script>
-    // Функция устанавливает фокус на указанный орган управления и раскрывает 
+    // Функция устанавливает фокус на указанный орган управления и раскрывает
     // выпадающий список
-    function setFocusOnChildInput(id) {
+    window.setFocusOnChildInput = (id) => {
         const dropdown = document.getElementById(id);
         dropdown.focus();
+
+        console.dir(dropdown);
+        //element.showPopup();
     }
 </script>
-*@
 
 @code {
 
@@ -33,8 +34,8 @@
     [Parameter]
     public EventCallback<string> SelectEvent { get; set; }
 
-    // Сгенерированный при вызове GenerateId() уникальный идентификатор списка (select)
-    private string selectId = String.Empty;
+    //
+    private FluentSelect<Option<string>>? fluentSelect;
 
     protected override void OnInitialized()
     {
@@ -55,13 +56,14 @@
 
     public void SetFocus()
     {
-        //JSRuntime.InvokeVoidAsync("setFocusOnChildInput", selectId).GetAwaiter().GetResult();
-    }
+        if (fluentSelect != null)
+        {
+            JSRuntime.InvokeVoidAsync("setFocusOnChildInput", fluentSelect.Id).GetAwaiter().GetResult();
 
-    private string GenerateId()
-    {
-        selectId = $"{Guid.NewGuid()}";
-        return selectId;
+            //fluentSelect.Element.FocusAsync().GetAwaiter().GetResult();
+            //fluentSelect.Open = true;
+            //StateHasChanged();
+        }
     }
 
     private void OnSelectionChanged(ChangeEventArgs e)
