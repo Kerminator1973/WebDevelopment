@@ -1,14 +1,14 @@
 ﻿@inject IJSRuntime JSRuntime
+@using Microsoft.Fast.Components.FluentUI
 
-<select id="@GenerateId()" @onchange="OnSelectionChanged">
-    @if (Items != null) {
-        @foreach (var item in Items)
-        {
-            <option value="@item">@item</option>
-        }
-    }
-</select>
+<FluentSelect Items=@Items
+            OptionText="@(i => i.Text)"
+            OptionValue="@(i => i.Value)"
+            OptionSelected="@(i => i.Selected)"
+            @onchange="OnSelectionChanged"
+            id="@GenerateId()" />
 
+@*
 <script>
     // Функция устанавливает фокус на указанный орган управления и раскрывает 
     // выпадающий список
@@ -17,6 +17,7 @@
         dropdown.focus();
     }
 </script>
+*@
 
 @code {
 
@@ -26,7 +27,7 @@
 
     // Список отображаемых в списке элементов
     [Parameter]
-    public List<string> Items { get; set; } = new();
+    public List<Option<string>> Items { get; set; } = new();
 
     // Событие - выбран элемент списка
     [Parameter]
@@ -41,13 +42,20 @@
         // добавляемых элементов, отображаем единственный доступный элемент
         if (!String.IsNullOrEmpty(DefaultItem) && Items.Count == 0)
         {
-            Items.Add(DefaultItem);
+            Items.Add(new Option<string> { Value = "0", Text = DefaultItem });
         }
+    }
+
+    public void ReplaceItems(List<Option<string>> newItems)
+    {
+        Items.Clear();
+        Items.AddRange(newItems);
+        StateHasChanged();
     }
 
     public void SetFocus()
     {
-        JSRuntime.InvokeVoidAsync("setFocusOnChildInput", selectId).GetAwaiter().GetResult();
+        //JSRuntime.InvokeVoidAsync("setFocusOnChildInput", selectId).GetAwaiter().GetResult();
     }
 
     private string GenerateId()
@@ -62,12 +70,5 @@
         if (e?.Value != null) {
             SelectEvent.InvokeAsync(e.Value.ToString());
         }
-    }
-
-    public void ReplaceItems(List<string> newItems)
-    {
-        Items.Clear();
-        Items.AddRange(newItems);
-        StateHasChanged();
     }
 }

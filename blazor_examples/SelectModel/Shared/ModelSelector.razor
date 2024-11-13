@@ -7,38 +7,17 @@
 <SelectorList DefaultItem="Выберите модель" SelectEvent="onSelectCountry" @ref="countrySelector" />
 <SelectorList DefaultItem="Выберите страну" @ref="versionSelector" />
 
-<FluentSelect Items=@stringOptions1
-            OptionText="@(i => i.Text)"
-            OptionValue="@(i => i.Value)"
-            OptionSelected="@(i => i.Selected)"
-            @bind-Value="@stringValue" />
-
 <FluentButton Appearance="@Appearance.Accent">Reset</FluentButton>
 
 @code {
 
-    string? stringValue;
-
-    static List<Option<string>> stringOptions1 = new()
-    {
-        { new Option<string> { Value = "9", Text = "Nine" } },
-        { new Option<string> { Value = "8", Text = "Eight", Selected = true } },
-        { new Option<string> { Value = "7", Text = "Seven" } },
-        { new Option<string> { Value = "6", Text = "Six" } },
-        { new Option<string> { Value = "5", Text = "Five" } },
-        { new Option<string> { Value = "4", Text = "Four" } },
-        { new Option<string> { Value = "3", Text = "Three" } },
-        { new Option<string> { Value = "2", Text = "Two" } },
-        { new Option<string> { Value = "1", Text = "One" } }
-    };
-
     // Список доступных для выбора моделей приборов
-    private List<string> itemList = new List<string>
+    private List<Option<string>> itemList = new()
     {
-        "D200",
-        "D210",
-        "D800",
-        "D820"
+        { new Option<string> { Value = "1", Text = "D200" } },
+        { new Option<string> { Value = "2", Text = "D210" } },
+        { new Option<string> { Value = "3", Text = "D800" } },
+        { new Option<string> { Value = "4", Text = "D820" } }
     };
 
     private SelectorList? countrySelector;
@@ -49,12 +28,12 @@
         Console.WriteLine($"Selected model: {model}"); // Отладочный вывод
 
         // Обновляем список элементов дочернего компонента
-        countrySelector?.ReplaceItems(new List<string>
+        countrySelector?.ReplaceItems(new List<Option<string>>
         {
-            "Russia",
-            "Iran",
-            "China",
-            "North Korea"
+            { new Option<string> { Value = "1", Text = "Russia" } },
+            { new Option<string> { Value = "2", Text = "Iran" } },
+            { new Option<string> { Value = "3", Text = "China" } },
+            { new Option<string> { Value = "4", Text = "North Korea" } }
         });
 
         countrySelector?.SetFocus();
@@ -64,12 +43,12 @@
     {
         Console.WriteLine($"Selected country: {country}");
 
-        versionSelector?.ReplaceItems(new List<string>
+        versionSelector?.ReplaceItems(new List<Option<string>>
         {
-            "T",
-            "OK",
-            "T2",
-            "OK2"
+            { new Option<string> { Value = "1", Text = "T" } },
+            { new Option<string> { Value = "2", Text = "OK" } },
+            { new Option<string> { Value = "3", Text = "T2" } },
+            { new Option<string> { Value = "4", Text = "OK2" } }
         });
 
         versionSelector?.SetFocus();
