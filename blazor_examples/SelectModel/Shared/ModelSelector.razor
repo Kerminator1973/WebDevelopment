@@ -1,11 +1,37 @@
-﻿<h3>ModelSelector</h3>
+﻿@using Microsoft.Fast.Components.FluentUI
+
+<h2>ModelSelector</h2>
 
 @* Определяем выпадающие списки *@
 <SelectorList Items="itemList" SelectEvent="onSelectModel" />
 <SelectorList DefaultItem="Выберите модель" SelectEvent="onSelectCountry" @ref="countrySelector" />
 <SelectorList DefaultItem="Выберите страну" @ref="versionSelector" />
 
+<FluentSelect Items=@stringOptions1
+            OptionText="@(i => i.Text)"
+            OptionValue="@(i => i.Value)"
+            OptionSelected="@(i => i.Selected)"
+            @bind-Value="@stringValue" />
+
+<FluentButton Appearance="@Appearance.Accent">Reset</FluentButton>
+
 @code {
+
+    string? stringValue;
+
+    static List<Option<string>> stringOptions1 = new()
+    {
+        { new Option<string> { Value = "9", Text = "Nine" } },
+        { new Option<string> { Value = "8", Text = "Eight", Selected = true } },
+        { new Option<string> { Value = "7", Text = "Seven" } },
+        { new Option<string> { Value = "6", Text = "Six" } },
+        { new Option<string> { Value = "5", Text = "Five" } },
+        { new Option<string> { Value = "4", Text = "Four" } },
+        { new Option<string> { Value = "3", Text = "Three" } },
+        { new Option<string> { Value = "2", Text = "Two" } },
+        { new Option<string> { Value = "1", Text = "One" } }
+    };
+
     // Список доступных для выбора моделей приборов
     private List<string> itemList = new List<string>
     {

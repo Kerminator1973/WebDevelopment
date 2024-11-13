@@ -96,3 +96,44 @@ public void SetFocus()
 ```
 
 Приведённый выше подход работает, но он выглядит переусложнённым и, кроме того, он не раскрывает выпадающее меню при переключении фокуса на него. Вероятно, следует использовать Bootstrap 5 и имеющиеся в нём дополнительные возможности.
+
+## Попытка полноценного решения задачи с раскрытием выпадающего меню
+
+Подобная задача уже была решена мной для jQuery/UI и Boostrap 5. Существует реализация Bootstap 5 для Blazor от [Vikram Reddy](./blazor_bootstrap.md), однако в этом инструменте есть определённые ограничения. Более интересным кажется инструмент от Microsoft - FluentUI.
+
+Установка библиотеки:
+
+```shell
+dotnet add package Microsoft.Fast.Components.FluentUI
+```
+
+Для полноценного использования элементов FluentUI, необходимо зарегистрировать специализированный сервис, вызовом AddFluentUIComponents():
+
+```csharp
+builder.Services
+    .AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
+    .AddFluentUIComponents();
+```
+
+В соответствии с [рекомендациями Microsoft](https://learn.microsoft.com/en-us/fluent-ui/web-components/integrations/blazor), необходимо добавить the composed scoped CSS file в head-раздел файлов "index.html", или "_Layout.cshtml":
+
+```html
+<link href="{PROJECT_NAME}.styles.css" rel="stylesheet" /> 
+```
+
+> В моём проекте, в файле "index.html" такая строка уже была: `<link href="SelectModel.styles.css" rel="stylesheet" />`
+
+Для проверки работоспособности, в один из компонентов был добавлен следующий код:
+
+```csharp
+@using Microsoft.Fast.Components.FluentUI
+
+<FluentCard>
+    <h2>Hello World!</h2>
+    <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
+</FluentCard>
+```
+
+Страница с официальной документацией по FluentUI [доступна здесь](https://fluentui-blazor.net/).
+
+> Использовать FluentSelect внутри FluentCard нельзя, т.к. у FluentCard есть чёткие границы, которые блокируют область отображения списка при его раскрытии.
