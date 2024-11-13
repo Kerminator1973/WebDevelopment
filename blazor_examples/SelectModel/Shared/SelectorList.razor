@@ -1,25 +1,11 @@
 ﻿@using Microsoft.Fast.Components.FluentUI
-@inject IJSRuntime JSRuntime
 
 <FluentSelect Items=@Items
             OptionText="@(i => i.Text)"
             OptionValue="@(i => i.Value)"
             OptionSelected="@(i => i.Selected)"
-            @ref="fluentSelect"
+            @bind-Open="isOpen"
             @onchange="OnSelectionChanged" />
-
-<script>
-    // Функция устанавливает фокус на указанный орган управления и раскрывает
-    // выпадающий список
-    window.setFocusOnChildInput = (id) => {
-        const dropdown = document.getElementById(id);
-        dropdown.focus();
-
-        console.dir(dropdown);
-        //element.showPopup();
-    }
-</script>
-
 @code {
 
     // Текстовое сообщение, отображаемое в списке выбора, если список пустой
@@ -34,8 +20,9 @@
     [Parameter]
     public EventCallback<string> SelectEvent { get; set; }
 
-    //
-    private FluentSelect<Option<string>>? fluentSelect;
+    // Через этот атрибут класса осуществляется связывание со свойством "Open"
+    // компонента FluentSelect. При изменении isOpen будет изменяться и "Open"
+    private bool isOpen = false;
 
     protected override void OnInitialized()
     {
@@ -56,14 +43,7 @@
 
     public void SetFocus()
     {
-        if (fluentSelect != null)
-        {
-            JSRuntime.InvokeVoidAsync("setFocusOnChildInput", fluentSelect.Id).GetAwaiter().GetResult();
-
-            //fluentSelect.Element.FocusAsync().GetAwaiter().GetResult();
-            //fluentSelect.Open = true;
-            //StateHasChanged();
-        }
+        isOpen = true;
     }
 
     private void OnSelectionChanged(ChangeEventArgs e)
