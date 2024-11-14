@@ -12,11 +12,9 @@
 
 @code {
 
-    private Models.VendorDevices devices;
-
     protected override async Task OnInitializedAsync()
     {
-        devices = await Http.GetFromJsonAsync<Models.VendorDevices>("data.json");
+        var data = await Http.GetFromJsonAsync<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>("data.json");
     }
 
     // Список доступных для выбора моделей приборов
