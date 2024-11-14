@@ -4,7 +4,7 @@
 <h2>ModelSelector</h2>
 
 @* Определяем выпадающие списки *@
-<SelectorList Items="itemList" SelectEvent="onSelectModel" />
+<SelectorList DefaultItem="Загрузка..." SelectEvent="onSelectModel" @ref="deviceSelector" />
 <SelectorList DefaultItem="Выберите модель" SelectEvent="onSelectCountry" @ref="countrySelector" />
 <SelectorList DefaultItem="Выберите страну" @ref="versionSelector" />
 
@@ -12,50 +12,77 @@
 
 @code {
 
+    // Данные импортированные из файла "data.json"
+    Dictionary<string, Dictionary<string, Dictionary<string, string>>>? Data;
+
     protected override async Task OnInitializedAsync()
     {
-        var data = await Http.GetFromJsonAsync<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>("data.json");
+        // Загружаем описание моделей с сервера
+        Data = await Http.GetFromJsonAsync<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>("data.json");
+
+        ReloadDevice();
     }
 
-    // Список доступных для выбора моделей приборов
-    private List<Option<string>> itemList = new()
-    {
-        { new Option<string> { Value = "1", Text = "D200" } },
-        { new Option<string> { Value = "2", Text = "D210" } },
-        { new Option<string> { Value = "3", Text = "D800" } },
-        { new Option<string> { Value = "4", Text = "D820" } }
-    };
-
+    private SelectorList? deviceSelector;
     private SelectorList? countrySelector;
     private SelectorList? versionSelector;
+
+    private string? lastSelectedDevice;
+
+    private void ReloadDevice()
+    {
+        if (Data != null)
+        {
+            List<Option<string>> list = new();
+            foreach (var name in Data.Keys)
+            {
+                list.Add(new Option<string> { Value = name, Text = name });
+            }
+            deviceSelector?.ReplaceItems(list);
+        }
+    }
+
+    private void ReloadCountries(string model)
+    {
+        if (Data != null)
+        {
+            List<Option<string>> list = new();
+            foreach (var name in Data[model].Keys)
+            {
+                list.Add(new Option<string> { Value = name, Text = name });
+            }
+            countrySelector?.ReplaceItems(list);
+        }
+    }
+
+    private void ReloadVersions(string country)
+    {
+        if (Data != null && lastSelectedDevice != null)
+        {
+            List<Option<string>> list = new();
+            foreach (var id in Data[lastSelectedDevice][country].Keys)
+            {
+                var title = Data[lastSelectedDevice][country][id];
+                list.Add(new Option<string> { Value = id, Text = title });
+            }
+            versionSelector?.ReplaceItems(list);
+        }
+    }
 
     private void onSelectModel(string model)
     {
         Console.WriteLine($"Selected model: {model}"); // Отладочный вывод
 
-        // Обновляем список элементов дочернего компонента
-        countrySelector?.ReplaceItems(new List<Option<string>>
-        {
-            { new Option<string> { Value = "1", Text = "Russia" } },
-            { new Option<string> { Value = "2", Text = "Iran" } },
-            { new Option<string> { Value = "3", Text = "China" } },
-            { new Option<string> { Value = "4", Text = "North Korea" } }
-        });
+        lastSelectedDevice = model;
+
+        ReloadCountries(model);
 
         countrySelector?.SetFocus();
     }
 
     private void onSelectCountry(string country)
     {
-        Console.WriteLine($"Selected country: {country}");
-
-        versionSelector?.ReplaceItems(new List<Option<string>>
-        {
-            { new Option<string> { Value = "1", Text = "T" } },
-            { new Option<string> { Value = "2", Text = "OK" } },
-            { new Option<string> { Value = "3", Text = "T2" } },
-            { new Option<string> { Value = "4", Text = "OK2" } }
-        });
+        ReloadVersions(country);
 
         versionSelector?.SetFocus();
     }
