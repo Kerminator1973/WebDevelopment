@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Fast.Components.FluentUI
+@inject HttpClient Http
 
 <h2>ModelSelector</h2>
 
@@ -10,6 +11,13 @@
 <FluentButton Appearance="@Appearance.Accent">Reset</FluentButton>
 
 @code {
+
+    private Models.VendorDevices devices;
+
+    protected override async Task OnInitializedAsync()
+    {
+        devices = await Http.GetFromJsonAsync<Models.VendorDevices>("data.json");
+    }
 
     // Список доступных для выбора моделей приборов
     private List<Option<string>> itemList = new()
