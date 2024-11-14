@@ -52,6 +52,17 @@
                 list.Add(new Option<string> { Value = name, Text = name });
             }
             countrySelector?.ReplaceItems(list);
+
+            if (list.Count == 1)
+            {
+                // Если прибор предназначен только для одной конкретной страны,
+                // автоматически переключаем фокус на выбор версии прибора
+                ReloadVersions(list[0].Value!);
+            }
+            else
+            {
+                countrySelector?.SetFocus();
+            }
         }
     }
 
@@ -66,6 +77,12 @@
                 list.Add(new Option<string> { Value = id, Text = title });
             }
             versionSelector?.ReplaceItems(list);
+
+            // TODO: нужно проверять, сколько элементов в списке. Если он только один,
+            // то автоматически выбирать его, поскольку FluentSelect не пришлёт обновление
+            // при выборе элемента и эту проблему нужно обходить
+
+            versionSelector?.SetFocus();
         }
     }
 
@@ -76,14 +93,10 @@
         lastSelectedDevice = model;
 
         ReloadCountries(model);
-
-        countrySelector?.SetFocus();
     }
 
     private void onSelectCountry(string country)
     {
         ReloadVersions(country);
-
-        versionSelector?.SetFocus();
     }
 }
