@@ -248,7 +248,34 @@ public bool? Open { get; set; }
 
 ## Решение первых проблем
 
-Одна из первых проблем - FluentSelect не присылает событие OnSelectionChanged, если в списке находится только один элемент.
+Одна из первых проблем - FluentSelect не присылает событие OnSelectionChanged, если в списке находится только один элемент. Очевидная идея - попробовать явным образом использовать `@onclick`:
+
+```csharp
+@foreach (var item in items)
+{
+    <FluentSelectItem Value="@item.Value" @onclick="() => OnItemClick(item)">
+        @item.Text
+    </FluentSelectItem>
+}
+
+@code {
+    private void OnItemClick(SelectItem item)
+    {
+        // Check if the clicked item is already selected
+        if (item.Value == selectedValue)
+        {
+            // Emit the OnSelectionChanged event manually
+            HandleSelectionChanged(item.Value);
+        }
+        else
+        {
+            // Update the selected value
+            selectedValue = item.Value;
+            HandleSelectionChanged(selectedValue);
+        }
+    }
+}
+```
 
 Вторая критичная проблема - в некоторых списках очень много пунктов меню. Элементы таких списков не помещаются на экране. В решении для jQueryUI я делал custom-ный список, который выводил элементы в несколько колонок. Нужно подумать, как это можно сделать в парадигме Blazor.
 

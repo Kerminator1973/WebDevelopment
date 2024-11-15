@@ -3,7 +3,6 @@
 <FluentSelect Items=@Items
             OptionText="@(i => i.Text)"
             OptionValue="@(i => i.Value)"
-            OptionSelected="@(i => i.Selected)"
             @bind-Open="isOpen"
             @onchange="OnSelectionChanged" />
 @code {
@@ -20,7 +19,7 @@
     [Parameter]
     public EventCallback<string> SelectEvent { get; set; }
 
-    // Через этот атрибут класса осуществляется связывание со свойством "Open"
+    // Через этот атрибут класса осуществляется связывание (binding) со свойством "Open"
     // компонента FluentSelect. При изменении isOpen будет изменяться и "Open"
     private bool isOpen = false;
 

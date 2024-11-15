@@ -5,8 +5,8 @@
 
 @* Определяем выпадающие списки *@
 <SelectorList DefaultItem="Загрузка..." SelectEvent="onSelectModel" @ref="deviceSelector" />
-<SelectorList DefaultItem="Выберите модель" SelectEvent="onSelectCountry" @ref="countrySelector" />
-<SelectorList DefaultItem="Выберите страну" @ref="versionSelector" />
+<SelectorList DefaultItem="Выберите страну" SelectEvent="onSelectCountry" @ref="countrySelector" />
+<SelectorList DefaultItem="Выберите исполнение" @ref="versionSelector" />
 
 <FluentButton Appearance="@Appearance.Accent" @onclick="OnButtonClick">Reset</FluentButton>
 
@@ -48,6 +48,8 @@
         if (Data != null)
         {
             List<Option<string>> list = new();
+            list.Add(new Option<string> { Value = "none", Text = "Выберите модель..." });
+
             foreach (var name in Data.Keys)
             {
                 list.Add(new Option<string> { Value = name, Text = name });
@@ -106,6 +108,11 @@
     private void onSelectModel(string model)
     {
         Console.WriteLine($"Selected model: {model}"); // Отладочный вывод
+
+        if (model == "none")
+        {
+            return;
+        }
 
         // Запоминимаем выбранную модель прибора, она используется
         // в реализации метода ReloadVersions()
