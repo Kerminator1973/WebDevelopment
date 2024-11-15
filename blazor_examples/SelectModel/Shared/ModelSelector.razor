@@ -8,7 +8,7 @@
 <SelectorList DefaultItem="Выберите модель" SelectEvent="onSelectCountry" @ref="countrySelector" />
 <SelectorList DefaultItem="Выберите страну" @ref="versionSelector" />
 
-<FluentButton Appearance="@Appearance.Accent">Reset</FluentButton>
+<FluentButton Appearance="@Appearance.Accent" @onclick="OnButtonClick">Reset</FluentButton>
 
 @code {
 
@@ -23,10 +23,24 @@
         ReloadDevice();
     }
 
+    private void OnButtonClick()
+    {
+        // Возвращаем компонент в начальное состояние - загружаем данными только
+        // первый список, а остальные списки сбрасываем в "значение по умолчанию"
+        countrySelector?.ClearToDefault();
+        versionSelector?.ClearToDefault();
+
+        ReloadDevice();
+    }
+
+    // Ссылки на изменяемые в коде дочерние компоненты
     private SelectorList? deviceSelector;
     private SelectorList? countrySelector;
     private SelectorList? versionSelector;
 
+    // Информация о последнем выбранном устройстве/модели нужна для
+    // загрузки списка исполнений прибора, который зависит от модели
+    // и выбранной страны
     private string? lastSelectedDevice;
 
     private void ReloadDevice()
@@ -46,6 +60,8 @@
     {
         if (Data != null)
         {
+            versionSelector?.ClearToDefault();
+
             List<Option<string>> list = new();
             foreach (var name in Data[model].Keys)
             {
@@ -61,7 +77,7 @@
             }
             else
             {
-                countrySelector?.SetFocus();
+                countrySelector?.OpenDropDownList();
             }
         }
     }
@@ -82,14 +98,17 @@
             // то автоматически выбирать его, поскольку FluentSelect не пришлёт обновление
             // при выборе элемента и эту проблему нужно обходить
 
-            versionSelector?.SetFocus();
+            versionSelector?.OpenDropDownList();
         }
     }
 
+    // Обработчики события дочерних компонентов
     private void onSelectModel(string model)
     {
         Console.WriteLine($"Selected model: {model}"); // Отладочный вывод
 
+        // Запоминимаем выбранную модель прибора, она используется
+        // в реализации метода ReloadVersions()
         lastSelectedDevice = model;
 
         ReloadCountries(model);

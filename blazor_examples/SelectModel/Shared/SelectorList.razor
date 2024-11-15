@@ -30,8 +30,15 @@
         // добавляемых элементов, отображаем единственный доступный элемент
         if (!String.IsNullOrEmpty(DefaultItem) && Items.Count == 0)
         {
-            Items.Add(new Option<string> { Value = "0", Text = DefaultItem });
+            ClearToDefault();
         }
+    }
+
+    public void ClearToDefault()
+    {
+        Items.Clear();
+        Items.Add(new Option<string> { Value = "0", Text = DefaultItem });
+        StateHasChanged();
     }
 
     public void ReplaceItems(List<Option<string>> newItems)
@@ -41,7 +48,7 @@
         StateHasChanged();
     }
 
-    public void SetFocus()
+    public void OpenDropDownList()
     {
         isOpen = true;
     }
