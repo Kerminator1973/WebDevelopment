@@ -47,12 +47,8 @@
     {
         Items = newItems;
         SelectItem = newItems[0];
+        isOpen = true;  // Раскрываем элемент списка
         StateHasChanged();
-    }
-
-    public void OpenDropDownList()
-    {
-        isOpen = true;
     }
 
     private void OnSelectionChanged(ChangeEventArgs e)

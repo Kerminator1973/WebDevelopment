@@ -64,6 +64,7 @@
 
         if (Data != null)
         {
+
             List<Option<string>> list = new();
             list.Add(new Option<string> { Value = "none", Text = countrySelector?.DefaultItem });
 
@@ -74,8 +75,6 @@
             }
 
             countrySelector?.ReplaceItems(list);
-            countrySelector?.OpenDropDownList();
-
             versionSelector?.ClearToDefault();
         }
     }
@@ -100,8 +99,6 @@
             // TODO: нужно проверять, сколько элементов в списке. Если он только один,
             // то автоматически выбирать его, поскольку FluentSelect не пришлёт обновление
             // при выборе элемента и эту проблему нужно обходить
-
-            versionSelector?.OpenDropDownList();
         }
     }
 
