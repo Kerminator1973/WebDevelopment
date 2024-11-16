@@ -1,0 +1,120 @@
+﻿@inject HttpClient Http
+@using Microsoft.Fast.Components.FluentUI
+
+<h3>SelectorV2</h3>
+
+<FluentSelect Items="@DeviceModels"
+              SelectedOption="@SelectModel"
+              ValueChanged=OnModelSelect />
+
+<FluentSelect Items="@DeviceCountrys"
+              SelectedOption="@SelectCountry"
+              ValueChanged=OnCountrySelect
+              Open="IsCountrySelectOpen" />
+
+<FluentSelect Items="@DeviceVersions"
+              SelectedOption="@SelectVersion"
+              Open="IsVersionSelectOpen" />
+
+@*
+
+В документации у селекта есть поле Placeholder но тут его нету,
+возможно следует обновить версию и оно сильно поможет.
+
+В SPCD Placeholder'a тоже нету и мы решали эту проблему следующим образом.
+
+<FluentSelect @bind-Value="@SelectModel" TOption="string">
+    <FluentOption Value="Default" Selected="true">Выбрать модель</FluentOption>
+    @foreach (var model in DeviceModels)
+    {
+        <FluentOption Value="model"> @model </FluentOption>
+    }
+</FluentSelect>
+
+Но это не едиственный способ. 
+
+*@
+
+<FluentButton Appearance="@Appearance.Accent" @onclick=Reset>Reset</FluentButton>
+
+@code {
+
+    List<Device> Devices = [];
+
+    List<string> DeviceModels = [];
+    List<string> DeviceCountrys = [];
+    List<string> DeviceVersions = [];
+
+    bool IsCountrySelectOpen;
+    bool IsVersionSelectOpen;
+
+    string SelectModel = string.Empty;
+    string SelectCountry = string.Empty;
+    string SelectVersion = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+        DeviceModels = Devices.Select(d => d.Model).ToList();
+    }
+    async Task GetData()
+    {
+        var data = await Http.GetFromJsonAsync<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>("data.json") ?? new();
+
+        Devices = data.Select(device => new Device
+        {
+            Model = device.Key,
+            Countrys = device.Value.Select(currency => new Country
+            {
+                Name = currency.Key,
+                Versions = currency.Value.Select(currencyType => new Version
+                {
+                    Id = currencyType.Key,
+                    Value = currencyType.Value
+                }).ToList()
+            }).ToList()
+        }).ToList();
+    }
+    void OnModelSelect(string value)
+    {
+        var device = Devices.FirstOrDefault(d => d.Model == value);
+        DeviceCountrys = device?.Countrys.Select(c => c.Name).ToList() ?? new();
+        SelectModel = value;
+        IsCountrySelectOpen = DeviceCountrys.Any();
+    }
+    void OnCountrySelect(string value)
+    {
+        var currentDevice = Devices.Find(d => d.Model == SelectModel);
+        var country = currentDevice?.Countrys.FirstOrDefault(c => c.Name == value);
+        DeviceVersions = country?.Versions.Select(v => v.Value).ToList() ?? new();
+        SelectCountry = value;
+        IsVersionSelectOpen = DeviceVersions.Any();
+        IsCountrySelectOpen = false;
+    }
+    async Task Reset()
+    {
+        SelectModel = string.Empty;
+        SelectCountry = string.Empty;
+        SelectVersion = string.Empty;
+        IsCountrySelectOpen = false;
+        IsVersionSelectOpen = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    class Device
+    {
+        public string Model { get; set; } = string.Empty;
+        public List<Country> Countrys { get; set; } = [];
+    };
+    class Country
+    {
+        public string Name { get; set; } = string.Empty;
+        public List<Version> Versions { get; set; } = [];
+
+    }
+    class Version
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+    }
+}

@@ -4,11 +4,11 @@
 <h2>ModelSelector</h2>
 
 @* Определяем выпадающие списки *@
-<SelectorList DefaultItem="Загрузка..." SelectEvent="onSelectModel" @ref="deviceSelector" />
-<SelectorList DefaultItem="Выберите страну" SelectEvent="onSelectCountry" @ref="countrySelector" />
-<SelectorList DefaultItem="Выберите исполнение" @ref="versionSelector" />
+<SelectorList DefaultItem="Загрузка..." SelectEvent=onSelectModel @ref=deviceSelector />
+<SelectorList DefaultItem="Выберите страну" SelectEvent=onSelectCountry @ref=countrySelector />
+<SelectorList DefaultItem="Выберите исполнение" @ref=versionSelector />
 
-<FluentButton Appearance="@Appearance.Accent" @onclick="OnButtonClick">Reset</FluentButton>
+<FluentButton Appearance="@Appearance.Accent" @onclick=OnReset>Reset</FluentButton>
 
 @code {
 
@@ -23,7 +23,7 @@
         ReloadDevice();
     }
 
-    private void OnButtonClick()
+    private void OnReset()
     {
         // Возвращаем компонент в начальное состояние - загружаем данными только
         // первый список, а остальные списки сбрасываем в "значение по умолчанию"

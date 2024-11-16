@@ -3,8 +3,8 @@
 <FluentSelect Items=@Items
             OptionText="@(i => i.Text)"
             OptionValue="@(i => i.Value)"
-            @bind-Open="isOpen"
-            @onchange="OnSelectionChanged" />
+            @bind-Open=isOpen
+            @onchange=OnSelectionChanged />
 @code {
 
     // Текстовое сообщение, отображаемое в списке выбора, если список пустой
