@@ -99,7 +99,7 @@ public void SetFocus()
 
 ## Подключение библиотеки FluentUI
 
-Подобная задача уже была решена мной для jQuery/UI и Boostrap 5. Существует реализация Bootstap 5 для Blazor от [Vikram Reddy](./blazor_bootstrap.md), однако в этом инструменте есть определённые ограничения. Более интересным кажется инструмент от Microsoft - FluentUI.
+Подобная задача уже была решена мной для jQuery/UI и Boostrap 5. Существует реализация Bootstap 5 для Blazor от [Vikram Reddy](./blazor_bootstrap.md), однако в этом инструменте есть определённые ограничения. Более интересным кажется инструмент от Microsoft - FluentUI. [Fluent](https://fluent2.microsoft.design/get-started/design) - это концепция дизайна пользовательского интерфейса от Microsoft.
 
 Установка библиотеки:
 
@@ -159,7 +159,6 @@ public bool? Open { get; set; }
 <FluentSelect Items=@Items
             OptionText="@(i => i.Text)"
             OptionValue="@(i => i.Value)"
-            OptionSelected="@(i => i.Selected)"
             @ref="fluentSelect"
             @onchange="OnSelectionChanged" />
 ```
@@ -248,36 +247,56 @@ public bool? Open { get; set; }
 
 ## Решение первых проблем
 
-Одна из первых проблем - FluentSelect не присылает событие OnSelectionChanged, если в списке находится только один элемент. Очевидная идея - попробовать явным образом использовать `@onclick`:
+Как результат, мы получили первый работающий вариант компонента выбора исполнения прибора. Ключевой код отдельного списка выглядит следующим образом:
 
 ```csharp
-@foreach (var item in items)
-{
-    <FluentSelectItem Value="@item.Value" @onclick="() => OnItemClick(item)">
-        @item.Text
-    </FluentSelectItem>
-}
-
+<FluentSelect Items=@Items
+            OptionText="@(i => i.Text)"
+            OptionValue="@(i => i.Value)"
+            @bind-Open="isOpen"
+            @onchange="OnSelectionChanged" />
 @code {
-    private void OnItemClick(SelectItem item)
+    private void OnSelectionChanged(ChangeEventArgs e)
     {
-        // Check if the clicked item is already selected
-        if (item.Value == selectedValue)
-        {
-            // Emit the OnSelectionChanged event manually
-            HandleSelectionChanged(item.Value);
-        }
-        else
-        {
-            // Update the selected value
-            selectedValue = item.Value;
-            HandleSelectionChanged(selectedValue);
+        // Передаём родительскому элементу информацию о выбранном элементе списка
+        if (e?.Value != null) {
+            SelectEvent.InvokeAsync(e.Value.ToString());
         }
     }
 }
 ```
 
-Вторая критичная проблема - в некоторых списках очень много пунктов меню. Элементы таких списков не помещаются на экране. В решении для jQueryUI я делал custom-ный список, который выводил элементы в несколько колонок. Нужно подумать, как это можно сделать в парадигме Blazor.
+Однако мы получаем несколько серьёзных проблем:
+
+- FluentSelect не присылает событие OnSelectionChanged, если в списке находится только один элемент
+- После первого выбора перестаёт работать автоматическое раскрытие списка выбора
+- В некоторых списках очень много пунктов меню. Элементы таких списков не помещаются на экране. В решении для jQueryUI я делал custom-ный список, который выводил элементы в несколько колонок
+- При нажатии кнопки "Reset" не сбрасывается текущий выбранных элемент списка (модели)
+
+Решить проблему с OnSelectionChanged можно добавив обработчик onclick для каждого элемента списка:
+
+```csharp
+<FluentSelect TOption="string" @bind-Open="isOpen">
+    @foreach (var item in Items)
+    {
+        <FluentOption Value="@item.Value" @onclick="() => OnItemClick(item)">
+            @item.Text
+        </FluentOption>
+    }
+</FluentSelect>
+
+@code {
+    private void OnItemClick(Option<string> item)
+    {
+        // Передаём родительскому элементу информацию о выбранном элементе списка
+        SelectEvent.InvokeAsync(item.Value);
+    }
+}
+```
+
+Однако в таком варианте перестаёт работать выбор с клавиатуры.
+
+Что делать со всеми этими проблемами - пока не понятно. Очевидно, что если парадигма пользовательского интерфейса разрабатываемого приложения расходится в FluentUI, то добиться желаемого поведения будет крайне сложно.
 
 ## Необходимые оптимизации
 
