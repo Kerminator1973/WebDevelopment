@@ -4,7 +4,7 @@
             OptionText="@(i => i.Text)"
             OptionValue="@(i => i.Value)"
             SelectedOption="@SelectItem"
-            @bind-Open=isOpen
+            Open=isOpen
             @onchange=OnSelectionChanged />
 @code {
     // Текстовое сообщение, отображаемое в списке выбора, если список пустой
@@ -19,8 +19,7 @@
     [Parameter]
     public EventCallback<string> SelectEvent { get; set; }
 
-    // Через этот атрибут класса осуществляется связывание (binding) со свойством "Open"
-    // компонента FluentSelect. При изменении isOpen будет изменяться и "Open"
+    // Флаг раскрытия списка
     private bool isOpen = false;
 
     private Option<string>? SelectItem { get; set; }
@@ -40,6 +39,7 @@
         Items = new();
         Items.Add(new Option<string> { Value = "0", Text = DefaultItem });
         SelectItem = Items[0];
+        isOpen = false;
         StateHasChanged();
     }
 
@@ -59,6 +59,9 @@
             var selection = e.Value.ToString();
             if (selection != DefaultItem)
             {
+                // Схлопываем (закрываем) текущий элемент выбора
+                isOpen = false;
+
                 Console.WriteLine($"{selection}");
                 SelectEvent.InvokeAsync(selection);
             }
