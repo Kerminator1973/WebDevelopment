@@ -298,6 +298,39 @@ public bool? Open { get; set; }
 
 Что делать со всеми этими проблемами - пока не понятно. Очевидно, что если парадигма пользовательского интерфейса разрабатываемого приложения расходится в FluentUI, то добиться желаемого поведения будет крайне сложно.
 
+### Свойство SelectedOption работает, но есть нюансы
+
+Приведённый ниже код имеет тенденцию к работе, но есть пока не решённая особенность - в случае, если в списке всего один элемент, то этот единственный элемент отображается в списке, но он не отображется в верхней части select-а, которая видна в "закрытом состоянии". Если элементов несколько, то код работает корректно.
+
+```csharp
+<FluentSelect Items=@Items
+            OptionText="@(i => i.Text)"
+            OptionValue="@(i => i.Value)"
+            SelectedOption="@SelectItem"
+            @bind-Open=isOpen
+            @onchange=OnSelectionChanged />
+@code {
+    private Option<string>? SelectItem { get; set; }
+
+    public void ClearToDefault()
+    {
+        Items.Clear();
+        Items.Add(new Option<string> { Value = "0", Text = DefaultItem });
+        SelectItem = Items[0];
+        StateHasChanged();
+    }
+
+    public void ReplaceItems(List<Option<string>> newItems)
+    {
+        Items = newItems;
+        SelectItem = Items[0];
+        StateHasChanged();
+    }
+}
+```
+
+Костыль/обманка с обязательным добавлением в список обязательного Default-ного значения работает, но почему то, после первого открытия элемента списка (см. isOpen) второй раз этот подход не срабатывает.
+
 ## Необходимые оптимизации
 
 Поскольку в приложении может использоваться несколько разных ModelSelector-ом, необходимо разработать специализированный сервис, который будет загружать справочник моделей только один раз. Этот сервис должен быть реализован как Singleton с Lazy-загрузкой. Этот сервис должен быть внедрён в ModelSelector.

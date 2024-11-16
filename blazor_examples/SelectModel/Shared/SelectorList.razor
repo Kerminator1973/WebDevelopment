@@ -3,10 +3,10 @@
 <FluentSelect Items=@Items
             OptionText="@(i => i.Text)"
             OptionValue="@(i => i.Value)"
+            SelectedOption="@SelectItem"
             @bind-Open=isOpen
             @onchange=OnSelectionChanged />
 @code {
-
     // Текстовое сообщение, отображаемое в списке выбора, если список пустой
     [Parameter]
     public string? DefaultItem { get; set; }
@@ -23,6 +23,8 @@
     // компонента FluentSelect. При изменении isOpen будет изменяться и "Open"
     private bool isOpen = false;
 
+    private Option<string>? SelectItem { get; set; }
+
     protected override void OnInitialized()
     {
         // После того, как орган управления создан, если не был указан список
@@ -35,15 +37,16 @@
 
     public void ClearToDefault()
     {
-        Items.Clear();
+        Items = new();
         Items.Add(new Option<string> { Value = "0", Text = DefaultItem });
+        SelectItem = Items[0];
         StateHasChanged();
     }
 
     public void ReplaceItems(List<Option<string>> newItems)
     {
-        Items.Clear();
-        Items.AddRange(newItems);
+        Items = newItems;
+        SelectItem = newItems[0];
         StateHasChanged();
     }
 
@@ -55,8 +58,14 @@
     private void OnSelectionChanged(ChangeEventArgs e)
     {
         // Передаём родительскому элементу информацию о выбранном элементе списка
-        if (e?.Value != null) {
-            SelectEvent.InvokeAsync(e.Value.ToString());
+        if (e?.Value != null)
+        {
+            var selection = e.Value.ToString();
+            if (selection != DefaultItem)
+            {
+                Console.WriteLine($"{selection}");
+                SelectEvent.InvokeAsync(selection);
+            }
         }
     }
 }

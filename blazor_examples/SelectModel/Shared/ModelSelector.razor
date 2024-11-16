@@ -4,9 +4,9 @@
 <h2>ModelSelector</h2>
 
 @* Определяем выпадающие списки *@
-<SelectorList DefaultItem="Загрузка..." SelectEvent=onSelectModel @ref=deviceSelector />
-<SelectorList DefaultItem="Выберите страну" SelectEvent=onSelectCountry @ref=countrySelector />
-<SelectorList DefaultItem="Выберите исполнение" @ref=versionSelector />
+<SelectorList DefaultItem="Выберите страну..." SelectEvent=onSelectModel @ref=deviceSelector />
+<SelectorList DefaultItem="Выберите страну..." SelectEvent=onSelectCountry @ref=countrySelector />
+<SelectorList DefaultItem="Выберите исполнение..." @ref=versionSelector />
 
 <FluentButton Appearance="@Appearance.Accent" @onclick=OnReset>Reset</FluentButton>
 
@@ -48,7 +48,7 @@
         if (Data != null)
         {
             List<Option<string>> list = new();
-            list.Add(new Option<string> { Value = "none", Text = "Выберите модель..." });
+            list.Add(new Option<string> { Value = "none", Text = deviceSelector?.DefaultItem });
 
             foreach (var name in Data.Keys)
             {
@@ -60,36 +60,37 @@
 
     private void ReloadCountries(string model)
     {
+        Console.WriteLine($"ReloadCountries {model}");
+
         if (Data != null)
         {
-            versionSelector?.ClearToDefault();
-
             List<Option<string>> list = new();
-            foreach (var name in Data[model].Keys)
+            list.Add(new Option<string> { Value = "none", Text = countrySelector?.DefaultItem });
+
+            var keys = Data[model].Keys;
+            foreach (var name in keys)
             {
                 list.Add(new Option<string> { Value = name, Text = name });
             }
-            countrySelector?.ReplaceItems(list);
 
-            if (list.Count == 1)
-            {
-                // Если прибор предназначен только для одной конкретной страны,
-                // автоматически переключаем фокус на выбор версии прибора
-                ReloadVersions(list[0].Value!);
-            }
-            else
-            {
-                countrySelector?.OpenDropDownList();
-            }
+            countrySelector?.ReplaceItems(list);
+            countrySelector?.OpenDropDownList();
+
+            versionSelector?.ClearToDefault();
         }
     }
 
     private void ReloadVersions(string country)
     {
+        Console.WriteLine($"ReloadVersions {country}");
+
         if (Data != null && lastSelectedDevice != null)
         {
             List<Option<string>> list = new();
-            foreach (var id in Data[lastSelectedDevice][country].Keys)
+            list.Add(new Option<string> { Value = "none", Text = versionSelector?.DefaultItem });
+
+            var keys = Data[lastSelectedDevice][country].Keys;
+            foreach (var id in keys)
             {
                 var title = Data[lastSelectedDevice][country][id];
                 list.Add(new Option<string> { Value = id, Text = title });
