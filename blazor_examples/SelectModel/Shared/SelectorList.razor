@@ -62,7 +62,7 @@
                 // Схлопываем (закрываем) текущий элемент выбора
                 isOpen = false;
 
-                Console.WriteLine($"{selection}");
+                Console.WriteLine($"OnSelectionChanged: {selection}");
                 SelectEvent.InvokeAsync(selection);
             }
         }
