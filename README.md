@@ -95,6 +95,8 @@
 
 Также популярной библиотекой является [Semantic UI](https://semantic-ui.com/), у которой есть адаптация под React.
 
+Другие популярные библиотеки визуального оформления для React: [Material UI](https://mui.com/material-ui/), [Ant Design](https://ant.design/), [Next UI](https://nextui.org/), [Grommet](https://v2.grommet.io/), [Onsen UI](https://onsen.io/).
+
 > Набирающая популярность библиотека CSS-стилей - [Bulma](https://bulma.io/). Библиотека "из коробки" поддерживается [DataTables.NET](https://datatables.net/)
 
 В крупных проектах возникает проблема избыточных CSS, которая влияет как на объём передаваемых по сети данных, так и на простоту сопровождения web-приложения. Для решения проблемы можно использовать специализированные пред-процессоры SaSS/SCSS, [LESS](http://lesscss.org/), [Stylus](https://stylus-lang.com/) и другие. [Syntactically Awesome Stylesheets (SASS)](http://sass-lang.com/) является одним из наболее популярных инструментов для описания каскадных таблиц с элементами языка программирования. Пример определения каскадных таблиц на **SCSS** - новой версии SaSS:
