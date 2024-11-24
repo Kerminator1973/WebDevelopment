@@ -46,6 +46,11 @@
 >
 > Как условный вариант решения проблемы - там, где FluentUI мешает работе, использовать собственные компоненты, даже если они дублируют функционал компонентов библиотеки FluentUI.
 
+Однако следует отметить и сильные стороны FluentUI:
+
+- Существует Fluent UI React, адаптация [библиотеки для React](https://react.fluentui.dev/). Исходные тексты [находятся на GitHub](https://github.com/microsoft/fluentui)
+- Библиотека используется [в приложениях Microsoft](https://github.com/microsoft/fluentui/blob/master/README.md): Microsoft 365, Office и Edge. Следует заметить, что проекты [Fluent UI](https://github.com/microsoft/fluentui) и [Fluent UI Blazor](https://github.com/microsoft/fluentui-blazor) отличаются на два порядка. Количество tag-ов в первом - 30210, а во втором - 102.
+
 Заметим, что и другие инструменты идут по пути трансляции в Wasm для работы в браузерах. В этом направлении движется [Kotlin/Wasm](https://kotlinlang.org/docs/wasm-overview.html) и [Rust/Wasm](https://rustwasm.github.io/book/).
 
 ## Обратить внимание - кэширование запросов через HttpClient
