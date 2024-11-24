@@ -7,12 +7,16 @@
 @* Добавляем provider, без определения которого диалоги работать не будут *@
 <FluentDialogProvider />
 
-<ModelSelector />
-<br/>
+<FluentLayout Style="margin-top: 10px;">
+    <FluentStack Orientation="Orientation.Vertical">
+        <FluentStack Orientation="Orientation.Horizontal">
+            <ModelSelector />
+        </FluentStack>
 
-@* Разбираемся с настройками модальных диалогов во FluentUI: https://fluentui-blazor.net/ *@
-<FluentButton Appearance="@Appearance.Accent" @onclick=OnShowModalAsync>Show Modal</FluentButton>
-
+        @* Разбираемся с настройками модальных диалогов во FluentUI: https://fluentui-blazor.net/ *@
+        <FluentButton Appearance="@Appearance.Accent" @onclick=OnShowModalAsync>Show Modal</FluentButton>
+     </FluentStack>
+</FluentLayout>
 @code {
 
     private bool _trapFocus = true;
