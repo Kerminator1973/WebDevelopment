@@ -1,8 +1,6 @@
 ﻿@using Microsoft.Fast.Components.FluentUI
 @inject HttpClient Http
 
-<h2>ModelSelector</h2>
-
 @* Определяем выпадающие списки *@
 <SelectorList DefaultItem="Выберите страну..." SelectEvent=onSelectModel @ref=deviceSelector />
 <SelectorList DefaultItem="Выберите страну..." SelectEvent=onSelectCountry @ref=countrySelector />
