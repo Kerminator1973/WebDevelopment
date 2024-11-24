@@ -133,13 +133,13 @@ public FluentDialog? Dialog { get; set; }
 @inject IDialogService DialogService
 ```
 
-Далее обязательно должен быть определён, без которого приложение не будет работать полноценно:
+Далее обязательно должен быть определён **FluentDialogProvider**, без которого приложение не будет работать полноценно:
 
 ```csharp
 <FluentDialogProvider />
 ```
 
-Далее создаются данные модели, для передачи в диалог:
+Далее создаются данные модели для передачи в диалог:
 
 ```csharp
 SimplePerson simplePerson = new()
