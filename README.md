@@ -122,7 +122,7 @@ body {
 
 Для исследования рекомендуется [Playground](https://sass-lang.com/playground/) с сайта SASS.
 
-Ещё один продукт - [Tailwind CSS](https://tailwindcss.com/) считается одним из наиболее перспективных инструментов предобработки CSS. К его достоинствам отсносятся: versatile, user-friendly, responsive, reliable, fast. Tailwind совместим с Next.js, Vite, Angular, React.
+Ещё один продукт - [Tailwind CSS](https://tailwindcss.com/) считается одним из наиболее перспективных инструментов предобработки CSS. К его достоинствам относятся: versatile, user-friendly, responsive, reliable, fast. Tailwind совместим с Next.js, Vite, Angular, React.
 
 Рекомендуется к прочтению статья [Обзор фреймворка TailwindCSS: чем он хорош и кому будет полезен](https://timeweb.com/ru/community/articles/chto-takoe-tailwindcss-zachem-nuzhen-i-chem-horosh) за авторством Space Police. Идея заключается в том, чтобы прописывать стили напрямую в директиву class, а не под селекторами в CSS-файле. Это выглядит так:
 

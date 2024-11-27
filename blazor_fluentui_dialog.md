@@ -172,3 +172,32 @@ DialogParameters parameters = new()
 var dialog = await DialogService.ShowDialogAsync<SimpleDialog>(simplePerson, parameters);
 DialogResult? result = await dialog.Result;
 ```
+
+## Кастомизация диалога
+
+При создании разметки (rendering), **DialogService** анализирует как набор параметров (DialogParameters), так и фактическую верстку диалога (в нашем случае - верстку компонента SimpleDialog). Если в вертке нет блока `<FluentDialogFooter />`, то DialogService сформирует его. При формировании будут учитываться указанные значения из DialogParameters. Так, например, если в DialogParameters будет указано свойство "PrimaryAction" со значением "Yes", то текст на главной кнопке в Footer-е будет "Yes", а если этого параметра не будет, то будет сгенерирован текст "OK".
+
+Однако если нам нужен ещё более высокий уровень кастомизации, в частности - изменение стилистического оформления, то мы можем определить в верстке целые блоки, которые будут использованы в верстке вместо сегенарированных DialogService. Например, в footer-е есть две кнопки: OK и Cancel, которые мы можем определить в верстке SimpleDialog вот так:
+
+```csharp
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@SaveAsync">Принять с благодарностью</FluentButton>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@CancelAsync">Раздражённо отказаться</FluentButton>
+</FluentDialogFooter>
+```
+
+К этим кнопкам мы можем применить нужные нам стили. Также мы можем добавить специализированный код, в частности, реакцию на нажатие этих кнопок:
+
+```csharp
+private async Task SaveAsync()
+{
+    await Dialog!.CloseAsync();
+}
+
+private async Task CancelAsync()
+{
+    await Dialog!.CancelAsync();
+}
+```
+
+Первая кнопка будет закрыта с кодом завершения диалога OK, а вторая вернёт `result.Cancelled`.
