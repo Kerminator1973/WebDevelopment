@@ -53,6 +53,8 @@
 
 В качестве альтернативы можно рассматривать библиотеку [MudBlazor](https://mudblazor.com/), базирующуюся на идеях MaterialUI. В отличие от FluentUI, в MudBlazor в Shadow DOM почти ничего нет и кастомизировать внешний вид приложения достаточно легко. Набор органов управления очень большой и большая часть из них анимирована. Кроме этого MudBlazor похож на MaterialUI, что значительно снижает порог вхождения у тех разработчиков, которые использовали MaterialUI вместе с React.
 
+Ещё одна популярная и мощная библиотека - [Radzen Blazor Components](https://blazor.radzen.com/?theme=material3). Библиотека используется такими корпорациями, как: Microsoft, Porshe, NASA, Dell, Siemens, и т.д.
+
 Заметим, что и другие инструменты идут по пути трансляции в Wasm для работы в браузерах. В этом направлении движется [Kotlin/Wasm](https://kotlinlang.org/docs/wasm-overview.html) и [Rust/Wasm](https://rustwasm.github.io/book/).
 
 ## Обратить внимание - кэширование запросов через HttpClient
