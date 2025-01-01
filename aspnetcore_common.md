@@ -98,6 +98,37 @@ HttpResponseMessage response = await client.SendAsync(request);
 IEnumerable<Customer>? model = await response.Content.ReadFromJsonAsync<IEnumerable<Customer>>();
 ```
 
+## RenderSection - очень гибкий способ настройки рендеринга
+
+Предположим, что у нас есть приложение с несколькими формами. Большая часть форм выводит контент внутри Bootstrap контейнера, что соодаёт привлекательный диазйн приложения. Но для журнала аудита нам нужно всё пространство экрана, т.к. данных в таблице очень много. Чтобы не создавать новые Layouts, мы можем определить в основном "_Layout.cshtml" несколько разных зон рендеринга, например:
+
+```csharp
+@* До этого места определено выпадающее меню *@
+
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+@RenderSection("OutsideContainer", required: false)
+```
+
+В большинстве форм не нужен OutsideContainer и они программируются так, как и раньше. Но в журнале аудита основная секция (@RenderBody) будет пустой, но зато будет определена секция OutsideContainer:
+
+```csharp
+@{
+    ViewData["Title"] = "Журнал аудита";
+}
+
+@section OutsideContainer {
+    <div>
+        @* Верстка на всю ширину экрана *@
+    </div>
+}
+```
+
+Такой подход позволяет создавать сложные по структуре страницы с очень лаконичной версткой.
+
 ## Добавление GraphQL в приложение ASP.NET Core
 
 В дополнительных главах (только online, в печатной книге они отсутствуют) "C# 10 and .NET 6. Modern Cross-Platform Development" by Mark J. Price есть раздел, посвящённый использованию GraphQL в приложениях на ASP.NET Core. В Visual Studio отсутствует шаблон приложения, который позволяет генерировать код такого стандартного приложения, однако есть NuGET Packages, которые позволяют добавить соответствующую поддержку:
