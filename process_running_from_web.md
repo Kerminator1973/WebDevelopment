@@ -101,3 +101,71 @@ using (StreamWriter writer = new StreamWriter(filePath))
     await writer.WriteLineAsync(result);
 }
 ```
+
+## Запуск процесса в Linux-системах
+
+Для запуска внешних процессов в Linux используется shell. Часто применяется `bash`, размещённый в папке bin-е, но в системе могут быть использованы и альтернативные варианты, такие как: `/bin/sh`, `/bin/busybox`. Для простоты мы можем явно указывать, какой shell следует использовать для запуска нужной нам команды:
+
+```csharp
+StartInfo = new ProcessStartInfo
+{
+	FileName = "/bin/bash",
+	Arguments = $"-c \"{escapedArgs}\"",
+	RedirectStandardOutput = true,
+	UseShellExecute = false,
+	CreateNoWindow = true,
+}
+```
+
+Однако более универсальным ваиантом является использование переменной окружения`$SHELL`, в которой передаётся путь к используемой shell.
+
+Получить значение переменной можно используя функцию **GetEnvironmentVariable**():
+
+```csharp
+string shellPath = Environment.GetEnvironmentVariable("SHELL");
+Console.WriteLine($"Shell: {shellPath}");
+```
+
+Для примера, в качестве аргументов shell может быть команда получения списка подключенных блочных устройств:
+
+```shell
+lsblk -f
+```
+
+### Полный пример
+
+Ниже приведён полный пример _extension method_, который используется в Linux-приложениях:
+
+```csharp
+public static class ShellHelper
+{
+    public static string Bash(this string cmd)
+    {
+        var escapedArgs = cmd.Replace("\"", "\\\"");
+
+        string shellPath = Environment.GetEnvironmentVariable("SHELL");
+
+        var process = new Process()
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = shellPath,
+                Arguments = $"-c \"{escapedArgs}\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            }
+        };
+        process.Start();
+        string result = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+        return result;
+    }
+}
+```
+
+Вызов команды может выглядеть следующим образом:
+
+```csharp
+var output = "upsc battery 2>1".Bash();
+```
