@@ -629,3 +629,121 @@ docker exec -it my-postgres-container psql -U postgres -d proidc3
 Команда `docker export` создаёт tar-архив с содержимым файлов контейнера, в результате чего появляется папка, пригодная для использования вне Docker.
 
 Причина, по которой мои изменения не сохранились, возможно, связаны с тем, что я не вышел их контейнера, используя команду `exit` перед тем, как выполнить команду `docker commit`.
+
+## Sonatype/Nexus 3
+
+За основу взята инструкция [Setting up a Nexus3 Lab Server](https://github.com/chrisbmatthews/lab-nexus-sever) by Chris B. Matthews. Инструкция четёрыхлетней давности.
+
+Команда клонирования репозитария:
+
+```shell
+git clone https://github.com/chrisbmatthews/lab-nexus-sever.git
+```
+
+Скрипт запуска сервера Nexus 3:
+
+```bash
+#!/usr/bin/env bash
+
+#To allow full file access to the volume in case docker is running as root...
+chmod 777 volume
+
+#Bring up the server
+docker-compose up -d
+```
+
+Содержимое "docker-compose.yml" следующее:
+
+```yaml
+version: "3.7"
+
+services:
+  nexus:
+    image: sonatype/nexus3
+    expose:
+      - 8081
+      - 8082
+      - 8083
+    ports:
+      - "8082:8082"
+      - "8083:8083"
+      - "8081:8081"
+    volumes:
+      - ./volume:/nexus-data
+    restart: always
+```
+
+Скрипт даёт права доступа к папке "volume" и выполняет команду запуска контейнера:
+
+```shell
+docker-compose up -d
+```
+
+Если всё пошло по плану, появляется возможность зайти на локальный сайт Nexus 3: `http://localhost:8081/`
+
+Далее нужно изменить default-ного пользователя (admin) щёлкнув по ссылке "Sign In" на главной странице. Пароль пользователя есть в локальной папке `volume` в файле "admin.password". Можно посмотреть пароль командой:
+
+```shell
+admin.password
+```
+
+После ввода логина и пароля, система предлагает поменять пользовательский пароль.
+
+### Работа с Nexus 3 как с Proxy
+
+TODO: пока не отрабатывал этот вариант.
+
+### Работа с Nexus 3 как с Private Repo
+
+В навигационной панели (слева) выбрать "Repository --> Blob Stores". На форме уже будет один blob под именем "default", но мы можем создать езё один. Для этого следует найти на форме кнопку "Create Blob Store" (правый верхний угол). При создании Blob-а нужно указать его тип (File), имя и путь к нему. Например: "kermitblob" и путь как "/nexus-data/blobs/kermitblob".
+
+Если перейти на закладку "Proprietary Repositories", то можно увидеть репозитарии в разделах "Generic Hosted Repositories" и "Proprietary Hosted Repositories". Это списки доступных репозитариев. По умолчанию, уже доступны репозитарии для Maven и NuGet-hosted.
+
+Мы можем перейти в закладку "Repositories --> Repositories" и увидим список репозиториев системы. Посредством кнопки "Create repository" мы можем создать новый репозиторий, выбрав его тип "docker (hosted)". Заметим, что Nexus 3 умеет создавать совершенно разные репозитории, включая apt.
+
+После ввода имени репозитария следует выбрать транспортный протокол. Чтобы не разбираться с сертификатами, можно выбрать "HTTP" и указать номер порта 8083.
+
+После создания репозитария (он появится в списке доступных), необходимо разрешить Docker-у использовать небезопасное соединение. В конфигурационном файле Docker-а необходимо найти раздел "insecure-registries" и в него следует добавить строки (с большой вероятностью, файл не существует и нужно создать новый):
+
+```
+{
+  "insecure-registries": [
+    "localhost:8082",
+    "localhost:8083"
+  ]
+}
+```
+
+Далее следует перезагрузить docker daemon. В зависимости от того как он был установлен потребуется либо команда `sudo systemctl status docker`, либо (при использовании Snap): `sudo snap restart docker`
+
+Мне не удалось при выполнении команды `sudo docker info` увидеть, что были добавлены порты 8082 и 8083, однако вот такая строка была:
+
+```
+Insecure Registries:
+ 127.0.0.0/8
+```
+
+Далее была выполнена команда: `docker login localhost:8083`, которая закончилась успешно:
+
+```
+time="2025-01-06T15:32:21+03:00" level=info msg="Error logging in to endpoint, trying next endpoint" error="Get \"https://localhost:8083/v2/\": http: server gave HTTP response to HTTPS client"
+WARNING! Your password will be stored unencrypted in /home/developer/snap/docker/2963/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credential-stores
+
+Login Succeeded
+```
+
+Далее я создал некоторый Docker-образ (Postgres из CinnaPages)
+
+```shell
+docker build -t localhost:8083/kermitrepo:latest .
+```
+
+И сохранил его в Nexus:
+
+```shell
+docker push localhost:8083/kermitrepo:latest
+```
+
+К сожалению, я пока не понял, был ли push успешным, или нет. Необходимо ещё более глубоко нырнуть в технологию.
