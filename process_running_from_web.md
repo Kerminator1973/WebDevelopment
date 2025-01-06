@@ -169,3 +169,84 @@ public static class ShellHelper
 ```csharp
 var output = "upsc battery 2>1".Bash();
 ```
+
+### Тоже самое, но для C++
+
+Для того, чтобы сделать тоже самое, но на C++, можно использовать функцию popen()/_popen(), которая запускает процесс и возвращает pipe, через который можно получать стандарный вывод процесса:
+
+```cpp
+#include <iostream>
+#include <cstdio>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
+
+std::string exec(const char* cmd) {
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&_pclose)> pipe(_popen(cmd, "r"), _pclose);
+    if (!pipe) {
+        throw std::runtime_error("_popen() failed!");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    return result;
+}
+
+int main() {
+    try {
+        std::string output = exec("dir");  // Replace with your command
+        std::cout << "Output:\n" << output << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    return 0;
+}
+```
+
+Этот подход хорошо работает для перехватат вывода команды. Если необходимо получить больший контроль над процессом (например, захватывать и stdout, и stderr, или предоставлять данные процессу), может потребоваться использование низко-уровневых API, такие как: fork(), exec() и pipe() в Unix-системах, или вызывать CreateProcess() в Windows-системах.
+
+Чтобы избежать низкоуровневых API, можно использовать The Boost Library, QProcess из Qt, класс Process из POCO Library, или `<process>` из C++ 23.
+
+Пример использования Boost.Process для захвата стандартного вывода:
+
+```cpp
+#include <boost/process.hpp>
+#include <iostream>
+#include <string>
+
+namespace bp = boost::process;
+
+int main() {
+    
+    try {
+        // Command to execute (replace with your command)
+        std::string command = "ls -l";  // Unix-like systems
+        // std::string command = "dir";  // Windows
+
+        // Create a child process and capture its output
+        bp::ipstream output_stream;  // Stream to capture stdout
+        bp::child child_process(command, bp::std_out > output_stream);
+
+        // Read the output line by line
+        std::string line;
+        while (std::getline(output_stream, line)) {
+            std::cout << line << std::endl;
+        }
+
+        // Wait for the process to finish
+        child_process.wait();
+
+        // Check the exit code
+        if (child_process.exit_code() != 0) {
+            std::cerr << "Process exited with code: " << child_process.exit_code() << std::endl;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+```
