@@ -699,7 +699,7 @@ TODO: пока не отрабатывал этот вариант.
 
 Если перейти на закладку "Proprietary Repositories", то можно увидеть репозитарии в разделах "Generic Hosted Repositories" и "Proprietary Hosted Repositories". Это списки доступных репозитариев. По умолчанию, уже доступны репозитарии для Maven и NuGet-hosted.
 
-Мы можем перейти в закладку "Repositories --> Repositories" и увидим список репозиториев системы. Посредством кнопки "Create repository" мы можем создать новый репозиторий, выбрав его тип "docker (hosted)". Заметим, что Nexus 3 умеет создавать совершенно разные репозитории, включая apt.
+Мы можем перейти в закладку "Repositories --> Repositories" и увидим список репозиториев системы. Посредством кнопки "Create repository" мы можем создать новый репозиторий, выбрав его тип "docker (hosted)". Заметим, что Nexus 3 умеет создавать совершенно разные репозитории, включая: apt, Cargo, Conda, NuGet, npm, PyPi, Yum(RPM) и другие.
 
 После ввода имени репозитария следует выбрать транспортный протокол. Чтобы не разбираться с сертификатами, можно выбрать "HTTP" и указать номер порта 8083.
 
@@ -740,10 +740,57 @@ Login Succeeded
 docker build -t localhost:8083/kermitrepo:latest .
 ```
 
-И сохранил его в Nexus:
+Проверить, что образ был собран можно выполнив команду `sudo docker images`:
+
+```output
+REPOSITORY                  TAG       IMAGE ID       CREATED        SIZE
+localhost:8083/kermitrepo   latest    f6c7915984d7   20 hours ago   435MB
+sonatype/nexus3             latest    d3df1178e8d7   4 weeks ago    635MB
+```
+
+Легко увидеть, что существует как образ с nexus3, так и собранный локально образ (localhost:8083/kermitrepo). В качестве репозитария образа указан "localhost:8083/kermitrepo".
+
+Команад сохранения образа в Nexus:
 
 ```shell
 docker push localhost:8083/kermitrepo:latest
 ```
 
-К сожалению, я пока не понял, был ли push успешным, или нет. Необходимо ещё более глубоко нырнуть в технологию.
+Пример успешного выполнения команды:
+
+```output
+The push refers to repository [localhost:8083/kermitrepo]
+e9b5403ec39f: Pushed 
+292d421ade97: Pushed 
+6e96dce9a5cf: Pushed 
+957b5f570bef: Pushed 
+2125bae0c1d7: Pushed 
+c993c95f45c3: Pushed 
+023af46da835: Pushed 
+e4f6953e8595: Pushed 
+11efcd43b7f2: Pushed 
+9e776ff275e9: Pushed 
+0196325b5059: Pushed 
+095b6f5b03a7: Pushed 
+5eefae50e9e6: Pushed 
+9afe14b4c027: Pushed 
+8b296f486960: Pushed 
+latest: digest: sha256:bb2ea77115d4852b40c492a7694c522434a6f27f86246198d7ddb3df0c1afa75 size: 3455
+```
+
+Если зайти в "Repository --> Blob Stores", то можно увидеть, что занято 295.90 МБ. Если предположить, что для хранения данных используется сжатие, то 300 МБ похоже на сжатые 435 МБ.
+
+Мы можем выполнить команду загрузки Docker-образа из репозитария: `sudo docker pull localhost:8083/kermitrepo:latest`
+
+```console
+latest: Pulling from kermitrepo
+Digest: sha256:bb2ea77115d4852b40c492a7694c522434a6f27f86246198d7ddb3df0c1afa75
+Status: Image is up to date for localhost:8083/kermitrepo:latest
+localhost:8083/kermitrepo:latest
+```
+
+Вывод позволяет утверждать, что запрос в репозитарий был успешным и, поскольку образ не изменился, то ничего обновлять не пришлось.
+
+В управляющей консоли видно, что за последние 24 часа был выполнен один Unique Logins и за день было выполнено три запроса из 20,000 разрешённых.
+
+Чтобы увидеть содержимое репозитария "kermitrepo" нужно щелкнуть на имя репозитария в закладке "Browse". В этом случае будет открыто дерево "HTML View" в котором есть список "blobs", манифесты "manifests" и tags. В tags находится элемент "latest", в котором будет информация о том когда и кто создал этот tag и как загрузить образ из него.
