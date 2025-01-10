@@ -204,7 +204,7 @@ var builder = require('xmlbuilder');
 	const xml =	root.end({ pretty: true});
 	
 	// Возвращаем Http Status Code 200 (OK) и XML-документ с описанием бинарных объектов
-	res.set('Content-Type', 'text/xml')	
+	res.set('Content-Type', 'text/xml')
 	res.send(xml);
 ```
 
@@ -245,6 +245,14 @@ app.get('/getobj.aspx', (req, res) => {
 ```javascript
 res.set('Content-Type', 'image/jpg')
 res.send(user.avatar) // bytes
+```
+
+### Клиент может указать имя файла, под которым он хочет загрузить данные
+
+Для этого необходимо указать атрибут `download` у тэга anchor. Например:
+
+```html
+<a href="path/to/file.pdf" download="custom-filename.pdf">Download PDF</a>
 ```
 
 ## Получение файла от пользователя
