@@ -1034,6 +1034,11 @@ private void IncrementCount(MouseEventArgs e)
 
 State Management реализуется через механизм Dependency Injection. Для Blazor Server см. **AppState**, а для Blazor Web Assembly см. [справочную информацию](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-8.0#add-client-side-services).
 
+Одной из наиболее популярных библиотек State Management для Blazor является [timewarp-state
+](https://github.com/TimeWarpEngineering/timewarp-state), ранее известная как Blazor-State.
+
+В качестве альтернативы рассматривается библиотека [Fluxor](https://github.com/mrpmorris/Fluxor), для которой декларируется: "_Fluxor is a zero boilerplate Flux/Redux library for Microsoft .NET_".
+
 ### Асинхронные запросы на сервер
 
 Асинхронные запросы в Blazor исключительно удобно выполнять, благодаря асинхронномы выполнению код и Dependency Injection:
