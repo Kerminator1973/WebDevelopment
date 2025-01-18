@@ -122,9 +122,13 @@ await builder.Build().RunAsync();
 
 В действительности, нет какого-то одного наилучшего типа Blazor-приложения, выбор необходимо осуществлять исходя из стоящей перед разработчиком задачи. Дополнительно о выборе типа Blazor-приложения можно почитать в книге "Exploring Blazor: Creating Server-side and Client-side Applications in .NET 7. 2nd Edition" by _Taurius Litvinavicius_.
 
-Различия двух реализаций Blazor:
+Различия двух Blazor _hosting models_:
 
-<img src="./https://learn.microsoft.com/ru-ru/training/aspnetcore/blazor-introduction/media/intro-architecture.jpg">
+<img src="https://learn.microsoft.com/ru-ru/training/aspnetcore/blazor-introduction/media/intro-architecture.jpg">
+
+> Чуть более глубоко объяснить разницу между hostimgs models можно через подобие. Существует две больших группы программного кода. Одна группа всегда работает в браузере - это интеграционный слой "Blazor.js" и DOM браузера. Вторая группа состоит из: Razor Components, Blazor и Render Tree. Вот эта вторая группа может размещаться как на сервере, так и внутри браузера. В случае Blazor Server - эта группа представляет собой IL-сборки .NET Core; связь этого кода с "Blazor.js" осуществляется посредством SignalR (WebSockets). В случае Blazor WebAssembly - группа представляет собой сборки dotnet.wasm, которые размещаются и работают внутри браузера и обмениваются сообщениями с "Blazor.js" через JS Interop.
+>
+> В случае использование .NET MAUI всё становится немного сложнее, т.к. за DOM появляются ещё и Native Components, специфические для каждой конкретной операционной системы (macOS, Android, iOS, Tizen).
 
 При генерации кода проекта любого из шаблонов, рекомендуется в форме "Additional Information" убрать кнопку "Do not use top-level statements".
 
