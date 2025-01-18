@@ -55,6 +55,14 @@
 
 Ещё одна популярная и мощная библиотека - [Radzen Blazor Components](https://blazor.radzen.com/?theme=material3). Библиотека используется такими корпорациями, как: Microsoft, Porshe, NASA, Dell, Siemens, и т.д.
 
+Другие библиотеки: 
+
+- [Blazorise](https://blazorise.com/)
+- [Blazm](https://github.com/EngstromJimmy/Blazm.Components) - библиотека от автора книг о Blazor - Jimmy Engström. Ключевая особенность - реализация Grid-а
+- Progress Telerik (компания поддерживает санкционное давление на Россию)
+- DevExpress (компания поддерживает санкционное давление на Россию)
+- Syncfusion (компания поддерживает санкционное давление на Россию)
+
 Заметим, что и другие инструменты идут по пути трансляции в Wasm для работы в браузерах. В этом направлении движется [Kotlin/Wasm](https://kotlinlang.org/docs/wasm-overview.html) и [Rust/Wasm](https://rustwasm.github.io/book/).
 
 ## Обратить внимание - кэширование запросов через HttpClient
