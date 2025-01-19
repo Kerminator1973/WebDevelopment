@@ -207,8 +207,8 @@ npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
 - Стандартизация JavaScript в [ECMA](https://ecma-international.org/publications-and-standards/standards/ecma-262/). Текущий стандарт - ECMAScript 2023 (14 редакция)
 - Microsoft "исправляет ошибки" JavaScript посредством транспайлера TypeScript
-- Google разработал и развивает альтернативу JavaScript - Dart
-- Microsoft развивает инструмент Blazor, который обеспечивает трансляцию .NET-приложений в WebAssembly, для нативного исполнения в браузере. Blazor поддерживает interop с JavaScript, а также имеет доступ к DOM
+- Google разработал и развивает альтернативу JavaScript - Dart (но основное применение - мобильные платформы)
+- Microsoft развивает инструмент Blazor, который обеспечивает трансляцию .NET-приложений в WebAssembly, для нативного исполнения в браузере. Blazor поддерживает interop с JavaScript, а также имеет доступ к DOM (через "blazor.js")
 
 <a name="webassembly"></a>
 
@@ -435,6 +435,16 @@ node d:\Sources\RUFServerLite\node_modules\uglify-js\bin\uglifyjs d:\Sources\RUF
 Борьба за минимальный размер Bundle-а может иметь высокую коммерческую ценность. Для улучшения пользовательского опыта компоненты web-приложения часто размещают максимально близко к пользователю, используя **Content Delivery Networks** (CDN). Такие сети могут состоять из десятков тысяч кэширующих серверов, размещённых по всему миру. В соответствии с тарифной политикой, CDN сумма платёжа чаще всего зависит от объема переданных данных, т.е. размер Bundle явным образом и весьма ощутимо влиять на расходы компании.
 
 <a name="security"></a>
+
+## Этапы развития web-технологий
+
+Можно условно определить этапы развития web-технологий:
+
+- 1995-2005 - HTML генерируется на сервере: CGI-scripts, PHP, Django, ASP.NET
+- 2005-2010 - активно используется динамическое поведение: jQuery, AJAX
+- 2010-2015 - появились первый SPA: Bakcbone.js, Ember, Kbockout, Angular.js
+- 2015-2022 - активное развитие SPA: React, Vue. Angular, Svelte, Blazor
+- 2022 и дальше - Server + Client Components: Next.js, Nuxt
 
 ## Информационная безопасность
 
