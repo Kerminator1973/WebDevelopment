@@ -521,10 +521,12 @@ Blazor поддерживает Ahead-of-Time (AOT) компиляцию, т.е.
 dotnet workload install wasm-tools
 ```
 
-Также в файле с описание проекта необходимо указать специальный флаг:
+Также в файле с описанием проекта (csproj), в разделе PropertyGroup, необходимо добавить специальный флаг:
 
 ```csharp
-<RunAOTCompilation>true</RunAOTCompilation>
+<PropertyGroup>
+    <RunAOTCompilation>true</RunAOTCompilation>
+</PropertyGroup>
 ```
 
 Собрать приложение в Release-режиме можно командой:
