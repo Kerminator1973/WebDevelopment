@@ -74,3 +74,19 @@ reader.onload = function ({ target: { result } }) {
 // Запускаем процесс чтения blob-объекта, как текста (т.к. JSON это текстовый формат)
 reader.readAsText(xhr.response);
 ```
+
+### Что происходит на сервере
+
+Предположим, что мы запустили на сервере некоторый процесс (приложение операционной системы), который вернул нам поток данных. Предположим, что эти данные находятся в переменной result, строчного типа. Передать эти данные браузеру (в обработчике GET-запроса) можно следующим образом:
+
+```csharp
+// Сохраняем результат операции в файл. Критически важно установить корректную кодировку,
+// на тестовом сервере это "iso-8859-1" (28591), она же Latin1
+using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.GetEncoding(28591)))
+{
+    await writer.WriteLineAsync(result);
+}
+
+var fileBytes = System.IO.File.ReadAllBytes(filePath);
+return File(fileBytes, "application/octet-stream", "database.backup");
+```
