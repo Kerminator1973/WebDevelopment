@@ -124,7 +124,6 @@ const btnRestore = document.getElementById('btnUploadSQL');
 btnRestore.addEventListener('click', function (event) {
 
     event.preventDefault();
-    event.stopPropagation();
 
     // Для сборки POST-запроса используем орган управления типа 'file': <input type="file">
     let formData = new FormData();
@@ -147,6 +146,8 @@ btnRestore.addEventListener('click', function (event) {
         success: function (response) {
     // ...
 ```
+
+Заметим, что вызов `event.preventDefault()` блокирует стандартную обработку щелчка на кнопке - отправку форма браузером, а не нашим кодом. Иногда разработчики добавляют вызов `event.stopPropagation()`, но в нём нет особенного смысла - эта функция просто блокирует обработку события родительскими элементами.
 
 ### Обработка POST-запроса с данными на сервере
 

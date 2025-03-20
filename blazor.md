@@ -433,6 +433,9 @@ Blazor позволяет осуществлять асинхронную обр
 <input value=@data @onkeypress="ProcessKeyPress" @onkeypress:preventDefault />
 ```
 
+- preventDefault - блокирует стандартную обработку события
+- stopPropagation - блокирует "всплытие" события в родительские DOM-Элементы
+
 ## Вызов Callback-метода родительского компонента
 
 Реклмендуется [ознакомиться со статьёй](https://learn.microsoft.com/ru-ru/training/modules/blazor-improve-how-forms-work/2-attach-csharp-code-dom-events-blazor-event-handlers).
