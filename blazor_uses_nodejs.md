@@ -2,6 +2,40 @@
 
 При публикации проекта, Blazor "под капотом" использует Node.js и JavaScript-код для трансляции IL-сборок в wasm-пакеты. При этом собирается не только код проекта, но и весь Runtime. Время сборки и количество ресурсов, которые при этом используются - значительные, на грани критических!
 
+Ниже приведены логи сборки проекта:
+
+```output
+c:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\ServicePartners.Client.csproj : warning NU1900: Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.
+  Optimizing assemblies for size may change the behavior of the app. Be sure to test after publishing. See: https://aka.ms/dotnet-illink
+  Compiling native assets with emcc with -Oz. This may take a while ...
+  [1/3] pinvoke.c -> pinvoke.o [took 1,35s]
+  [2/3] corebindings.c -> corebindings.o [took 1,35s]
+  [3/3] driver.c -> driver.o [took 1,39s]
+```
+
+Emcc – это компилятор Emscripten, который компилирует код на C++ в WebAssebly. И он действительно компилирует несколько низкоуровневых файлов (см. выше).
+
+Далее компилятор собирает .NET для Wasm из исходников:
+
+```output
+  Linking for initial memory $(EmccInitialHeapSize)=21495808 bytes. Set this msbuild property to change the value.
+  Linking with emcc with -O2. This may take a while ...
+…
+"C:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\obj\Any CPU\Release\net8.0\wasm\for-publish\pinvoke.o" "C:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\obj\Any CPU\Release\net8.0\wasm\for-publish\driver.o" "C:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\obj\Any CPU\Release\net8.0\wasm\for-publish\corebindings.o" "C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Runtime.Mono.browser-wasm\8.0.11\runtimes\browser-wasm\native\libicudata.a" "C:\Program
+```
+
+Инструментальные средства из состава .NET используют Node.js и код на JavaScript при публикации проекта:
+
+```output
+"C:\Program Files\dotnet\packs\Microsoft.NET.Runtime.Emscripten.3.1.34.Node.win-x64\8.0.11\tools\bin\node.exe" "C:\Program Files\dotnet\packs\Microsoft.NET.Runtime.Emscripten.3.1.34.Sdk.win-x64\8.0.11\tools\emscripten\tools\acorn-optimizer.js" C:\Users\CCNETS~1\AppData\Local\Temp\emscripten_temp_3svfb4qm\dotnet.native.js JSDCE minifyWhitespace --exportES6 -o C:\Users\CCNETS~1\AppData\Local\Temp\emscripten_temp_3svfb4qm\dotnet.native.jso1.js
+```
+
+В частности, осуществляется минификация JavaScript-кода из состава **JS Interop**.
+
+```output
+  Stripping symbols from dotnet.native.wasm
+```
+
 Причина, по которой используется JavaScript следующая (ChatGPT): tooling для трансляции IL в wasm разработан на TypeScript. TypeScript, как и C# - инструменты разработанные в Microsoft. В эко-системе TypeScript содержится огромная коллекция различных библиотек и инструментов, с помощью которых написать инструмент трансляции было проще всего. Т.е. более правильно говорить не о JavaScipt/Node.js, а о TypeScript и console-based Runtime (одним из вариантов которого является Node.js). Заметим, что мы имеем дело с транспайлером TypeScript -> JavaScript, результат которого осуществляет транспиляцию с IL в wasm.
 
 Ещё одна причина использования Node.js - это развитая кросс-платформенная технология, которая работает на основных операционных системах (Windows/Linux/MacOS) "из коробки".
@@ -38,4 +72,4 @@ dotnet publish --no-build
 
 >Go - это аллюзия на Google? Взяли первые две буквы названия компании для названия языка программирования?
 
-Эта гипотеза поднимает серьёзные вопросы к качеству Blazor, т.к. "под капотом" находится целая куча устаревших технологий, с непонятными перспективами.
+Эта гипотеза поднимает серьёзные вопросы к технологичности Blazor, т.к. "под капотом" находится целая куча разных языковых стеков.
