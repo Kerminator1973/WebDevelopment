@@ -75,6 +75,21 @@ reader.onload = function ({ target: { result } }) {
 reader.readAsText(xhr.response);
 ```
 
+### Пример из книги "Exploring Blazor"
+
+В книге "Exploring Blazor. Second Edition" by  Taurius Litvinavicius, приведён следующие JavaScript-код загрузки файла из Blazor-приложения:
+
+```js
+function downloadfile(name, bt64) {
+    var downloadlink = document.createElement('a');
+    downloadlink.download = name;
+    downloadlink.href = "data:application/octet-stream;base64," + bt64;
+    document.body.appendChild(downloadlink);
+    downloadlink.click();
+    document.body.removeChild(downloadlink);
+}
+```
+
 ### Потенциальные ошибки при скачивании файлов
 
 Приложение может выгружать документы разных типов: json, pdf, text, database backup. Однако может возникнуть ситуация при которой токен AspNetCore.Identity протухнет. В этом случае Middleware вернёт код 302 и выполнит redirect на страницу Login.html, чтобы оператор мог выполнить повторную аутентификацию. Наш JavaScript-код не увидит переадрессацию 302 (он получит Http Status Code 200), но вместо ожидаемого типа данных вернёт HTML. По этому косвенному признаку можно понять, что токен "протух" и перебросить операторана страницу Login.
