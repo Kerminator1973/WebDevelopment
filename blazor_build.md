@@ -1,8 +1,14 @@
 # Публикация приложения Blazor WebAssembly
 
-При публикации приложения осуществляется не только сборка самого приложения, но так же и сборка Runtime. Для сборки Runtime существует только один вариант - "browser-wasm".
+Публикация проекта Blazor многоранный процесс, который может драматрически изменятся в зависимости от режима сборки.
 
-Пример сборки проекта:
+В наиболее простом случае, компилятор собирает пакет из dll-файлов, хранящих IL-сборки, а так же Blazor bridge - компонент, через который Blazor Runtime осуществляет модификацию Document Object Model (DOM).
+
+Сборка проекта может быть оптимизирована в случае использования дополнительных, платформо-зависимых библиотек (SDK), который устанавливаются с помощью **wasm-tools** (wasm-tools-net8).
+
+Наиболее сложный вариант сборки - Ahead-of-Time Compilation (AoT), который осуществляет трансляцию IL-сборок в wasm-пакеты, учитывая целевую модель: Portable, или конкретную аппаратную платформу. Оптимизация единиц сборки в режиме AoT осуществляется с использованием wasm-tools. При этом осуществляется не только сборка проекта, но и весь Runtime. Время сборки и количество ресурсов, которые при этом используются - кратно, или даже на порядок больше, чем в простом варианте сборки.
+
+Пример логов простой сборки проекта:
 
 ```shell
 Build started at 18:39...
@@ -277,7 +283,57 @@ Web App was published successfully file:///D:/Sources/Playground/BlazorAppBuild/
 - компилирует библиотеки .NET в объектные модули wasm (.o). Компиляция осуществляется с оптимизацией
 - использует Node.js для оптимизации JS Interop - моста между .NET/wasm и "песочницей" DOM
 
-Компиляция начинает занимать почти 2 минуты, вместо 17.5 секунд. 
+Компиляция занимает почти 2 минуты, вместо 17.5 секунд. 
+
+```output
+c:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\ServicePartners.Client.csproj : warning NU1900: Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.
+  Optimizing assemblies for size may change the behavior of the app. Be sure to test after publishing. See: https://aka.ms/dotnet-illink
+  Compiling native assets with emcc with -Oz. This may take a while ...
+  [1/3] pinvoke.c -> pinvoke.o [took 1,35s]
+  [2/3] corebindings.c -> corebindings.o [took 1,35s]
+  [3/3] driver.c -> driver.o [took 1,39s]
+```
+
+В процесс сборки используется **emcc**. Emcc – это компилятор Emscripten, который компилирует код на C++ в WebAssebly. И он действительно компилирует несколько низкоуровневых файлов (см. выше).
+
+Далее компилятор собирает .NET для Wasm из исходников:
+
+```output
+  Linking for initial memory $(EmccInitialHeapSize)=21495808 bytes. Set this msbuild property to change the value.
+  Linking with emcc with -O2. This may take a while ...
+…
+"C:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\obj\Any CPU\Release\net8.0\wasm\for-publish\pinvoke.o" "C:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\obj\Any CPU\Release\net8.0\wasm\for-publish\driver.o" "C:\Jenkins_Work\workspace\build_SPCD\ServicePartners.Client\obj\Any CPU\Release\net8.0\wasm\for-publish\corebindings.o" "C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Runtime.Mono.browser-wasm\8.0.11\runtimes\browser-wasm\native\libicudata.a" "C:\Program
+```
+
+Инструментальные средства из состава .NET используют Node.js и код на JavaScript при публикации проекта:
+
+```output
+"C:\Program Files\dotnet\packs\Microsoft.NET.Runtime.Emscripten.3.1.34.Node.win-x64\8.0.11\tools\bin\node.exe" "C:\Program Files\dotnet\packs\Microsoft.NET.Runtime.Emscripten.3.1.34.Sdk.win-x64\8.0.11\tools\emscripten\tools\acorn-optimizer.js" C:\Users\CCNETS~1\AppData\Local\Temp\emscripten_temp_3svfb4qm\dotnet.native.js JSDCE minifyWhitespace --exportES6 -o C:\Users\CCNETS~1\AppData\Local\Temp\emscripten_temp_3svfb4qm\dotnet.native.jso1.js
+```
+
+В частности, осуществляется минификация JavaScript-кода из состава **JS Interop**.
+
+```output
+  Stripping symbols from dotnet.native.wasm
+```
+
+Основная причина использования Node.js - развитые средства оптимизация JavaScript-кода, который используется, как минимум, в Blazor Bridge.
+
+## Оптимизация DevOps операций
+
+Для того, чтобы предотвратить повторную полную сборку проекта, необходимо использовать ключ `--no-build`:
+
+```shell
+dotnet publish --no-build
+```
+
+Этот ключ нельзя использовать безусловно, т.е. требуется добавить настройку "Полной пересборки" проекта, как опцию сборки в DevOps Pipeline. Также эта настройка может повлиять и на другие особенности DevOps Pipeline, например, придётся решать проблему с автоматической очисткой папки сборки проекта, а также выбора машины для сборки проекта.
+
+Также возможен вариант, в котором скрипт сборки проекта (.csproj) собирает приложение без Runtime, а для сборки Runtime используется другой проект. Однако, этот вариант относится в Advanced-техникам, он сложнее в реализации и не исключает расхождения в совместимости приложения и Runtime.
+
+Следует заметить, что оптимизация сборки может повлиять на стабильной работы приложения и даже привести к некорректной работе приложения.
+
+## В чем принципиальное различие обычной сборки и AoT
 
 Общий размер с проекта без глубокой оптимизации (\browser-wasm\publish): 15 МБ.
 
