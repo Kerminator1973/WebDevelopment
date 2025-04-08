@@ -776,6 +776,8 @@ A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.
 
 Go является компилируемым, кросс-платформенным языком, с автоматической сборкой мусора.
 
+Популярным инструментом для разработки web-приложений и создания API является [Fiber](https://github.com/gofiber/fiber), который можно описать следующими словами: "вдохновлённый Express, построенный на Fasthttp - самый быстрый движок для Go".
+
 <a name="crud"></a>
 ## RESTful и CRUD
 
