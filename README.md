@@ -690,6 +690,8 @@ IQueryable<SalesOrderDetail> query =
 
 >Весной 2025 года автор популярных библиотек AutoMapper и MediatR [Jimmy Bogard заявил](https://www.jimmybogard.com/automapper-and-mediatr-going-commercial/) о переводе своих библиотек из open source на коммерческую лицензию. Библиотека MassTransit (_trusted messaging framework_) также становится коммерческой, начиная с 9-ой версии. Перевод наиболее полезных библиотек на коммерческие лицензии начинает походить на коммерциализацию эко-системы в целом.
 
+>В апреле 2025 года Microsoft сообщил о прекращении деятельности в Китае, и [закрывает свою дочку Wicresoft](https://3dnews.ru/1120886/microsoft-zakroet-svoyu-kitayskuyu-kompaniyu-wicresoft-i-uvolit-tisyachi-sotrudnikov). Из России Microsoft ушёл в 2022 года. Если расценивать эти события как тренд, то Microsoft перестаёт существовать как глобальная компания и становится региональным провайдером облачных услуг.
+
 <a name="java"></a>
 
 ### Особенности технологического стека Java
