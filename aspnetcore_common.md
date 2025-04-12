@@ -290,3 +290,5 @@ public class Person : IDisposable
 ```
 
 Как я понимаю, чтобы не оборачивать код в try..finally/Dispose(), разработчики C\# придумали конструкцию с ключевым словом **using**, которая делает ровным счётом тоже самое.
+
+Отличная статья на Habr - [Как применять IDisposable и финализаторы: 3 простых правила](https://habr.com/ru/articles/89720/) by _Stephen Cleary_.
