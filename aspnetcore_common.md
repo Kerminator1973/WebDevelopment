@@ -413,3 +413,28 @@ if (numbers.Any() )
 ```csharp
 var numbers = GetNumbers().ToList();
 ```
+
+### Повторное использование HttpClient
+
+Если мы будем слишком часто создавать экземпляры HttpClient, то через некоторое время возникнет исключение из-за невозможности установить SSL-соединение. Пример неправильного кода:
+
+```csharp
+// ВНИМАНИЕ! ЭТО НЕ ПРАВИЛЬНЫЙ ПОДХОД
+async Task MakeRequestBadAsync(string url)
+{
+    using var client = new HttpClient();
+    try
+    {
+        await client.GetAsync(url);
+        Console.WriteLine("Request attepted (unsafe).");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}")
+    }
+}
+```
+
+Нам следует создать один экземпляр httpClient-а и использовать его повторно.
+
+В ASP.NET Core рекомендуется использовать **IHttpClientFactory**.
