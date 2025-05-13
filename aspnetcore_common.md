@@ -374,3 +374,42 @@ public async Task FetchDataAsync()
 // ...
 await FetchDataAsync();
 ```
+
+### Ошибки при использовании _iterator block_
+
+Допустим, что у нас есть функция, которая осуществляет "ленивую" генерацию значений, используя оператор yield:
+
+```csharp
+IEnumerable<int> GetNumbers()
+{
+    Console.WriteLine("--- Generating numbers ---");
+    yield return 1;
+    yield return 2;
+    yield return 3;
+}
+```
+
+Предположим, что мы хотим получить все три значения и используем следующий код:
+
+```csharp
+// ВНИМАНИЕ! ЭТО НЕ ПРАВИЛЬНЫЙ ПОДХОД
+var numbers = GetNumbers();
+
+if (numbers.Any() )
+{
+    Console.WriteLine("Counting");
+    Console.WriteLine($"Count: {numbers.Count()}");
+    foreach (var number in numbers)
+    {
+        Console.WriteLine($"Processing {number}");
+    }
+}
+```
+
+Ужас приведённого выше кода состоит в том, что строка "--- Generating numbers ---" будет выведена не один, а три раза. Два дополнительных раза связаны с вызовами numbers.Any() и numbers.Count(). Эти вызовы будут создавать новые итераторы, что и будет приводить к выводу строки повторно. Это может быть очень существенной проблемой, например, при обработке файлов.
+
+Решение: 
+
+```csharp
+var numbers = GetNumbers().ToList();
+```
