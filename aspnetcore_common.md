@@ -317,3 +317,60 @@ private static void ICanThrowException()
     throw new Exception("Bad thing happened");
 }
 ```
+
+### Ошибочное использование асинхронного кода
+
+Для получения результата асинхронных команд не рекомендуется использовать Result, как ниже в коде:
+
+```csharp
+// ВНИМАНИЕ! ЭТО НЕ ПРАВИЛЬНЫЙ ПОДХОД
+var data = FetchDataAsync().Result;
+
+public async Task<string> FetchDataAsync()
+{
+    await Task.Delay(100);  // Имитируем операцию ввода/вывода
+    return "Data";
+}
+```
+
+Правильный подход:
+
+```csharp
+var data = await FetchDataAsync();
+```
+
+### Некорректная обработка исключений асинхронного кода
+
+Ниже приведён код, в котором исключение в основном потоке не поймает исключение асинхронной задачи:
+
+```csharp
+// ВНИМАНИЕ! ЭТО НЕ ПРАВИЛЬНЫЙ ПОДХОД
+public async void FetchDataAsync()
+{
+    await Task.Delay(100);
+    throw new InvalidOperationException("Failure!");
+}
+
+try 
+{
+    FetchDataAsync();
+}
+catch (Exception ex)
+{
+    // СЮДА МЫ НЕ ПОПАДЁМ!
+    Console.WriteLine("caught");
+}
+```
+
+Чтобы поймать исключение, мы должны возвращать Task:
+
+```csharp
+public async Task FetchDataAsync()
+{
+    await Task.Delay(100);
+    throw new InvalidOperationException("Failure!");
+}
+
+// ...
+await FetchDataAsync();
+```
