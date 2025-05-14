@@ -293,6 +293,25 @@ public class Person : IDisposable
 
 Отличная статья на Habr - [Как применять IDisposable и финализаторы: 3 простых правила](https://habr.com/ru/articles/89720/) by _Stephen Cleary_.
 
+## Использование LINQ для разбора массивов символов
+
+Несколько примеров для работы с массивами символов с использованием LINQ:
+
+```csharp
+Part_Number = String.Concat(Encoding.ASCII.GetString(data.Take(15).ToArray()).Where(char.IsLetterOrDigit));
+```
+
+```csharp
+byte[] tmp = data.Take(BillLength).ToArray();
+```
+
+```csharp
+currState.ServiceBytes = _res.Skip(CommandIndex
+        + (currState.poolStateDictonary.Z2 != 0 ? 1 : 0)
+        + ((currState.poolStateDictonary.nextByteIsBill || currState.poolStateDictonary.nextByteIsErrorCode) ? 1 : 0)
+        ).SkipLast(CommandCrcLength).ToArray();
+```
+
 ## Трюки, которые необходимо знать
 
 Если мы хотим выполнить код при возникновении исключения, а затем бросить исключение дальше с оригинальным _stack details_, то throw должен вызываться без параметра:
