@@ -56,6 +56,26 @@ dotnet new webapp
 
 Зная IP-адрес компьютера с запущенным приложением, мы можем подключиться к нему. Для примера: http://192.168.0.120/
 
+## Очистка кэшей NuGet
+
+Удалить кэш NuGet-пакетов, кэш http и временные файлы можно командой:
+
+```shell
+dotnet nuget locals all --clear
+```
+
+По отдельности:
+
+- `dotnet nuget locals global-packages --clear`
+- `dotnet nuget locals http-cahce --clear`
+- `dotnet nuget locals temp --clear`
+
+Посмотреть расположение файлов можно командой:
+
+```shell
+dotnet nuget locals all --list
+```
+
 ## Правильное использование Http client через HttpClientFactory
 
 В случае, если web-приложение должно с web-сервера обратиться к какому-то другому серверу, обычно используется HttpClientFactory. Регистрация сервиса при запуске приложения выглядит следующим образом:
