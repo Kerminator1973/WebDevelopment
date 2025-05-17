@@ -477,3 +477,32 @@ async Task MakeRequestBadAsync(string url)
 Нам следует создать один экземпляр httpClient-а и использовать его повторно.
 
 В ASP.NET Core рекомендуется использовать **IHttpClientFactory**.
+
+### Ошибки захвата переменных в лямбдах
+
+Предположим, что у нас есть следующий код:
+
+```csharp
+List<Action> CreateActions()
+{
+    var actions = new List<Action>();
+    for (int i = 0; i < 3; i++) {
+        actions.Add(() => Console.WriteLine($"Value: {i}"));
+    }
+    return actions;
+}
+
+var actions = CreateActions();
+foreach (var action in actions) action();
+```
+
+Можно было бы предположить, что в приведённом выше примере, будут выведены значения 0, 1 и 2. Но на самом деле, переменная i будет захвачена лямбда-функцией и приложение выведет значения: 3, 3 и 3.
+
+Решение проблемы тривиальное:
+
+```csharp
+var myNumber = i;
+actions.Add(() => Console.WriteLine($"Value: {myNumber}"));
+```
+
+>Замечу, что в подобных ситуациях, синтаксис лямбда-функций в C++, который явным образом требует указать, как следует захватывать внешние переменные, гораздо более разумный и вменяемый.
