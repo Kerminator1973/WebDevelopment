@@ -4,8 +4,6 @@
 
 Большинство конструкций описаны в книгах [Марка J. Прайса](https://github.com/markjprice) "C# xx and .NET yy - Modern Cross-Platform Development". Книги серии, однозначно, рекомендуются к прочтению. В [бонусных главах](https://github.com/markjprice/cs10dotnet6/blob/main/9781801077361_Bonus_Content.pdf) содержатся дополнительные материалы по gRPC, MAUI, и т.д.
 
->14 мая 2025 года, по информации Miguel de Icaza (Gnome, Mono, Xamarin), Microsoft уволила инженеров из проекта Maui. Вероятно, что этот продукт будет закрыт.
-
 ## Термины
 
 В C\# методы могут быть **static** и **instance**. **Instance method** - это метод, который может быть вызван у конкретного экземляра класса. **Static method** - это метод, который может быть вызван без создания экземпляра класса.
