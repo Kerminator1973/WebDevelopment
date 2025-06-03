@@ -49,6 +49,12 @@ dotnet project convert app.cs
 
 Проблема, которую решает Microsoft - снизить кривую обучения для новых разработчиков. На английском языке соответствующий термин звучит как _adoption_.
 
+Возможность запуска CS-файла без создания проектов доступна и в других решениях:
+
+- [cs-script](https://github.com/oleg-shilo/cs-script)
+- [dotnet-script](https://github.com/dotnet-script/dotnet-script)
+- [Cake](https://cakebuild.net/)
+
 ## Использование строк шебанг (shebang - \#!)
 
 В .NET 10 появилась поддержка шебанг строк, которые подсказывают shell, как нужно выполнять исполняемый файл:
