@@ -124,7 +124,7 @@ public class EmailPublisher
 >using System;
 >using System.Text;
 >using System.Text.Json;
->using RabbitMQ.Client;>
+>using RabbitMQ.Client;
 >
 >namespace Mq
 >{
@@ -216,6 +216,38 @@ public class EmailConsumer : BackgroundService
   }
 }
 ```
+
+>Для успешной сборки приложения потребителя сгенерировал по шаблону консольное приложение и, кроме RabbitMQ добавил следующие зависимости:
+>
+>```shell
+>dotnet add package Microsoft.Extensions.Hosting
+>dotnet add package Microsoft.Extensions.DependencyInjection
+>dotnet add package Microsoft.Extensions.Logging
+>```
+>
+>Начальная часть консольного приложения:
+>
+>```csharp
+>using Microsoft.Extensions.DependencyInjection;
+>using Microsoft.Extensions.Hosting; // For BackgroundService
+>using Microsoft.Extensions.Logging; // For ILogger
+>using System;
+>using System.Threading;
+>using System.Threading.Tasks;
+>using RabbitMQ.Client;
+>using RabbitMQ.Client.Events;
+>using System.Text;
+>using System.Text.Json;
+>
+>namespace BackgroundServiceDemo
+>{
+>    public record Email(string To, string Subject, string Body);
+>    
+>    public class EmailConsumer : BackgroundService
+>    {
+>```
+>
+>На старте приложение загрузило из очереди находящиеся там сообщения, но, по каким-то причинам, не извлекало их динамически.
 
 ### Типы обмена в RabbitMQ
 
