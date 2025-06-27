@@ -32,6 +32,12 @@ docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 ra
 В команде указан порт, по которому можно подключиться к web-консоли - **15672**. Для подключения используется URL `http://localhost:15672`. Логин и пароль по умолчанию: `guest`/`guest`
 
 >Web-консоль успешно запускается. Команды для остановки контейнера приведены [в статье](https://github.com/Kerminator1973/WebDevelopment/blob/master/docker.md).
+>
+>Замечу, что в [официальной документации по RabbitMQ](https://www.rabbitmq.com/docs/download) рекомендуется использовать следующую версию брокера запросов:
+>
+>```shell
+>docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
+>```
 
 ### Реализация в .NET
 
@@ -45,6 +51,18 @@ docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 ra
 ```powershell
 Install-Package RabbitMQ.Client
 ```
+
+>Создание консольного приложения .NET (Publisher-а):
+>
+>```shell
+>dotnet new console -n mqPublisher
+>```
+>
+>Добавление зависимости:
+>
+>```shell
+>dotnet add package RabbitMQ.Client
+>```
 
 Определим класс сообщения:
 
@@ -100,20 +118,45 @@ public class EmailPublisher
 }
 ```
 
+> Пример кода Publisher-а вполне рабочий - я могу наблюдать, что сообщение добавляется в очередь и доступно для дальнейшей обработки. Предложенный в статье код я разместил в файле "EmailPublisher.cs":
+>
+>```csharp
+>using System;
+>using System.Text;
+>using System.Text.Json;
+>using RabbitMQ.Client;>
+>
+>namespace Mq
+>{
+>    public record Email(string To, string Subject, string Body);
+>
+>    public class EmailPublisher
+>    {
+>```
+>
+>В "Program.cs" добавил код создания экземпляра Publisher-а и добавление сообщения:
+>
+>```csharp
+>using Mq;
+>
+>var mq = new Mq.EmailPublisher();
+>await mq.Publish(new Email("volobuev@gmail.com", "Hello", "First Meeting"));
+>```
+>
+>Интерфейс Rabbit MQ, на первый взгляд - потрясающий!
+
 Параметры очереди:
 
 - durable: сохранять на диске, чтобы очередь не терялась при перезапуске брокера
 - exclusive: может ли использоваться другими соединениями
 - autoDelete: удалять ли сообщения при отключении последнего потребителя
 
-Получатель
+Получатель прослушивает очередь и обрабатывает сообщения по мере их поступления. Он должен:
 
-Прослушивает очередь и обрабатывает сообщения по мере их поступления. Он должен:
-
-- подключиться к RabbitMQ,
-- подписаться на очередь,
-- ожидать сообщений,
-- десериализовывать и обрабатывать сообщения.
+- подключиться к RabbitMQ
+- подписаться на очередь
+- ожидать сообщений
+- десериализовывать и обрабатывать сообщения
 
 Рекомендуемый и наиболее удобный способ получения сообщений — настроить подписку с помощью интерфейса IAsyncBasicConsumer. Затем сообщения будут доставляться автоматически по мере их поступления. Один из способов реализации потребителя — использовать класс AsyncEventingBasicConsumer, в котором доставки и другие события жизненного цикла потребителя реализованы как события C#:
 
