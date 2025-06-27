@@ -82,25 +82,21 @@ public record Email(string To, string Subject, string Body);
 ```csharp
 public class EmailPublisher
 {
-  private const string QUEUE = 
-   "email-queue";
+  private const string QUEUE = "email-queue";
 
   public async Task Publish(Email email)
   {
-    var fctry = new ConnectionFactory() { 
-     HostName = "localhost" };
-    using var conn = 
-     await fctry.CreateConnectionAsync();
-    using var channel = 
-     await conn.CreateChannelAsync();
+    var fctry = new ConnectionFactory() { HostName = "localhost" };
+    using var conn = await fctry.CreateConnectionAsync();
+    using var channel = await conn.CreateChannelAsync();
 
     // Создаём очередь
     await channel.QueueDeclareAsync(
-     queue: QUEUE,
-     durable: true,
-     exclusive: false,
-     autoDelete: false,
-     arguments: null);
+      queue: QUEUE,
+      durable: true,
+      exclusive: false,
+      autoDelete: false,
+      arguments: null);
 
     // Создаём сообщение
     var msg = JsonSerializer.Serialize(email);
@@ -108,12 +104,11 @@ public class EmailPublisher
 
     // Публикуем
     await channel.BasicPublishAsync(
-     exchange: string.Empty,
-     routingKey: QUEUE,
-     mandatory: true,
-     basicProperties: 
-      new BasicProperties { Persistent = true },
-     body: body);
+      exchange: string.Empty,
+      routingKey: QUEUE,
+      mandatory: true,
+      basicProperties: new BasicProperties { Persistent = true },
+      body: body);
   }
 }
 ```
@@ -164,55 +159,44 @@ public class EmailPublisher
 ```csharp
 public class EmailConsumer : BackgroundService
 {
-  private const string QUEUE = 
-   "email-queue";
+  private const string QUEUE = "email-queue";
 
-  protected override async Task 
-   ExecuteAsync(CancellationToken ct)
+  protected override async Task ExecuteAsync(CancellationToken ct)
   {
-    var fctry = new ConnectionFactory() { 
-     HostName = "localhost" };
-    using var conn = 
-     await fctry.CreateConnectionAsync(ct);
-    using var channel = 
-     await conn.CreateChannelAsync(cancellationToken: ct);
+    var fctry = new ConnectionFactory() { HostName = "localhost" };
+    using var conn = await fctry.CreateConnectionAsync(ct);
+    using var channel = await conn.CreateChannelAsync(cancellationToken: ct);
 
     await channel.QueueDeclareAsync(
-     queue: QUEUE,
-     durable: true,
-     exclusive: false,
-     autoDelete: false,
-     arguments: null,
-     cancellationToken: ct);
+      queue: QUEUE,
+      durable: true,
+      exclusive: false,
+      autoDelete: false,
+      arguments: null,
+      cancellationToken: ct);
 
-    var consumer = 
-     new AsyncEventingBasicConsumer(channel);
-    consumer.ReceivedAsync += 
-     async (sender, eventArgs) =>
-     {
-       var body = eventArgs.Body.ToArray();
-       var json = Encoding.UTF8.GetString(body);
-       var email = 
-        JsonSerializer.Deserialize<Email>(json);
+    var consumer = new AsyncEventingBasicConsumer(channel);
+    consumer.ReceivedAsync += async (sender, eventArgs) => {
 
-       Console.WriteLine(
-        $"Email: {email?.To}, Тема: {email?.Subject}");
+      var body = eventArgs.Body.ToArray();
+      var json = Encoding.UTF8.GetString(body);
+      var email = JsonSerializer.Deserialize<Email>(json);
 
-       // Отправляем email…
-       Task.Delay(1000).Wait();
+      Console.WriteLine($"Email: {email?.To}, Тема: {email?.Subject}");
 
-       await ((AsyncEventingBasicConsumer)sender)
-         .Channel
-         .BasicAckAsync(
-           eventArgs.DeliveryTag, 
-           multiple: false);
-     };
+      // Имитируем отправку email…
+      Task.Delay(1000).Wait();
+
+      await ((AsyncEventingBasicConsumer)sender).Channel.BasicAckAsync(
+        eventArgs.DeliveryTag, 
+        multiple: false);
+    };
 
     await channel.BasicConsumeAsync(
-     queue: QUEUE,
-     autoAck: true,
-     consumer: consumer,
-     cancellationToken: ct);
+      queue: QUEUE,
+      autoAck: true,
+      consumer: consumer,
+      cancellationToken: ct);
   }
 }
 ```
@@ -248,6 +232,18 @@ public class EmailConsumer : BackgroundService
 >```
 >
 >На старте приложение загрузило из очереди находящиеся там сообщения, но, по каким-то причинам, не извлекало их динамически.
+>
+>Чтобы добиться получения сообщений по мере их появления в очереди, необходимо в вызове BasicConsumeAsync() поменять значение поля `autoAck` с true на false, а также добавить "бесконечное ожидание" после вызова BasicConsumeAsync():
+>
+>```csharp
+>await channel.BasicConsumeAsync(
+>    queue: QUEUE,
+>    autoAck: false,
+>    consumer: consumer,
+>    cancellationToken: ct);
+>
+>await Task.Delay(Timeout.Infinite, ct);
+```
 
 ### Типы обмена в RabbitMQ
 
