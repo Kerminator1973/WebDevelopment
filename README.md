@@ -1050,6 +1050,7 @@ Online-компилятор С++ [GodBolt](https://godbolt.org/). Ключева
 - [DB Fiddle](https://www.db-fiddle.com/) - MySQL, PostgreSQL и SQLite
 - [pgSQL](https://pg-sql.com/) - песочница для PostgreSQL
 - [Python](https://colab.research.google.com/) - специализация Machine Learning, но не только
+- [react.new](https://codesandbox.io/) - песочница для разработки React-приложений
 
 Исключительно важным продуктом для отладки REST API является [Postman](https://www.postman.com/). Этот продукт позволяет, посредством GUI, сконструировать любой http(s) запрос и проанализировать полученный результат. Продукт считается индустриальным стандартом. Схожий функционал есть у консольного приложения [CURL](https://curl.haxx.se/), но в этом продукте нет такого мощного и удобного графического пользовательского интерфейса, как у Postman.
 
