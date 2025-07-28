@@ -1,6 +1,10 @@
 # Встроенный в Postgres SQL движок Key/Value
 
->Раздел находится в состоянии: исследование!
+Использовать hstore можно только после активации (установки) соответствующего расширения, следующей командой:
+
+```sql
+CREATE EXTENSION IF NOT EXISTS hstore;
+```
 
 Чтобы использовать hstore необходимо создать колонку с типом hstore:
 
@@ -33,25 +37,25 @@ INSERT INTO my_table (data) VALUES ('"key1" => "value1", "key2" => "value2"');
 INSERT INTO my_table (data) VALUES (hstore('key1', 'value1') || hstore('key2', 'value2'));
 ```
 
+Для каждого Insert-а выводится отдельная запись в pgAdmin -> View/Edit Data -> All Rows.
+
 Получить данные можно следующим образом:
 
 ```sql
 SELECT data->'key1' FROM my_table;
 ```
 
-Синтаксис для изменения данных следующий:
+Однако, этот запрос работает не так, как может интуитивно показаться. Поскольку в запросе отсутствует ключевое слово WHERE, запрос возвращает все записи из таблицы (представлении All Rows в pgAdmin). Однако, если в конкретной записи нет нужно ключа, что возвращаемое значение null. Также как и в традиционном реляционном запросе, использование SELECT-а без WHERE часто лишено смысла.
 
-```sql
-table (data) VALUES (hstore('key1', 'value1') || hstore('key2', 'value2'));
-```
-
-Так же можно использовать условия поиска данных. Примеры:
+Более канонической формой является:
 
 ```sql
 SELECT * FROM my_table WHERE data ? 'key1';
 SELECT * FROM my_table WHERE data ?| array['key1', 'key2'];
 SELECT * FROM my_table WHERE data @> hstore('key1', 'value1');
 ```
+
+Где условия задаются следующим образом:
 
 ```sql
 - `?` Проверить, что ключ существует
@@ -60,6 +64,16 @@ SELECT * FROM my_table WHERE data @> hstore('key1', 'value1');
 - `@>` Check if the left hstore contains the right hstore
 - `<@` Check if the left hstore is contained in the right hstore
 ```
+
+Обобщая: hstore позволяет сохранять в поле некоторый набор пар "ключ/значение" и искать записи, указывая имя ключа. Важно понимать, что записей содержащих конкретный ключ может быть несколько, а Postgres позволяет отбирать записи по комбинации находящихся в них ключей.
+
+Синтаксис для изменения данных следующий:
+
+```sql
+table (data) VALUES (hstore('key1', 'value1') || hstore('key2', 'value2'));
+```
+
+## Ещё один тип данных - JSONB
 
 В PostgreSQL есть ещё один тип данных - jsonb, который позволяет выполнять схожие действия, но синтаксис использования немного другой.
 
