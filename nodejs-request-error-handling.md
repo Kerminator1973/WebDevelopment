@@ -44,3 +44,5 @@ app.listen(3000, '0.0.0.0', () => {
     console.log('Server running on port 3000');
 });
 ```
+
+>Столкнулся с ситуацией, в которой Node.js игнорировал http-запрос в том случае, если в MIME-заголовке отсутствовало поле "Host". Информация полученная от Cloude Haiku: "_HTTP/1.1 requires the Host header to be present in every request. If the header is missing, servers are technically allowed to reject the request_".
