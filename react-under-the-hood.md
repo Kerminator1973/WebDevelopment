@@ -101,3 +101,5 @@ render() {
 ## Важные методики - Memoization
 
 [Memoization](https://legacy.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#what-about-memoization) - это сохранение тяжело получаемых, или сложно вычисляемых данных в памяти приложения.
+
+Также рекомендуется почитать раздел по [мемоизации в моём репозитарии](https://github.com/Kerminator1973/ReactDataTables/blob/main/react_notes.md).
