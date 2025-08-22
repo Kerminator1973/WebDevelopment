@@ -67,3 +67,7 @@ SET ASPNETCORE_URLS=http://*:80;https://*:443
 ```
 
 Варианты `0.0.0.0` (для IPv4) и `[::]` (для IPv6) также могут быть использованы.
+
+При выполнении запросов на клиентской стороне необходимо явным образом указывать используемый протокол (http, или https).
+
+Определение IP-адреса хостовой машины, который должен быть использован из клиентской машины [описано здесь](https://github.com/Kerminator1973/WebDevelopment/blob/master/iis.md#accesstohost). Особенности конфигурирования сетевой подсистемы виртуальной машины описаны [здесь](https://github.com/Kerminator1973/WebDevelopment/blob/master/homesite.md#usingvmware).
