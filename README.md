@@ -1043,6 +1043,8 @@ Google Chrome сам по себе является очень мощным ин
 
 [GIGA IDE от СБЕРа](https://gitverse.ru/home/) - сборка, основанная на JetBrains IntelliJ Idea/Pycharm Community. Содержит более 70 дополнительных инструментов разработки, тестирования, администрирования, а также AI-ассистент. Благодаря использованию дополнительных инструментов, по функциональным возможностям приближается к платным версиям IDE от JetBrains.
 
+[OpenIDE](https://openide.ru/) - сборка IntelliJ Idea, осуществляемая группой компаний (BellSoft, "Группа Астра" и "Хоулмонт") на базе исходных текстов IntelliJ Idea Community Edition. В статье [Российские Java/Spring-разработчики: какие IDE выбирают сегодня](https://habr.com/ru/companies/axiomjdk/articles/949914/) разработки Axiom SDK сравнивая OpenIDE с GIGA IDE, утверждают о том, что кодовая база OpenIDE значительно более свежая, продукт действительно open-source и поддерживается несколькими компаниями, в отличии от GIGA IDE.
+
 Облачные IDE: [GitPod](https://www.gitpod.io/), [CodeAnywhere](https://codeanywhere.com/), [Github Codespaces](https://github.com/features/codespaces). CodeAnywhere и Codespaces являются платными - в России не доступны.
 
 Облачный редактор [VS Code](https://vscode.dev/) - оплата за фактические время использования - в России не доступны.
