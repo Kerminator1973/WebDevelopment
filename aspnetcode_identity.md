@@ -58,3 +58,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 - Microsoft.AspNetCore.Antiforgery - CSRF protection
 - Microsoft.IdentityModel.Tokens - Token validation utilities (used for JWT, SAML, etc.)
 - AspNetCore.Authentication.ApiKey - простя схема использования API‑ключей
+
+Также полезным может быть поиск используемых Middleware: `app.UseAuthentication()` и `app.UseAuthorization()`
+
+>Гипотетически, мы можем использовать одну и ту же реализацию IDataProtectionProvider в проектах ASP.NET 4.0 и ASP.NET Core 8, добавив в качестве зависимости Microsoft.AspNetCore.DataProtection:
+>
+>```xml
+><!-- In the .csproj (or packages.config) of the Web Forms / MVC 4 app -->
+><PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="8.*" />
+>```
+>
+>Это может потребовать использования общего хранилища ключей, а также решения большого количества проблем совместимости, в частности они должны иметь одно имя приложений (см. SetApplicationName), использовать одинаковые алгоритмы Key-ring encryption, и т.д.
