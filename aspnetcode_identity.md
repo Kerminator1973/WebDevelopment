@@ -69,3 +69,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 >```
 >
 >Это может потребовать использования общего хранилища ключей, а также решения большого количества проблем совместимости, в частности они должны иметь одно имя приложений (см. SetApplicationName), использовать одинаковые алгоритмы Key-ring encryption, и т.д.
+
+## Как можно обновить cookie для продолжения работы
+
+Механизм описан на [странице](./aspnetcode_ConfigureApplicationCookie.md) и реализован в проекте ProIDC.
