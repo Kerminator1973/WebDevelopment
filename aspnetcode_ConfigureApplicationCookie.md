@@ -69,6 +69,8 @@ options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthentic
 };
 ```
 
+Приведённый выше пример добавляется в вызов `ConfigureApplicationCookie()` и является настройкой одного из параметров Identity.
+
 ## Anti-Forgery Token
 
 Anti-Forgery Token является парой связанных значений, одна часть которого хранится в Cookie, а вторая на HTML-странице и включается в Post-запрос.
