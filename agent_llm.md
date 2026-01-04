@@ -14,11 +14,11 @@ LLM - это клиент агентских систем.
 
 Чаще всего агенты предоставляют LLM доступ к ресурсам: папкам и файлам, что позволяет LLM сформировать больший контекст, получая доступ к файлам проекта, настройкам, и т.д.
 
-Агенты встраиваются в IDE: [Windsurf](https://windsurf.com/) (см. Cascade), [Cursor](https://cursor.com/) (см. Composer), Visual Studio Code, Visual Studio 2026, GigaIDE, IntelliJ AI, Amazon CodeWhisperer Studio, GitHub Codespaces. В большинстве случаев, в качестве основы IDE используется Visual Studio Code.
+Агенты встраиваются в IDE: [Windsurf](https://windsurf.com/) (см. Cascade), [Cursor](https://cursor.com/) (см. Composer), Visual Studio Code, Visual Studio 2026, GigaIDE, KodaCode, IntelliJ AI, Amazon CodeWhisperer Studio, GitHub Codespaces. В большинстве случаев, в качестве основы IDE используется Visual Studio Code.
 
 Российский агент встраиваемый в VSCode - [KodaCode](https://kodacode.ru/). Работает с зарубежными LLM без прокси. Поддерживает работу бесплатный режим с китайскими LLM (MiniMax M2.1, Qwen3, Kimi K2 Thinking, GLM 4.6). Требует автризации на GitHub. На начало 2026 года бесплатный, но планируется переход на подписочную модель с поддержкой нескольких бесплатных LLM. В начале 2026 поддержка IDE JetBrains. Разработчики - бывшие сотрудники СБЕРа, разрабатывавшие GigaCode.
 
->Cursor - в режиме **Plan** задаёт уточняющие вопросы и формирует Markdown-файл с описание задачи и списокм того, чтоб нужно сделать с кодом. Далее Cursor работает уже с этим списком.
+>Cursor - в режиме **Plan** задаёт уточняющие вопросы и формирует Markdown-файл с описанием задачи и списком того, чтоб нужно сделать с кодом. Далее Cursor работает уже с этим списком.
 >
 >В бесплатной версии есть GPT 5.2. Хорошо подходит для проектирования, прототипов и быстрых экспериментов. Позволяет выполнять регистрацию на "10 минутные" почтовые аккаунты.
 >
