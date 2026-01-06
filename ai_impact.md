@@ -16,7 +16,7 @@
 
 Может ли ИИ быть эффективно использован в любом проекте: НЕТ. ИИ лучше всего работает на маленьких проектах. Чем больше технология и алгоритмы похожи на 100 тысяч таких же, уже написанных, тем выше будет качество кода сгенерированного ИИ.
 
-## Как возникает деградация программого продукта (на реальных примерах)
+## Как возникает деградация программого продукта (на реальных примерах). Возникли меньше месяца назад
 
 Студент генерировал код на Python для институтской задачи по курсу "цифровая лингвистика". По условиям задачи следовало выполнить векторизацию исходных документов, построив по каждому из документов вектор, содержащий частоту использования каждого слова, встречаемого в любом из документов. Затем нужно было извлечь частоту использования конкретного слова из конкретного документа.
 
@@ -55,9 +55,163 @@ return tf_values[number_of_doc]
 
 Проблема состоит в том, что если не вчитываться в код и не проверять его эффективность на постоянной основе, можно включить в промышленное решение множество супер-не эффективных алгоритмов, которые будут приводить к огромному расходу ресурсов и, косвенно, наносить коммерческий ущерб компании.
 
-### Пример очень быстрого, на правильного кода
+### Пример очень быстрого, но неправильного кода
 
-BVS CC и regex.
+В BVS Control Center есть части кода, которые можно улучшить в части производительности. В частности, разбор HTML-документов получаемых от счётчика D820 осуществляется с помощью регулярных выражений. Для того, чтобы оценить производительность именно этого кода был использован специализированный инструмент - DotNetBenchmark. Инструмент точно оценивает время выполнения кода.
+
+Для сравнения, с помощью ИИ был сгенерирован код, который делает тоже самое, но на низком уровне, без использования регулярных выражений.
+
+Оригинальный код:
+
+```csharp
+private readonly string htmlExample = new(@"
+	<tr valign=""middle"">
+	  < td align = ""center"" width = ""60%"" colspan = ""2"" >
+		< form method = ""GET"" action = ""http://192.168.1.254/ser_num/00001321.zip"" >
+		  < input type = ""submit"" class=""CSS_MONO_FONT"" style=""height:50px; width:100%"" value=""N   1:      | 00001321 |        8 Banknotes"">
+		</form>
+	  </td>
+	  <td align = ""left"" class=""CSS_MONO_FONT"" colspan=""2"">
+		<a href = ""http://192.168.1.254/ser_num/00001321.zip"" >/ ser_num / 00001321.zip </ a >
+		< br > 401 bytes
+	  </td>
+	</tr>
+	<tr valign = ""middle"" >
+	  < td align=""center"" width=""60%"" colspan=""2"">
+		<form method = ""GET"" action=""http://192.168.1.254/ser_num/00001322.zip"">
+		  <input type = ""submit"" class=""CSS_MONO_FONT"" style=""height:50px; width:100%"" value=""N   2:      | 00001322 |        5 Banknotes"">
+		</form>
+	  </td>
+	  <td align = ""left"" class=""CSS_MONO_FONT"" colspan=""2"">
+		<a href = 'http://192.168.1.254/ser_num/00001322.zip' >/ ser_num / 00001322.zip </ a >
+		< br > 394 bytes
+	  </td>
+	</tr>
+");
+
+static readonly Regex reHref = new(@"(?inx)
+	<a \s [^>]*
+		href \s* = \s*
+			(?<q> ['""] )
+				(?<url> [^'""]+ )
+			\k<q>
+	[^>]* >", RegexOptions.Compiled, TimeSpan.FromMilliseconds(500));   // Ограничиваем время компиляции регулярного выражения
+
+[Benchmark]
+public void UsedRegEx()
+{
+    List<string> urls = new();
+
+    // Используем регулярные выражения для того, чтобы извлечь имена файлов
+    // с архивами из полученного HTML-документа
+    foreach (Match match in reHref.Matches(htmlExample))
+    {
+        urls.Add("http://" + "192.168.1.254" + match.Groups["url"].ToString());
+    }
+}
+```
+
+ИИ сгенерировал следующий код (комментарии к коду добавил программист-человек):
+
+```csharp
+private readonly string baseUrl = "192.168.1.254";
+
+[Benchmark]
+public void NotUsingRegEx()
+{
+    List<string> urls = new();
+
+    // Используем строковые операции для извлечения URL из href атрибутов
+    int searchFrom = 0;
+    while (true)
+    {
+        // Ищем начало тега <a
+        int aTagStart = htmlExample.IndexOf("<a ", searchFrom, StringComparison.OrdinalIgnoreCase);
+        if (aTagStart == -1)
+            break;
+
+        // Ищем атрибут href
+        int hrefStart = htmlExample.IndexOf("href", aTagStart, StringComparison.OrdinalIgnoreCase);
+        if (hrefStart == -1)
+        {
+            searchFrom = aTagStart + 3;
+            continue;
+        }
+
+        // Ищем знак равенства
+        int equalsSign = htmlExample.IndexOf('=', hrefStart);
+        if (equalsSign == -1)
+        {
+            searchFrom = hrefStart + 4;
+            continue;
+        }
+
+        // Пропускаем пробелы после знака равенства
+        int quoteStart = equalsSign + 1;
+        while (quoteStart < htmlExample.Length && char.IsWhiteSpace(htmlExample[quoteStart]))
+            quoteStart++;
+
+        if (quoteStart >= htmlExample.Length)
+            break;
+
+        // Определяем тип кавычки
+        char quoteChar = htmlExample[quoteStart];
+        if (quoteChar != '"' && quoteChar != '\'')
+        {
+            searchFrom = quoteStart;
+            continue;
+        }
+
+        // Ищем закрывающую кавычку
+        int urlStart = quoteStart + 1;
+        int quoteEnd = htmlExample.IndexOf(quoteChar, urlStart);
+        if (quoteEnd == -1)
+        {
+            searchFrom = urlStart;
+            continue;
+        }
+
+        // Извлекаем URL
+        string url = htmlExample.Substring(urlStart, quoteEnd - urlStart).Trim();
+
+        // Если URL относительный, добавляем базовый адрес
+        if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
+            !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        {
+            urls.Add($"http://{baseUrl}{url}");
+        }
+        else
+        {
+            urls.Add(url);
+        }
+
+        searchFrom = quoteEnd + 1;
+    }
+}
+```
+
+Результаты замера эффективности обоих результатов:
+
+| Method           | Mean      | Error    | StdDev   | Gen0   | Gen1   | Allocated |
+|----------------- |----------:|---------:|---------:|-------:|-------:|----------:|
+| UsedRegEx        | 567.25 ns | 2.984 ns | 2.792 ns | 0.2813 | 0.0010 |    1768 B |
+| NotUsingRegEx    | 128.94 ns | 2.572 ns | 2.962 ns | 0.0470 |      - |     296 B |
+
+Реализация без использования RegEx даёт выигрыш в 4,75 раза, а также расходует в шесть раз меньше памяти.
+
+Казалось бы - абсолютная победа, однако, всё не так просто. Реализация с использованием RegEx учитывает размещение атрибутов внутри тэга и работает абсолютно корректно. Этот код работает алгоритмически верно и не даёт ошибок.
+
+Вариант сгенерированный ИИ - очень быстрый, но он сильно упрощён и работоспособен в очень ограниченных случаях. Например, код будет работать не правильно, вот в такой ситуации: 
+
+```html
+<a onclick='...'>Можно нажать</a><div href='...'>Очень странный div</div>
+```
+
+Код найдёт `<a ` в первом тэге, а `href` возьмёт из второго, который вообще не имеет никакого отношения с ссылке на пересчёт.
+
+Подобные ошибки являются крайне сложными, т.к. на тестах всё будет работать, но возникающее в промышленной эксплуатации некорректное поведение будет практически, невозможно, объяснить.
+
+Несколько подобных проблем могут привести к критичной деградации поведения приложения. Построить логически обоснованную модель сбоя будет практически невозможно.
 
 ### Мобильная версия портала сервис-партнёров
 
