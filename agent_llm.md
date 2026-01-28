@@ -32,7 +32,7 @@ LLM - это клиент агентских систем.
 
 Агенты встраиваются в IDE: [Windsurf](https://windsurf.com/) (см. Cascade), [Cursor](https://cursor.com/) (см. Composer), [ZED](https://zed.dev/) разработанный на Rust, [Google Antigravity](https://antigravity.google/), [Trae IDE](https://www.trae.ai/), Visual Studio Code, Visual Studio 2026, GigaIDE, KodaCode, IntelliJ AI, Amazon CodeWhisperer Studio, GitHub Codespaces. В большинстве случаев, в качестве основы IDE используется Visual Studio Code.
 
-Российский агент встраиваемый в VSCode - [KodaCode](https://kodacode.ru/). Работает с зарубежными LLM без прокси. Поддерживает работу бесплатный режим с китайскими LLM (MiniMax M2.1, Qwen3, Kimi K2 Thinking, GLM 4.6). Требует автризации на GitHub. На начало 2026 года бесплатный, но планируется переход на подписочную модель с поддержкой нескольких бесплатных LLM. В начале 2026 поддержка IDE JetBrains. Разработчики - бывшие сотрудники СБЕРа, разрабатывавшие GigaCode.
+Российский агент встраиваемый в VSCode - [KodaCode](https://kodacode.ru/). Работает с зарубежными LLM без прокси. Поддерживает работу бесплатный режим с китайскими LLM (MiniMax M2.1, Qwen3, Kimi K2 Thinking, GLM 4.6). Требует авторизации на GitHub. На начало 2026 года бесплатный, но планируется переход на подписочную модель с поддержкой нескольких бесплатных LLM. В начале 2026 поддержка IDE JetBrains. Разработчики - бывшие сотрудники СБЕРа, разрабатывавшие GigaCode. Kimi Code предлагает несколько тарифных планов, самый дешевый из которых стоит $19/месяц.
 
 >Cursor - в режиме **Plan** задаёт уточняющие вопросы и формирует Markdown-файл с описанием задачи и списком того, чтоб нужно сделать с кодом. Далее Cursor работает уже с этим списком.
 >
