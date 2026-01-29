@@ -82,7 +82,7 @@ services.AddDataProtection()
 
 Тип используемого токена можно иногда понять по внешнему виду:
 
-- Antiforgery (CSRF) token: в заголовке Http-запроса есть ползе "XSRF-TOKEN", или "X-XSRF-TOKEN"
+- Antiforgery (CSRF) token: в заголовке Http-запроса есть поле "XSRF-TOKEN", или "X-XSRF-TOKEN"
 - Если токен начинается со строки "CfDJ8", то это скорее всего либо Token AspNetCore.Identity.Application, либо ASP.NET Core data‑protection token
 - строка в base64 - это либо JWT, либо Refresh Token
 
