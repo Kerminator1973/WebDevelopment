@@ -279,6 +279,14 @@ docker build -t cinna-pages .
 docker run -d -p 8080:80 cinna-pages
 ```
 
+>Важно заметить, что начиная с .NET Core 7, в механизм Publish добавлена возможность создания контейнеров Docker и Podman. Пример команды:
+>
+>```shell
+>dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer -p:ContainerImageName=hellodocker7
+>```
+>
+>Для использования этой возможности в проект нужно было добавить NuGet-пакет Microsoft.NET.Build.Containers, но, предположительно, он уже должен включаться по умолчанию в .NET SDK в современных версиях. Настройки контейнера (имя образа, теги, базовый образ и т.д.) можно задавать в файле проекта (csproj) через свойства MSBuild.
+
 ### Как указать порты, которые будет обрабатывать Kestrel
 
 Одним из вариантов указания портов, которые будет слушать web-сервер Kestrel - указать их явным образом в файле "appsettings.json". Например, так:
