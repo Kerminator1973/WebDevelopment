@@ -71,3 +71,25 @@ SET ASPNETCORE_URLS=http://*:80;https://*:443
 При выполнении запросов на клиентской стороне необходимо явным образом указывать используемый протокол (http, или https).
 
 Определение IP-адреса хостовой машины, который должен быть использован из клиентской машины [описано здесь](https://github.com/Kerminator1973/WebDevelopment/blob/master/iis.md#accesstohost). Особенности конфигурирования сетевой подсистемы виртуальной машины описаны [здесь](https://github.com/Kerminator1973/WebDevelopment/blob/master/homesite.md#usingvmware).
+
+## Как тоже самое выглядит в коде
+
+Если бы мы делали тоже самое в коде, то выглядело бы это так:
+
+```csharp
+public static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+    .ConfigureWebHostDefaults(webBuilder =>
+    {
+        webBuilder
+            .UseUrls("http://*:5000")
+            .CaptureStartupErrors(true)
+            .UseStartup<Startup>();
+    });
+```
+
+Вызов UseUrls() позволяет настроить подключение как http, так и https:
+
+```csharp
+UseUrls("http://0.0.0.0:5000", "https://0.0.0.0:5001");
+```
