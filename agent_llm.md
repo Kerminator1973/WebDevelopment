@@ -179,6 +179,8 @@ Agent Mode в Visual Studio Code получает доступ к окну "Outp
 - Gemini 3 Pro
 - DeepSeek V3.2
 
+Похожие российские агрегаторы: [Chat AI Bot](https://chataibot.ru/), [Merlin Ai](https://www.getmerlin.in/ru).
+
 Китайские LLM предоставляют доступ к некоторым своим сетям бесплатно, но есть ограничения по надёжности и скорости работы:
 
 - [DeepSeek](https://www.deepseek.com/) V3.2
