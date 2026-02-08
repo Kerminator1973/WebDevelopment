@@ -5,9 +5,290 @@
 
 ## Результат
 
-Giga.Chat отказался анализировать документ по ссылке.
-
 Alice.yandex.ru сгенерировала HTML-документ в который включала описание стилей css (нежелательно) и JavaScript-код (также нежелательно). JavaScript явно не знает специфику DataTables.NET и предполагает прямую манипуляцию с DOM для заполнения таблицы, что является ошибочным.
+
+Giga.Chat отказался анализировать документ по ссылке, однако существует возможность в GigaIDE включить в контекст файл. GigaChat добавил два файла.
+
+Разметка "index.html":
+
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление пользователями</title>
+
+    <!-- Bootstrap 5.1 CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
+
+    <style>
+        .btn-custom {
+            margin-right: 5px;
+        }
+        .modal-footer .btn {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h3>Список пользователей</h3>
+
+        <div class="mb-3">
+            <button id="addBtn" class="btn btn-success btn-custom">Добавить</button>
+            <button id="editBtn" class="btn btn-primary btn-custom" disabled>Изменить</button>
+            <button id="deleteBtn" class="btn btn-danger btn-custom" disabled>Удалить</button>
+        </div>
+
+        <table id="usersTable" class="table table-striped table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>ФИО</th>
+                    <th>Телефон</th>
+                    <th>Организация</th>
+                    <th>Банковский счёт</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <!-- Модальное окно "Добавить / Изменить" -->
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">Добавить пользователя</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <input type="hidden" id="userId">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">ФИО</label>
+                            <input type="text" class="form-control" id="fullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Телефон</label>
+                            <input type="text" class="form-control" id="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="organization" class="form-label">Организация</label>
+                            <input type="text" class="form-control" id="organization" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="account" class="form-label">Банковский счёт</label>
+                            <input type="text" class="form-control" id="account" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Подтвердите удаление</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите удалить выбранного пользователя?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery 3.7 -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap 5.1 JS -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Клиентская логика -->
+    <script src="js/script.js"></script>
+</body>
+</html>
+```
+
+Также GigaChat сгенерировал файл с JavaScript-кодом:
+
+```js
+$(document).ready(function () {
+    let table;
+    let selectedId = null;
+
+    // Настройки DataTable
+    const datatable_settings = {
+        "processing": true,
+        "serverSide": false, // Клиентская обработка
+        "searching": true,
+        "ordering": true,
+        "pageLength": 14,
+        "order": [[1, "asc"]], // Сортировка по ФИО (второй столбец)
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+        },
+        "columns": [
+            { "data": "id", "searchable": false, "className": "dt-body-center" },
+            { "data": "fullName" },
+            { "data": "phone" },
+            { "data": "organization" },
+            { "data": "account" }
+        ],
+        "ajax": {
+            "url": "/api/users",
+            "type": "GET",
+            "dataSrc": "",
+            "error": function (xhr, err, thrown) {
+                alert("Ошибка загрузки данных: " + (xhr.responseJSON?.message || thrown));
+            }
+        }
+    };
+
+    table = $("#usersTable").DataTable(datatable_settings);
+
+    // Выделение строки
+    $("#usersTable tbody").on("click", "tr", function () {
+        if ($(this).hasClass("selected")) {
+            $(this).removeClass("selected");
+            selectedId = null;
+            updateButtonState();
+        } else {
+            table.$("tr.selected").removeClass("selected");
+            $(this).addClass("selected");
+            selectedId = table.row(this).data().id;
+            updateButtonState();
+        }
+    });
+
+    // Обновление состояния кнопок
+    function updateButtonState() {
+        const isEnabled = selectedId !== null;
+        $("#editBtn").prop("disabled", !isEnabled);
+        $("#deleteBtn").prop("disabled", !isEnabled);
+    }
+
+    // Открытие модального окна "Добавить"
+    $("#addBtn").click(function () {
+        $("#userModalLabel").text("Добавить пользователя");
+        $("#userForm")[0].reset();
+        $("#userId").val("");
+        new bootstrap.Modal(document.getElementById("userModal")).show();
+    });
+
+    // Открытие модального окна "Изменить"
+    $("#editBtn").click(function () {
+        const data = table.row(".selected").data();
+        $("#userModalLabel").text("Изменить пользователя");
+        $("#userId").val(data.id);
+        $("#fullName").val(data.fullName);
+        $("#phone").val(data.phone);
+        $("#organization").val(data.organization);
+        $("#account").val(data.account);
+        new bootstrap.Modal(document.getElementById("userModal")).show();
+    });
+
+    // Сохранение (добавление/изменение)
+    $("#saveBtn").click(function () {
+        const id = $("#userId").val();
+        const userData = {
+            fullName: $("#fullName").val(),
+            phone: $("#phone").val(),
+            organization: $("#organization").val(),
+            account: $("#account").val()
+        };
+
+        const method = id ? "PUT" : "POST";
+        const url = id ? `/api/users/${id}` : "/api/users";
+
+        $.ajax({
+            url: url,
+            type: method,
+            contentType: "application/json",
+            data: JSON.stringify(userData),
+            success: function () {
+                table.ajax.reload(null, false);
+                $("#userModal").modal("hide");
+            },
+            error: function (xhr) {
+                alert("Ошибка: " + (xhr.responseJSON?.message || "Не удалось сохранить"));
+            }
+        });
+    });
+
+    // Открытие модального окна удаления
+    $("#deleteBtn").click(function () {
+        new bootstrap.Modal(document.getElementById("deleteModal")).show();
+    });
+
+    // Подтверждение удаления
+    $("#confirmDeleteBtn").click(function () {
+        $.ajax({
+            url: `/api/users/${selectedId}`,
+            type: "DELETE",
+            success: function () {
+                table.ajax.reload(null, false);
+                $("#deleteModal").modal("hide");
+                selectedId = null;
+                updateButtonState();
+            },
+            error: function (xhr) {
+                alert("Ошибка: " + (xhr.responseJSON?.message || "Не удалось удалить"));
+            }
+        });
+    });
+});
+```
+
+В целом результат кажется адекватным. Что касается выбора вариантов загрузки, то GigaChat добавил min-версию файлов (как и Cloude Sonet дальше по тексту). Он также праивльно объединил верстку добавления/изменения в одном модальном диалоге и корректно настраивает заголовок диалога.
+
+Однако код не оптимален. Например, рассмотрим следующий участок кода:
+
+```js
+$("#usersTable tbody").on("click", "tr", function () {
+    if ($(this).hasClass("selected")) {
+        $(this).removeClass("selected");
+        selectedId = null;
+        updateButtonState();
+    } else {
+        table.$("tr.selected").removeClass("selected");
+        $(this).addClass("selected");
+        selectedId = table.row(this).data().id;
+        updateButtonState();
+    }
+});
+```
+
+Как минимум, можно было бы вынести вызов `updateButtonState()` за пределы условия, т.к. в коде GigaChat он выполняется в обоих вариантах.
+
+ToDO: посмотреть, как в моё коде работает выделения элемента в DataTables.NET. Я не помню, что нужно было устанавливать класс вручную. Вроде бы этот функционал работал "из коробки".
+
+GigaChat нарушил одно моё указание "Сортировка по умолчанию должна осуществляться по первому полю". По факту он написал следующий код:
+
+```js
+"order": [[1, "asc"]], // Сортировка по ФИО (второй столбец)
+```
+
+Также стоит обратить внимание на то, что настройка "processing" выводит на экран сообщение "Обработка..." пока выполняется обработка длительных операций. В действительности это актуально только для server-side режима рендеринга, который я запретил к использованию в своем шаблоне. Это ещё раз подтверждает, что GigaChat плохо знает библиотеку DataTables.NET.
+
+В целом - не плохо. Довольно аккуратный код, без максимальной оптимизации и с ограниченным знанием особенностей разработки кода DataTables.NET.
+
+### Cloude Sonet 4.5
 
 Cloude Sonet 4.5 сгенерировал следующий код (index.html):
 
