@@ -249,7 +249,7 @@ connection.Reconnected += (message) =>
 
 ### RetryPolicy
 
-В действительности, существует понятие **retry policy** которое определяет, как часто нужно пытаться осуществлять попытку повторного открытие соединения с сервером SignalR при потере соединения. Так, например, может быть реализован подход, при котором страница постоянно пытается восстановить соединение с сервером, но если это долго не удаётся, то делает это реже, чтобы уменьшить нагрузку на сетевую инфраструктуру:
+В действительности, существует понятие **retry policy** которое определяет, как часто нужно пытаться осуществлять попытку повторного открытия соединения с сервером SignalR при потере соединения. Так, например, может быть реализован подход, при котором страница постоянно пытается восстановить соединение с сервером, но если это долго не удаётся, то делает это реже, чтобы уменьшить нагрузку на сетевую инфраструктуру:
 
 ```js
 class CustomRetryPolicy {
@@ -268,6 +268,38 @@ const connection = new signalR.HubConnectionBuilder()
     .withUrl("/your-hub-url")
     .withAutomaticReconnect(new CustomRetryPolicy())
     .build();
+```
+
+Для простоты, CustomRetryPolicy можно не добавлять как отдельный файл, а включить как параметр непосредственно в вызов функции `withAutomaticReconnect()`:
+
+```js
+let serverConnection = new signalR.HubConnectionBuilder()
+    .withUrl("/garmr", { transport: signalProtocol })
+    .configureLogging(signalR.LogLevel.Information)
+    .withAutomaticReconnect({
+        nextRetryDelayInMilliseconds(retryContext) {
+            if (retryContext.elapsedMilliseconds < 30000) {
+                return 2000 + Math.random() * 2000;
+            } else {
+                return 10000 + Math.random() * 5000;
+            }
+        }
+    })
+    .build();
+```
+
+Проверку разрыва соединения можно осуществить следующим образом:
+
+```js
+serverConnection.onclose(async () => {
+    console.log('connection closed');
+});
+```
+
+Довольно распространённым подходом является осуществление ограниченного количества попыток восстановления соединения через явно указанные промежутки времени. Такая стратегия может выглядеть следующим образом:
+
+```js
+.withAutomaticReconnect([0, 2000, 5000, 10000, 30000]) // 5 попыток с указанными задержками
 ```
 
 ## Что рекомендует делать Microsoft
