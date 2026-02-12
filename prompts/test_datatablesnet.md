@@ -807,3 +807,80 @@ $('#editBtn, #deleteBtn').prop('disabled', selectedRows !== 1);
 ```
 
 Смысл в том, что если программист ошибётся и не активирует решим выбора только одной строки (фактически, установит режим _multiline selection_), то код всё равно будет работать корректно.
+
+## Вариант реализации от Claude Opus 4.6
+
+ИИ шутит:
+
+```html
+<!-- Bootstrap 5.1 CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+```
+
+Верстка типовая, сделано аккуратно, "допиливание" требуется.
+
+Очень аккуратно сделана демонстрация работы функционала. Проверить работоспособность подходов можно даже без разработки API:
+
+```js
+// Демонстрационные данные (при отсутствии API)
+var demoData = [
+    { id: 1, fullName: "Иванов Иван Иванович",       phone: "+7 (495) 123-45-67", organization: "ООО «Альфа»",    account: "40702810100000012345" },
+    { id: 2, fullName: "Петров Пётр Петрович",        phone: "+7 (495) 234-56-78", organization: "АО «Бета»",      account: "40702810200000023456" },
+    { id: 3, fullName: "Сидорова Анна Михайловна",    phone: "+7 (495) 345-67-89", organization: "ПАО «Гамма»",    account: "40702810300000034567" },
+    { id: 4, fullName: "Козлов Дмитрий Александрович", phone: "+7 (495) 456-78-90", organization: "ООО «Дельта»",   account: "40702810400000045678" },
+    { id: 5, fullName: "Новикова Елена Сергеевна",    phone: "+7 (495) 567-89-01", organization: "ЗАО «Эпсилон»",  account: "40702810500000056789" }
+];
+
+// Инициализация DataTables
+var table = $('#usersTable').DataTable({
+    data: demoData,   // Заменить на ajax при наличии API
+    // ajax: { url: '/api/users', dataSrc: '' },
+```
+
+Однако локализацию он добавил внутри js-кода, тогда как другие ИИ предлагали использовать специализированный plug-in:
+
+```js
+language: {
+    search: "Поиск:",
+    lengthMenu: "Показать _MENU_ записей",
+    info: "Записи с _START_ по _END_ из _TOTAL_",
+    infoEmpty: "Нет записей",
+    infoFiltered: "(отфильтровано из _MAX_ записей)",
+    paginate: {
+        first: "Первая",
+        last: "Последняя",
+        next: "Следующая",
+        previous: "Предыдущая"
+    },
+    zeroRecords: "Ничего не найдено",
+    emptyTable: "Нет данных"
+}
+```
+
+Обработка кода кликов на таблице и обновление кнопок сделано оптимально. Opus 4.6 единственный, кто справился с задачей очень хорошо (он единственный вынес updateButtons() за пределы if-а):
+
+```js
+// Обработка клика по строке таблицы
+$('#usersTable tbody').on('click', 'tr', function () {
+    if ($(this).hasClass('selected')) {
+        $(this).removeClass('selected');
+        selectedRowData = null;
+    } else {
+        table.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+        selectedRowData = table.row(this).data();
+    }
+    updateButtons();
+});
+```
+
+Opus 4.6 выполнил кэширование модальных диалогов - все остальные каждый раз создавали новый экземпляр. Opus более экономно относится к heap-памяти браузера:
+
+```js
+var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+```
+
+Opus 4.6 добавил минимальную client-side валидацию вводимых данных!
+
+Вне всяких сомнений - Claude Opus 4.6 - самый сильный ИИ для генерации JavaScript-кода в задаче разработки web-форм с использованием DataTables.NET.
