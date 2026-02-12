@@ -270,7 +270,7 @@ const connection = new signalR.HubConnectionBuilder()
     .build();
 ```
 
-Для простоты, CustomRetryPolicy можно не добавлять как отдельный файл, а включить как параметр непосредственно в вызов функции `withAutomaticReconnect()`:
+Для простоты, CustomRetryPolicy можно не добавлять как отдельный класс, а включить как параметр непосредственно в вызов функции `withAutomaticReconnect()`:
 
 ```js
 let serverConnection = new signalR.HubConnectionBuilder()
