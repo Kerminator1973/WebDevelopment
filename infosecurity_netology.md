@@ -22,6 +22,8 @@ Intrusion Prevention System (IPS) - система предотвращения 
 - подозрительные шаблоны данных
 - попытки эксплуатации уязвимостей
 
+>Проверка дистрибутива, или исполняемого файла несколькими анти-вирусами online: [VirusTotal](https://www.virustotal.com/gui/home/upload)
+
 Политики безопасности определяют:
 
 - какой трафик разрешён
@@ -37,4 +39,3 @@ Intrusion Prevention System (IPS) - система предотвращения 
 Remote Access VPN - подключение к корпоративной сети. У удалённого сотрудника должны быть Антивирус и VPN-доступ. Одна из ключевых атак злоумышленников - DNS redirect. Рекомендуется устанавливать: Anti-Malware, DNS Security, Personal Firewall, Posture Assessment.
 
 >Kaspersky Secure Connection - это не VPN для доступа к сервисам внешнего интернета, а защита "DNS Security" + VPN.
-
