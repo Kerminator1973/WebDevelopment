@@ -18,7 +18,7 @@
 - MAUI (dead end)
 - Aspire (.NET silo)
 
-Red Flags:
+Red Flags (не тратить время на эти технологии):
 
 - WSDL
 - SOAP
