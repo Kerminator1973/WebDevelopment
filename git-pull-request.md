@@ -74,3 +74,22 @@ git push origin main --force-with-lease
 ```
 
 На странице своего форка на GitHub есть кнопка "Sync fork" — она делает всё то же самое в один клик, без использования терминала.
+
+Краткий чек-лист для быстрого выполнения:
+
+```shell
+# 1. Добавить upstream (один раз)
+git remote add upstream <URL>
+
+# 2. Получить обновления
+git fetch upstream
+
+# 3. Перейти на основную ветку
+git checkout main
+
+# 4. Синхронизировать (rebase)
+git rebase upstream/main
+
+# 5. Отправить в форк
+git push --force-with-lease origin main
+```
