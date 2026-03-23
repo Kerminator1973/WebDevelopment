@@ -517,6 +517,11 @@
     </div>
     <script src="./js/jquery-3.7.1.js" defer></script>
     <script src="./js/datatables.min.js" defer></script>
-    <script src="./js/main.js" defer></script>
+    <script>
+        // Инициализация при помощи Vanilla JS
+        document.addEventListener('DOMContentLoaded', function() {
+            new DataTable('#example');
+        });
+    </script>    
 </body>
 </html>

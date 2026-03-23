@@ -52,6 +52,6 @@ window.DataTable = factory( jQuery, window, document );
 
 ### Загрузка дополнительных библиотек
 
-Загрузить Bootstrap 5.3 можно с [официального сайта](https://getbootstrap.com/docs/5.3/getting-started/download/).
+Загрузить Bootstrap 5.3.8 можно с [официального сайта](https://getbootstrap.com/docs/5.3/getting-started/download/).
 
 Загрузить jQuery можно либо с [сайта DataTables.net из раздела примеров](https://code.jquery.com/jquery-3.7.1.js), либо с официального сайта [jQuery](https://jquery.com/).
