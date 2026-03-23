@@ -16,7 +16,7 @@
 
 Загружается архив - "DataTables.zip", в котором есть и js-файлы, и css-файлы (полная и минифицированая версии).
 
-Пример приложения взять непосредственно с сайта DataTables.net
+Пример приложения взять непосредственно с сайта DataTables.net, из раздела "Examples".
 
 ## Попытка запуска без Boostrap 5 и jQuery
 
@@ -49,6 +49,8 @@ window.DataTable = factory( jQuery, window, document );
 ```
 
 Ошибка: _Uncaught ReferenceError: jQuery is not defined_
+
+Разъяснения Gemini 3.1 Pro и Claude Sonet 4.6 - не соответствуют реальности, бесполезны. Вероятно, DataTables.net работает без jQuery, но в случае использования его совместно с React, или Vue.js.
 
 ### Загрузка дополнительных библиотек
 
