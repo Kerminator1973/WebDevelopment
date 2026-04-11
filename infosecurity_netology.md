@@ -38,7 +38,7 @@ Intrusion Prevention System (IPS) - система предотвращения 
 
 Remote Access VPN - подключение к корпоративной сети. У удалённого сотрудника должны быть Антивирус и VPN-доступ. Одна из ключевых атак злоумышленников - DNS redirect. Рекомендуется устанавливать: Anti-Malware, DNS Security, Personal Firewall, Posture Assessment.
 
->Kaspersky Secure Connection - это не VPN для доступа к сервисам внешнего интернета, а защита "DNS Security" + VPN.
+>Kaspersky Secure Connection - это не VPN для доступа к сервисам внешнего интернета, а защита "DNS Security" + VPN. Другими словами, использовать Secure Connection для доступа к YouTube и Telegram не получится, хотя можно будет использовать некоторые сайты, блокирующие российских пользователей по IP-адресу. Замечу, что для доступа к западным ресурсам может быть не достаточно "западного" IP-адреса - так же может потребоваться аутентификация по "западному" телефонному номеру. Так, например, использовать [ChatGPT](https://chatgpt.com/) получиться, а [Antropic Claude](https://claude.ai/onboarding) потребует SMS-подтверждения.
 
 ## Типовые системы ИБ
 
