@@ -50,7 +50,7 @@ window.DataTable = factory( jQuery, window, document );
 
 Ошибка: _Uncaught ReferenceError: jQuery is not defined_
 
-Разъяснения Gemini 3.1 Pro и Claude Sonet 4.6 - не соответствуют реальности, бесполезны. Вероятно, DataTables.net работает без jQuery, но в случае использования его совместно с React, или Vue.js.
+Разъяснения Gemini 3.1 Pro и Claude Sonnet 4.6 - не соответствуют реальности, бесполезны. Вероятно, DataTables.net работает без jQuery, но в случае использования его совместно с React, или Vue.js.
 
 ### Загрузка дополнительных библиотек
 
