@@ -143,7 +143,7 @@ public class UserModalViewModel
 <ValidationMessage For="@(() => Content.SerialNumber)" />
 ```
 
-Замечу, что тип кнопки "Submit" должет быть обязательно указан вот так: `Type="ButtonType.Submit"`
+Замечу, что тип кнопки "Submit" должен быть обязательно указан вот так: `Type="ButtonType.Submit"`
 
 Область кода:
 
@@ -169,6 +169,36 @@ public class UserModalViewModel
     }
 }
 ```
+
+Отдельного разъяснения заслуживают следующие строки кода:
+
+```csharp
+[Parameter] public UpgradabilityParams Content { get; set; } = new();
+[CascadingParameter] public FluentDialog Dialog { get; set; } = default!;
+```
+
+Используя атрибут `[Parameter]` мы указываем на то, что родительский компонент должен задать значение компонента явным образом. В случае модального диалога слово "явно" не очень подходит, но тем не менее:
+
+```csharp
+UpgradabilityParams upgradabilityParams = new() {};
+
+private async void CheckDeviceUpgradability()
+{
+    // ...
+    var dialog = await DialogService.ShowDialogAsync<UpgradabilityParamsDialog>(
+        upgradabilityParams, 
+        parameters
+    );
+    DialogResult? result = await dialog.Result;
+```
+
+Атрибут `[CascadingParameter]` означает, что этот параметр тоже приходит к нам откуда-то, но не явным образом, сверху по дереву компонентов через CascadingValue.
+
+В случае FluentDialog объект диалога обычно предоставляется инфраструктурой диалогов автоматически, поэтому его не нужно писать его вручную в каждом месте. То есть:
+
+- не передаётся как атрибут компонента
+- доступен всем вложенным компонентам в пределах области каскада
+- удобен для "контекстных" объектов (тема, локализация, текущий диалог, EditContext и т.п.)
 
 ## Создание диалога
 
