@@ -107,7 +107,14 @@ public void SetFocus()
 dotnet add package Microsoft.Fast.Components.FluentUI
 ```
 
-Для полноценного использования элементов FluentUI, необходимо зарегистрировать специализированный сервис, вызовом AddFluentUIComponents():
+Для полноценного использования элементов FluentUI, необходимо зарегистрировать специализированный сервис в файле "Program.cs". До добавления код выглядит так:
+
+```csharp
+builder.Services
+    .AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+```
+
+Добавление вызова AddFluentUIComponents():
 
 ```csharp
 builder.Services
@@ -137,8 +144,6 @@ builder.Services
 Страница с официальной документацией по FluentUI [доступна здесь](https://fluentui-blazor.net/).
 
 > Использовать FluentSelect внутри FluentCard нельзя, т.к. у FluentCard есть чёткие границы, которые блокируют область отображения списка при его раскрытии.
-
-При использовании шаблонного класса Option<T>, добавление
 
 ## Попытка полноценного решения задачи с раскрытием выпадающего меню
 
