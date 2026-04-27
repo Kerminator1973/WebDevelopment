@@ -153,10 +153,9 @@ public class UserModalViewModel
 
     [CascadingParameter] public FluentDialog Dialog { get; set; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnParametersSet()
     {
-        Content.ProductName = String.Empty;
-        Content.SerialNumber = String.Empty;
+        Content ??= new UpgradabilityParams();
     }
 
     private async Task HandleValidSubmit()
@@ -259,6 +258,8 @@ DialogParameters parameters = new()
 var dialog = await DialogService.ShowDialogAsync<SimpleDialog>(simplePerson, parameters);
 DialogResult? result = await dialog.Result;
 ```
+
+Если нам нужно сбрасывать значения полей при каждом открытии диалога, то сделать это нужно перед вызовом ShowDialogAsync().
 
 ## Кастомизация диалога
 
