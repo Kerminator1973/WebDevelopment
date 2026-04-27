@@ -22,6 +22,8 @@ namespace SelectModel.Models
 }
 ```
 
+>Поскольку в проекте может быть много "моделей", для улучшения навигации в проекте рекомендуется использовать имя папки "UIModels" для модальных диалогов, форм, и т.д.
+
 ## Файл с описанием диалога
 
 Пример файла "SimpleDialog.razor":
@@ -83,6 +85,91 @@ public FluentDialog? Dialog { get; set; }
 ```
 
 Заметим, что настройка параметров поведения диалога, в том числе - начальное состояние PrimaryActionButton, осуществляется внешним компонентом.
+
+### Валидация данных в форме
+
+Для управления вводом данных может быть использован атрибутированный код (в описании модели):
+
+```cpp
+using System.ComponentModel.DataAnnotations;
+
+public class UserModalViewModel
+{
+    [Display(Name = "Имя")]
+    [Required(ErrorMessage = "Имя обязательно")]
+    [StringLength(50, MinimumLength = 2, ErrorMessage = "От 2 до 50 символов")]
+    public string Name { get; set; } = string.Empty;
+```
+
+В верстку модального диалога необходимо явно добавить элементы, имеющие отношение к валидации:
+
+```csharp
+<EditForm Model="@Content" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+
+    <FluentDialogHeader>Проверка возможности обновления</FluentDialogHeader>
+    <ValidationMessage />
+
+    <FluentDialogBody Class="w-auto">
+        <FluentTextField @bind-Value="Content.ProductName">Product name:</FluentTextField>
+        <ValidationMessage For="@(() => Content.ProductName)" />
+
+        <FluentTextField @bind-Value="Content.SerialNumber">Serial number:</FluentTextField>
+        <ValidationMessage For="@(() => Content.SerialNumber)" />
+    </FluentDialogBody>
+
+    <FluentDialogFooter Class="d-flex justify-content-between">
+        <FluentButton Type="ButtonType.Submit">Проверить</FluentButton>
+        <FluentButton Type="ButtonType.Button" @onclick="CloseDialog">Закрыть</FluentButton>
+    </FluentDialogFooter>
+</EditForm>
+```
+
+Во-первых, необходимо обернуть форму в **EditForm**. Также критичным является добавление в модальный диалог валидатор на базе аннотированных данных: `<DataAnnotationsValidator />`
+
+Во-вторых необходимо определиться с версткой сообщений об ошибках. Может быть использован один, общий на всех элемент:
+
+```csharp
+<ValidationSummary />
+```
+
+В качестве альтернативы, для каждого поля можно добавить поле к описанием ошибки. Для этого используется компонент `<ValidationMessage />`, в каждом экземпляре которого указывается имя поля, для которого следует выводить сообщение об ошибке:
+
+```csharp
+<FluentTextField @bind-Value="Content.ProductName">Product name:</FluentTextField>
+<ValidationMessage For="@(() => Content.ProductName)" />
+
+<FluentTextField @bind-Value="Content.SerialNumber">Serial number:</FluentTextField>
+<ValidationMessage For="@(() => Content.SerialNumber)" />
+```
+
+Замечу, что тип кнопки "Submit" должет быть обязательно указан вот так: `Type="ButtonType.Submit"`
+
+Область кода:
+
+```csharp
+@code {
+    [Parameter] public UpgradabilityParams Content { get; set; } = new();
+
+    [CascadingParameter] public FluentDialog Dialog { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Content.ProductName = String.Empty;
+        Content.SerialNumber = String.Empty;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await Dialog.CloseAsync(Content); // или CloseAsync() без результата
+    }
+
+    private async Task CloseDialog()
+    {
+        await Dialog.CloseAsync();
+    }
+}
+```
 
 ## Создание диалога
 
