@@ -77,6 +77,31 @@ namespace FluentForm.ModelView
 }
 ```
 
+>Если нам необходимо завершить модальный диалог с установкой поля Cancelled в значение true, то сделать это можно следующим образом:
+>
+>```csharp
+>await Dialog.CloseAsync(DialogResult.Cancel());
+>```
+
+Следующая строка позволяет указать класс, который будет моделью (данными) для данного диалога. В конкретном случае, данные хранятся в классе UpgradabilityParams:
+
+```csharp
+@implements IDialogContentComponent<UpgradabilityParams>
+```
+
+Однако нет ничего, что заставляет нас создавать дополнительный класс - моделью может быть, например, обычный List<>:
+
+```csharp
+@implements IDialogContentComponent<List<DeviceIssue>>
+
+// ...
+
+@code {
+    [Parameter]
+    public List<DeviceIssue> Content { get; set; } = new();
+}
+```
+
 К особенностям модального диалога можно отнести необходимость обернуть верстку в специальные тэги для того, чтобы заработала валидация ввода:
 
 ```csharp
@@ -681,3 +706,174 @@ public async Task CreateMailings(CreateMailingsRequest createRequest)
 ```
 
 К сожалению, обработка ошибок, практически, отсутствует. Это приводит к тому, что при сбое, в нижней части экрана появляется окно с сообщением о возникшей ошибке и кнопки "Reload". Детальная информация о сбое может быть отображена в Developer Console F12.
+
+## Добавление функционала работы с базой данных через Entity Framework
+
+Сначала необходимо добавить в проект зависимости:
+
+- `Microsoft.EntityFrameworkCore` — базовый пакет EF Core
+- `Microsoft.EntityFrameworkCore.SqlServer` — провайдер для работы с SQL Server, т.к. RUFServer использует СУБД от Microsoft
+
+Если бы мы работали с миграциями, то могли бы добавить пакет `Microsoft.EntityFrameworkCore.Design`, который и обеспечивает работу с миграциями.
+
+Далее можно заимствовать из проекта RUFObjs модели и реализацию DbContext, убрав избыточные поля.
+
+Класс с описанием приборов BVS - "Data/Device.cs":
+
+```csharp
+namespace TestAPI.Model
+{
+    public partial class Device
+    {
+        public int Id { get; set; }
+        public string Serial { get; set; } = null!;
+        public int AttributeId { get; set; }
+        public bool IsActive { get; set; }
+        public string Nameplate { get; set; } = null!;
+
+        public virtual AttributeName Attribute { get; set; } = null!;
+    }
+}
+```
+
+Класс с описанием атрибутов исполнения - файл "Data/AttributeName.cs":
+
+```csharp
+namespace TestAPI.Model
+{
+    public partial class AttributeName
+    {
+        public AttributeName()
+        {
+            Devices = new HashSet<Device>();
+        }
+
+        public int Id { get; set; }
+        public string? AttrName { get; set; }
+
+        public virtual ICollection<Device> Devices { get; set; }
+    }
+}
+```
+
+Таблица с атрибутами исполнения нужна, т.к. она используется для того, чтобы проверить, поддерживает ли этот прибор приём российский рублей и не был ли он уже обновлён до актуальной версии.
+
+Реализация DbContext - файл "Data/RUFServerContext.cs":
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+using TestAPI.Model;
+
+namespace RUFObjs.Model
+{
+    public partial class RUFServerContext : DbContext
+    {
+        public RUFServerContext()
+        {
+        }
+
+        public RUFServerContext(DbContextOptions<RUFServerContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<AttributeName> AttributeNames { get; set; } = null!;
+        public virtual DbSet<Device> Devices { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AttributeName>(entity =>
+            {
+                entity.ToTable("attributeNames");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.AttrName)
+                    .HasMaxLength(50)
+                    .HasColumnName("attrName");
+            });
+
+            modelBuilder.Entity<Device>(entity =>
+            {
+                entity.ToTable("device");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.AttributeId).HasColumnName("attributeId");
+
+                entity.Property(e => e.IsActive).HasColumnName("isActive");
+
+                entity.Property(e => e.Serial)
+                    .HasMaxLength(50)
+                    .HasColumnName("serial");
+
+                entity.Property(e => e.Nameplate)
+                    .HasMaxLength(50)
+                    .HasColumnName("nameplate");
+
+                entity.HasOne(d => d.Attribute)
+                    .WithMany(p => p.Devices)
+                    .HasForeignKey(d => d.AttributeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_device_attributeNames");
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
+}
+```
+
+В файл "appsettings.json" необходимо добавить строку подключения к СУБД:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=ruftest.dpr.msk.shq;Initial Catalog=ruf;Persist Security Info=True;User ID=yyy;Password=xxx;TrustServerCertificate=True;"
+  }
+}
+```
+
+Для обеспечения возможности работы с СУБД Microsoft SQL Server на тестовом сервере, который использует самоподписанные сертификаты, необходимо добавить параметр `TrustServerCertificate=True`
+
+Затем в файле "Program.cs", после создания builder-а и `builder.Services.AddControllers()`, необходимо зарегистрировать DbContext:
+
+```csharp
+builder.Services.AddDbContext<RUFServerContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+```
+
+### Использование DbContext-а
+
+Для получения доступа к СУБД в контроллере, при обработке запросов, необходимо включить зависимость от DbContext (RUFServerContext):
+
+```csharp
+public class RUFController : ControllerBase
+{
+    private readonly ILogger<RUFController> _logger;
+
+    private readonly RUFServerContext _context;
+
+    public RUFController(RUFServerContext context, ILogger<RUFController> logger)
+    {
+        _logger = logger;
+        _context = context;
+    }
+```
+
+После этого можно выполнять запросы к базе данных, например:
+
+```csharp
+var devices = await _context.Devices
+    .Where(dev => dev.Nameplate != null && dev.Nameplate.CompareTo(serialNo) == 0)
+    .ToListAsync();
+```
