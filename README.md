@@ -715,7 +715,7 @@ Web-программирование это комбинация ПО работ
 | ASP.NET Core              |       C#       |       Internet Information Server и Kestler      |
 | Node.js, Deno, Bun        | JavaScript, TS |           Express.js, Koa.js, Fastify            |
 | Python                    |     Python     |                  Django, Flask                   |
-| Spring, Struts, Hibernate |      Java      | Nginx/Apache с Tomcat, Glassfish, Wildfly, Jetty |
+| Spring, Struts, Hibernate |  Java, Kotlin  | Nginx/Apache с Tomcat, Glassfish, Wildfly, Jetty |
 
 Задача Framework состоит в том, чтобы доставить http-запрос в функцию, наиболее подходящую для его обработки. Для этого осуществляется настройка таблиц маршрутизации (Routing) в web-приложении. Основные различия между фреймворками состоят в том, какая именно модель используется для описания таблиц маршрутизации. Одной из наиболее популярных моделей является **Model-View-Controller** (MVC). В этой модели различают методы доступа к данным (чаще всего база данных, Model), методы управления обработкой http-запросов (Controller) и методы генерации HTML-кода (View). Контроллер является связующим звеном и изолирует методы отображения от методов работы с данными в базе.
 
@@ -850,6 +850,10 @@ IQueryable<SalesOrderDetail> query =
 ### Особенности технологического стека Java
 
 Сильная сторона Java - огромное количество мощных библиотеки, развитая эко-система. Основной разработчик Java - корпорация Oracle, поставляет два **Java Development Kit** (JDK): платный, надежный, с длительным циклом поддержки (LTS) **Oracle JDK** и бесплатный экспериментальный **Open JDK**. Статья [За Oracle JDK нужно будет платить. Какие теперь варианты?](https://habr.com/ru/company/epam_systems/blog/430084/)
+
+>Благодаря компиляции кода на Kotlin и Java создаётся одинаковый байт-код, исполняемый разными реализациями JVM, экосистеме Java очень гибкая. В этой экосистеме есть крайне мощные IDE, в первую очередь IntelliJ Idea от JetBrains. Крайне популярный набор библиотек Spring Boot позволяет говорить о том, что в экосистеме есть почти всё, что нужно для разработки самых разных приложений.
+>
+>Амбиции эко-системы стали распространяться и на Machine Learning. От адептов экосистемы Java можно слышать утверждения о том, что именно Java, а не Pyhton должна быть языком для ML и AI. Справедливости ради, действительно есть множество популярных ML-библиотек для JVM: Spring AI, LangChain4J, TensorFlow Java, Apache OpenNLP, Apache Mahout, Weka, Deeplearning4j, и т.д.
 
 Ключевой репозитарий библиотек для Java - [Maven Central Repository](https://search.maven.org/?eh=)
 
