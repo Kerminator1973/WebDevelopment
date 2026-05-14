@@ -114,3 +114,22 @@ private async Task HandleValidSubmit()
     await OnResult.InvokeAsync(Content);
 }
 ```
+
+Если нам не нужно передавать родительскому компоненту какие-либо данные, то следует добавить не-generic EventCallback:
+
+```csharp
+[Parameter] public EventCallback OnResult { get; set; }
+```
+
+Отправка сообщения родительскому компоненту:
+
+```csharp
+await OnResult.InvokeAsync();
+```
+
+Сигнатура вызываемого метода родительского компонента:
+
+```csharp
+private async void HandleDeviceResult()
+{ ... }
+```
