@@ -233,6 +233,16 @@ public class Component1Logic : ComponentBase
 - Передача глобальных настроек (язык, валюта, часовой пояс)
 - Синхронизация состояния приложения (флаги загрузки, ошибки) между компонентами
 
+## Blazor.EventAggregator
+
+Для реализации шаблона publish/subscribe в Blazor может быть использована библиотека Blazor.EventAggregator.
+
+Добавление в проект:
+
+```shell
+dotnet add package Blazor.EventAggregator
+```
+
 ## Использование AppState
 
 Портал learn.microsoft.com содержит [материалы](https://learn.microsoft.com/ru-ru/training/modules/interact-with-data-blazor-web-apps/6-share-data-in-blazor-applications) по добавлению AppState для Blazor Server.
