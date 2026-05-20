@@ -9,6 +9,8 @@
 Также рекомендуется к ознакомлению статья [Релиз Bun Shell (новый shell для JavaScript)](https://habr.com/ru/articles/795949/) от Jarred Sumner (перевод Александр Русаков).
 
 >В декабре 2025 года проект был куплен компанией Anthropic: [Anthropic acquires Bun as Claude Code reaches $1B milestone](https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone). Причина, по которой покупка Bun компанией Anthropic, являющейся лидером в разработке LLM для кодирования, состоит в использовании Bun.js в качестве основного инструмента управления backend-ом в решениях Anthropic.
+>
+>В мае 2026 года появилась информация о том, что Anthropic переписали Bun с Zig на Rust.
 
 Статья "Bun in the Oven" (page 58) в журнале "CODE Magazine" январь-февраль 2024 года.
 
@@ -77,7 +79,7 @@ bun install
 
 Blueboat: https://blueboat.io/ 
 
-Blueboat написан на **Rust**-е. Runtime Bun.js написан на низкоуровневом языке [Zig](https://ziglang.org/). Zig - попытка заменить Си, но с надёжным управлением память. Особенности Zip: его очень легко установить (нужно просто скопировать bundle на локальный жёсткий диск) и в bundle входят кросс-компиляторы. Например, собрать приложение на платформе x64 из исходников на Си, под aarch64 можно такой командой:
+Blueboat написан на **Rust**-е. Runtime Bun.js написан на низкоуровневом языке [Zig](https://ziglang.org/). Zig - попытка заменить Си, но с надёжным управлением памятю. Особенности Zip: его очень легко установить (нужно просто скопировать bundle на локальный жёсткий диск) и в bundle входят кросс-компиляторы. Например, собрать приложение на платформе x64 из исходников на Си, под aarch64 можно такой командой:
 
 ```shell
 zig cc -o hello_aarch64 hellow.c -target aarch64
