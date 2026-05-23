@@ -42,3 +42,28 @@ ORDER BY "MigrationId" ASC LIMIT 100
 ```
 
 После того, как миграции в коде будут отображаться в команде `dotnet ef migrations list` в состоянии Pending, можно начать удалять их из кода.
+
+## Переименовать таблицу с неудачным названием
+
+Чтобы не потерять данные при переименовании таблицы, следует добавить следующий код в builder модели Entity Framework:
+
+```csharp
+public class MyDbContext : DbContext
+{
+    public DbSet<CastomPageTittleImageModel> CastomPageTittleImageModels { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<CastomPageTittleImageModel>()
+            .ToTable("CustomPageMainImages");
+    }
+}
+```
+
+Затем следует создать новую миграцию и сгенерировать SQL-код, чтобы убедиться, что будет выполняться операция RenameTable, а не DropTable + CreateTable. Сгенерировать проверочный скрипт можно следующей командой:
+
+```shell
+dotnet ef migrations script
+```
+
+Если скрипт был сгенерирован корректно, то далее следует применить миграцию к базе данных.
