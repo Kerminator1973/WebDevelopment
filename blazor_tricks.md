@@ -21,3 +21,19 @@
 ```
 
 Заметим, что атрибут `pattern` применяется не для каждого вводимого символа, а в момент отправки формы: если введенные данные не соответствуют шаблону, браузер блокирует отправку и выводит системное сообщение об ошибке.
+
+## Импортирование зависимостей
+
+Списки зависимостей в Blazor-приложениях могут быть очень большими - они могут содержать несколько десятков, или даже сотен директив, которые выглядят следующим образом:
+
+```csharp
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+```
+
+Чтобы не включать часто используемые зависимостит в каждый компонент приложения, в проекте есть специальный файл "_Imports.razor". Директивы импорта из этого файла автоматически включаются в каждый компонент приложения.
