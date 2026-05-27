@@ -53,3 +53,27 @@ public EventCallback AutoSaveOnComplite { get; set; }
 if (AutoSaveOnComplite.HasDelegate)
     await AutoSaveOnComplite.InvokeAsync();
 ```
+
+## Как избежать "лишнего" ре-рендеринга
+
+Blazor автоматически вызывает StateHasChanged() после завершения OnParametersSet() — это часть жизненного цикла компонента. Именно этот вызов инициирует ре-рендеринг.
+
+Чтобы избежать "лишнего" ре-рендеринга, необходимо реализовать метод ShouldRender():
+
+```csharp
+private bool _shouldRender = true;
+
+protected override void OnParametersSet()
+{
+    if (Page is not null)
+    {
+        _shouldRender = ImgUrl != Page.TitleImageUrl;
+        ImgUrl = Page.TitleImageUrl;
+    }
+}
+
+protected override bool ShouldRender()
+{
+    return _shouldRender;
+}
+```
