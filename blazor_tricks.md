@@ -114,3 +114,17 @@ public class DeviceUserApi
             ?? throw new InvalidOperationException("GetUserDevices is null");
 }
 ```
+
+## Выделить часть полей из элементов контейнера
+
+LINQ позволяет делать множество действий с обрабатываемыми данными и, в том числе, излекать из элементов контейнера только те поля, которые необходимы разработчику. Пример кода:
+
+```csharp
+source.SerialEntries
+    .Select(entry => new Shared.Request.SerialEntryRequest
+    {
+        Modification = entry.Modification,
+        SerialNumber = entry.SerialNumber
+    })
+    .ToList()
+```
