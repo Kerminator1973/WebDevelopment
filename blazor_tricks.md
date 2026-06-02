@@ -77,3 +77,40 @@ protected override bool ShouldRender()
     return _shouldRender;
 }
 ```
+
+## Primary constructor в С# 12 (.NET 8)
+
+Primary constructor позволяет:
+
+- объявить параметры прямо в объявлении класса
+- использовать эти параметры в теле класса (в т. ч. присваивать полям)
+- сократить шаблонный код — не нужно явно писать полный конструктор и поля‑приёмники
+
+Пример кода:
+
+```csharp
+public class DeviceUserApi(HttpClient http)
+{
+    public async Task<List<UserDeviceView>> GetUserDevices(Guid userId) 
+        => await http.GetFromJsonAsync<List<UserDeviceView>>($"DeviceUser/GetUserDevices/{userId}")
+            ?? throw new InvalidOperationException("GetUserDevices is null");
+}
+```
+
+Компилятор преобразует код с primary constructor в эквивалент классического конструктора. Приведённый выше пример компилятор разворачивает примерно в такой код:
+
+```csharp
+public class DeviceUserApi
+{
+    private readonly HttpClient _http;
+
+    public DeviceUserApi(HttpClient http)
+    {
+        _http = http;
+    }
+
+    public async Task<List<UserDeviceView>> GetUserDevices(Guid userId)
+        => await _http.GetFromJsonAsync<List<UserDeviceView>>($"DeviceUser/GetUserDevices/{userId}")
+            ?? throw new InvalidOperationException("GetUserDevices is null");
+}
+```
