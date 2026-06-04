@@ -223,3 +223,29 @@ private void OnProductModelChanged(ProductOption? selection)
 Такой подход чище, поскольку не мутирует исходную коллекцию и полностью избегает проблемы со сдвигом индексов в DOM.
 
 >Однако экспериментально альтернативный подход я не проверял и, возможно, у него есть какие-то _side-effects_.
+
+## Отладка в коде верстки
+
+Мы может добавить в коде рендеринга вывод данных в лог, а также устанавливать точку останова для просмотра локальных значений:
+
+```csharp
+@* Выбор модификации *@
+@{Console.WriteLine($"Entry modification = {entry.Modification}");}
+<FluentSelect Class="form-control"
+	ValueChanged="@((string val) => entry.Modification = val)"
+	TOption="ProductOption"
+	OptionText="@(o => o.DisplayName)"
+	OptionValue="@(o => o.Value)"
+	style="min-width: 0; flex: 1;">
+		@foreach (var option in ModificationsList)
+		{
+			Console.WriteLine($"{option.Value} vs {entry.Modification}");
+			<FluentOption
+				Value="@option.Value"
+				Selected="@(option.Value == entry.Modification)"
+			>
+				@option.DisplayName
+			</FluentOption>
+		}
+</FluentSelect>
+```
