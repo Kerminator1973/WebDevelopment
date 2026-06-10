@@ -76,3 +76,5 @@ npx npm-check-updates -u
 Проект создания частного репозитария NPM для https://github.com/cnpm/cnpmcore и web-сайт для него: https://github.com/cnpm/cnpmweb#-cnpmweb
 
 В 2026 году в России существует ряд зеркал для систем управления зависимостями. Один из наиболее важных проектов - [зеркала на GitVerse](https://gitverse.ru/docs/artifactory/registry-mirrors/pypi-mirror?ysclid=mq7mi6j4ae905185654). Этот проект СБЕРа хранит актуальные зависимости на зеркалах [PyPi](https://gitverse.ru/docs/artifactory/registry-mirrors/pypi-mirror), [Docker Hub](https://gitverse.ru/docs/artifactory/registry-mirrors/dh-mirror), [NPM](https://gitverse.ru/docs/artifactory/registry-mirrors/npm-mirror) и [Maven](https://gitverse.ru/docs/artifactory/registry-mirrors/mvn-mirror).
+
+На сайте [Mirror.Яндекс](https://mirror.yandex.ru/mirrors/) есть зеркала для множества программных продуктов.
