@@ -77,4 +77,16 @@ npx npm-check-updates -u
 
 В 2026 году в России существует ряд зеркал для систем управления зависимостями. Один из наиболее важных проектов - [зеркала на GitVerse](https://gitverse.ru/docs/artifactory/registry-mirrors/pypi-mirror?ysclid=mq7mi6j4ae905185654). Этот проект СБЕРа хранит актуальные зависимости на зеркалах [PyPi](https://gitverse.ru/docs/artifactory/registry-mirrors/pypi-mirror), [Docker Hub](https://gitverse.ru/docs/artifactory/registry-mirrors/dh-mirror), [NPM](https://gitverse.ru/docs/artifactory/registry-mirrors/npm-mirror) и [Maven](https://gitverse.ru/docs/artifactory/registry-mirrors/mvn-mirror).
 
-На сайте [Mirror.Яндекс](https://mirror.yandex.ru/mirrors/) есть зеркала для множества программных продуктов.
+На сайте [Mirror.Яндекс](https://mirror.yandex.ru/mirrors/) есть зеркала для множества программных продуктов. В частности команда установки PyPi-пакета через зеркало Яндекс выглядит так:
+
+```shell
+pip install -i https://mirror.yandex.ru/pypi/simple <название_пакета>
+```
+
+Настройка постоянного использования зеркала в конфигурации pip может выглядеть следующим образом:
+
+```
+[global]
+index-url = https://mirror.yandex.ru/pypi/simple
+trusted-host = mirror.yandex.ru
+```
