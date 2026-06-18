@@ -7,3 +7,9 @@
 ```csharp
 dotnet nuget why ServicePartners.Server.csproj AutoMapper
 ```
+
+Посмотреть полный список зависимостей проекта с транзитивными пакетами, можно следующей командой:
+
+```csharp
+dotnet list package --include-transitive
+```
