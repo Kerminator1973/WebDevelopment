@@ -90,3 +90,5 @@ pip install -i https://mirror.yandex.ru/pypi/simple <название_пакет
 index-url = https://mirror.yandex.ru/pypi/simple
 trusted-host = mirror.yandex.ru
 ```
+
+В статье [Российские зеркала пакетов и DevOps-платформы: что уже работает и как это использовать в условиях блокировок](https://habr.com/ru/articles/1052330/) by ANTON62 приведено ещё несколько зеркал для зависимостей. Особенно важно, что **VK Registry** хранит реестры NuGET-пакетов.
