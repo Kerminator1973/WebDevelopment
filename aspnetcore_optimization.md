@@ -97,3 +97,70 @@ foreach (var _c in this.Connections.Select(_c => _c.Value))
     }
 }
 ```
+
+## Критичность настройки FOREIGN KEYS
+
+В случае, если мы корректно настроили FOREIGN KEYS в модели, EF позволяет очень удобно использовать Include() вместо JOIN. Например:
+
+```csharp
+List<BulkFinStatEvent> response = await _db.Transactions
+    .Include(t => t.Unit)
+    .Include(t => t.Account)
+        .ThenInclude(a => a.Company)     // Загружаем Company через Account
+    .Include(t => t.Person)
+    .Include(t => t.OperCycle)
+    .Include(t => t.Currency)
+    .Include(t => t.Notes)
+    .Where(t => t.Id >= query.IdFrom)
+    .OrderBy(t => t.Id)     // Take без OrderBy даёт непредсказуемый результат
+    .Take(query.Count)
+    .Select(t => new BulkFinStatEvent
+    {
+        Id = t.Id,
+        Date = t.TransactionDate.ToString("yyyy-MM-ddTHH:mm:sszzz"),
+        Address = t.Unit.PostAddress,
+        Tid = t.Unit.UnitNo,
+        Mid = t.Account.Company.Id.ToString(),номера нет
+        OperationType = "7",
+        CustomerName = $"{t.Person.Field1} {t.Person.Field2} {t.Person.Field3}",
+        CurrencyCode = t.Currency.IsoDig,
+        IncomeSum = t.Notes.Sum(n => n.Nominal * n.Count).ToString("F2"),
+        Banknotes = t.Notes
+            .Select(b => new Banknotes { Nominal = b.Nominal.ToString(), Count = b.Count.ToString() })
+            .ToList(),
+        TransactionStatus = "1",
+        OperCycleNumber = t.OperCycle.OpCycle.ToString(),
+        OperCycleStart = t.OperCycle.OpenedAt.ToString("yyyy-MM-ddTHH:mm:sszzz"),
+        SettlementAccount = t.Account.AccountNumber
+    })
+    .ToListAsync();
+```
+
+По сути, мы говорит о том, что нам нужна запись из связанной таблицы с отношением один к одному и просто используем её поля:
+
+```csharp
+.Include(t => t.Currency)
+//...
+CurrencyCode = t.Currency.IsoDig,
+```
+
+Если нам нужно получить запись из таблицы через другую таблицу, то мы можем использовать метод ThenInclude():
+
+```csharp
+.Include(t => t.Account)
+    .ThenInclude(a => a.Company)     // Загружаем Company через Account
+```
+
+Если можно получить данные из другой таблицы используя связь один ко многим, то сделать это можно так:
+
+```csharp
+Banknotes = t.Notes
+    .Select(b => new Banknotes { Nominal = b.Nominal.ToString(), Count = b.Count.ToString() })
+    .ToList(),
+```
+
+Агрегация выполняется следующим образом:
+
+```csharp
+IncomeSum = t.Notes.Sum(n => n.Nominal * n.Count).ToString("F2"),
+```
