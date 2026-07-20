@@ -431,7 +431,6 @@ C другой стороны, если в проекте используетс
 6. **Preset** - готовые наборы предустановок для наиболее популярных особенностей языка 
 7. **HTML Preprocessor** - компонент, осуществляющий генерацию HTML-верстки, используя шаблоны документов
 
-
 Для начала использования фреймворков с депларативным стилем программирования, в который основной способ описания пользовательского интерфейса- композиция, рекомендуется ознакомиться с общим списоком шаблонов программирования, которые необходимы для [эффективной композиции компонентов](https://github.com/Kerminator1973/ReactDataTables/blob/main/what_you_have_to_know.md).
 
 ### Virtual DOM vs Shadow DOM
@@ -751,7 +750,7 @@ Web-программирование это комбинация ПО работ
 - PostgreSQL - реляционная СУБД, с поддержкой SQL
 - [Apache Cassandra](https://cassandra.apache.org/) - нереляционная отказоустойчивая распределенная СУБД, рассчитанная на создание высоко-масштабируемых и надёжных хранилищ огромных массивов данных, представленных в виде хэша
 - [Memcached](https://memcached.org/) - ервис кэширования данных в оперативной памяти на основе хеш-таблицы. Условный аналог Redis
-- так же имеет смысл посмотреть на: [Apache CouchDB](https://couchdb.apache.org/), библиотека [RocksDB](https://github.com/facebook/rocksdb) от Facebook, [Aerospike](https://aerospike.com/).
+- так же имеет смысл посмотреть на: [Apache CouchDB](https://couchdb.apache.org/), библиотека [RocksDB](https://github.com/facebook/rocksdb) от Facebook, [Aerospike](https://aerospike.com/), [DocumentDB](https://documentdb.io/) - MongoDB совместимая
 
 В Memcached/Redis чаще всего хранится результат операции. Ценность такого подхода очень высока, если в системе используется горизонтальное масштабирование, т.е. запущено несколько копий web-сервера. В случае однопоточных Runtime (Node.js), горизонтальное масштабирование кажется неизбежным. Также Memcached/RedisRedis может быть использован как средство хранения результата выполнения вычислительно ёмких операций, которые выполняются уже после того, как клиент получает ответ на запрос запуска задачи.
 
@@ -885,6 +884,8 @@ IQueryable<SalesOrderDetail> query =
 A type-safe HTTP client for Android and Java - [Retrofit](https://square.github.io/retrofit/).
 
 Рекомендуется к прочтению статья [Top 10 Libraries every Java Developer should know](https://towardsdatascience.com/top-10-libraries-every-java-developer-should-know-37dd136dff54).
+
+>Однако по мнению многих разработчиков, в экосистеме Java доминируют Spring Boot и Spring Framework. Подавляющее большинство проектов строится с использованием интрументов Spring. Отсутствие альтернатив Spring, в определённом смысле, мешает активному развитию эко-системы.
 
 <a name="serverless"></a>
 ## Serverless Backend
