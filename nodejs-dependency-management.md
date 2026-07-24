@@ -43,7 +43,7 @@ swagger-ui   3.52.5  3.52.5   4.1.3  node_modules/swagger-ui  RUFServerLite
 
 Есть специальный package, который принудительно устанавливает самые современные версии - **npm-check-updates**:
 
-```
+```shell
 npx npm-check-updates -u
 ```
 
