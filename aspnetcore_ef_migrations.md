@@ -67,3 +67,9 @@ dotnet ef migrations script
 ```
 
 Если скрипт был сгенерирован корректно, то далее следует применить миграцию к базе данных.
+
+Пример реальной команды для экспорта SQL-скрипта с поддержкой идемпотентности:
+
+```shell
+dotnet ef migrations script --idempotent --configuration Release --output ./Script.sql
+```
