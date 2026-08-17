@@ -53,3 +53,5 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 ```csharp
 .HasDefaultValueSql("nextval('global_event_id_seq')");
 ```
+
+Объединить две разных таблицы в одну можно используя **UNION** в SQL.
