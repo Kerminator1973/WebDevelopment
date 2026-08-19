@@ -587,3 +587,56 @@ actions.Add(() => Console.WriteLine($"Value: {myNumber}"));
 - Event Broadcasting
 
 Особенно хорошо инструмент подходит для Mailing-а.
+
+## Автоматическое построение Endpoint (UNDERCONSTRUCTION)
+
+ASP.NET Core использует Runtime Information для построения Endpoints серверного приложения. Когда мы пишем следующий код, ASP.NET Core осуществляет поиск компонентов, которые могут обрабатывать http-запросы:
+
+```csharp
+services.AddControllers(config =>
+{
+    // существующий код конфигурации
+});
+
+...
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllers();     // API
+});
+```
+
+Поиск Razor Pages осуществляется, косвенно, по факту наследования от PageModel, например:
+
+```csharp
+public class CompaniesModel : PageModel
+```
+
+Конкретный набор http-запросов формируется исходя из соответствия имён методов договорённостям (_conventions_):
+
+```csharp
+public async Task<ActionResult> OnGetAsync()
+...
+public IActionResult OnPost([FromBody] Company test)
+...
+public async Task<ActionResult> OnPostEditCompany([FromBody] CompanyDto val)
+```
+
+Похожим образом, поиск классов обрабатывающих запросы к API, также строиться по основываясь, косвенно, на факте наследования от класса ControllerBase:
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class ProatmController : ControllerBase
+```
+
+Конкретный набор может формироваться с использованием атрибутов методов, например:
+
+```csharp
+[AllowAnonymous]
+[HttpPost]
+public IActionResult Post([FromBody] CollectionCompletedDto payload)
+```
+
+Этот подход отличается от **Node.js**, в котором Endpoints и обработчики нужно указывать явным образом.
