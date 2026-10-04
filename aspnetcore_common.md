@@ -640,3 +640,25 @@ public IActionResult Post([FromBody] CollectionCompletedDto payload)
 ```
 
 Этот подход отличается от **Node.js**, в котором Endpoints и обработчики нужно указывать явным образом.
+
+## Несколько атрибутов в одной директиве
+
+ в ASP.NET Core можно указывать несколько атрибутов через запятую — но внутри одних квадратных скобок. Например:
+
+ ```csharp
+[Route("api/users"), Authorize, ValidateAntiForgeryToken]
+public class UsersController : ControllerBase
+{
+    // ...
+}
+ ```
+
+Этот код эквивалентен:
+
+```csharp
+[Route("api/users")]
+[Authorize]
+[ValidateAntiForgeryToken]
+public class UsersController : ControllerBase
+{ }
+```
