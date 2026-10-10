@@ -873,6 +873,8 @@ IQueryable<SalesOrderDetail> query =
 
 Стоит заметить, что после прекращения коммерческой деятельности JetBrains на территории Российской Федерации, BellSoft, совместно с "Группой Астра" и "Хоулмонт" стал публиковать сборки [OpenIDE](https://openide.ru/), community-версии IntelliJ Idea с собственными расширениями.
 
+>У проекта OpenIDE есть свой собственный Marketplace, в котором, в частности, доступен plugin GigaCode от СБЕРа.
+
 Заметим, что ядро Java написано на C++.
 
 Существуют специализированные виртуальные машины для компиляции Java в native code, например: [GraalVM](https://www.graalvm.org/).
