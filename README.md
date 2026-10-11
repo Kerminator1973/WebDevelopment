@@ -804,6 +804,22 @@ Web-программирование это комбинация ПО работ
 
 Для повышения производительности, могут быть использованы native-библиотеки, компирирующиеся из C/C++. Для сборки часто используется специальный модуль [node-gyp](https://www.npmjs.com/package/node-gyp).
 
+#### 2026 - как видится будущее JavaScript
+
+Наиболее значимые события 2026 в области JavaScript:
+
+- Anthropic купили Bun
+- Cloudflare купили команду Deno
+
+На первый взгляд, оба события связаны с глубокой интеграцией JavaScript в ключевые продукты IT-гигантов:
+
+- Anthropic пишет Claude Code на JavaScript/TypeScript и, скорее всего, им либо нужна высокая производительность, либо максимально широкий доступ к возможностям ОС (запуск приложений с привилегиями). Допускаю, что возможностей Node.js им не хватает и им потребовался свой собственный Runtime. В такой постановке Bun кажется прекрасным выбором
+- Cloudflare не хватает эффективной многозадачности для их серверного JavaScript/TypeScript-кода и они нанимают команду специалистов, которая отлично умеет делать WebWorker-ов в частности и Worker-ов в целом. Команда Deno - прекрасный выбор
+
+Microsoft также продолжает активно развивать TypeScript, как "язык первого класса" для разработки в самом Microsoft.
+
+Таким образом, будущее экосистемы JavaScript в 2026 году выглядит безоблачным.
+
 <a name="aspnet"></a>
 
 ### Особенности технологического стека ASP.NET Core
@@ -1175,7 +1191,7 @@ CQRS с MediatR поедлагает несколько преимуществ:
 7. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) by Microsoft
 8. [Markdown PDF](https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf) by yzane
 9. Microsoft [HexEditor](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
-10. [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode) by SonarSource - мощный Link для разных языков программирования, включая JavaScript/TypeScript
+10. [SonarLint](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode) by SonarSource - мощный Linter для разных языков программирования, включая JavaScript/TypeScript
 11. [Polacode](https://marketplace.visualstudio.com/items?itemName=pnp.polacode) by P & P - сделать красивую картинку с выделенным кодом приложения
 12. [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) by GitKraken - позволяет посмотреть Commit Graph, визуализировать историю изменений кода, "кто исправлял текущую строку кода"
 13. [MSBuild project tools](tintoy/msbuild-project-tools-server) by tinytoy. Предоставляет IntelliSense при редактировании файлов проектов C#
