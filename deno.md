@@ -4,6 +4,8 @@
 
 [Deno](https://deno.land/) рассматривается в качестве улучшенного runtime по сравнению c Node.js, что подтверждается тем фактом, что в число разработчиков Deno входит **Ryan Dahl** - человек, который создал первые версии Node.js.
 
+Ещё одна статья на русском языке - [Cloudflare поглотила JavaScript-платформу Deno и прекратит её разработку](https://www.opennet.ru/opennews/art.shtml?num=66432) by OpenNET.
+
 ## Обновление от 2026 года
 
 В октябре 2026 года Cloudflare купила компания [Deno Land](https://deno.com/blog/cloudflare). Доступен перевод на [русский язык](https://habr.com/ru/news/1092638/).
