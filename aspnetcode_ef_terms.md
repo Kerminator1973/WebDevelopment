@@ -72,3 +72,46 @@ EF Core по соглашениям поймёт, что это связь "од
 - Коллекционные (collection) — для стороны "многие": `public ICollection<Post> Posts { get; set; }`
 
 Обычно используют `ICollection<T>` с реализацией `List<T>` или `HashSet<T>`.
+
+### Использование навигационных свойств
+
+Поскольку навигационные свойства — это не данные, а способ доступа к ним, важно, как именно EF Core их загружает.
+
+_Eager loading_ (жадная загрузка) — сразу в запросе:
+
+```cs
+var blogs = context.Blogs
+    .Include(b => b.Posts)
+    .ToList();
+```
+
+_Explicit loading_ (явная загрузка) — вручную через Entry(...).Collection / Reference.
+
+_Lazy loading_ (ленивая загрузка) — автоматически при обращении к свойству (требует virtual и включённого lazy loading).
+
+### Практические нюансы
+
+Инициализация коллекции. Лучше инициализировать сразу:
+
+```cs
+public ICollection<Post> Posts { get; set; } = new List<Post>();
+```
+
+Это избавит от проверок на null и упростит добавление элементов.
+
+Virtual для lazy loading. Если используется ленивая загрузка, свойства добавить модификатор `virtual`:
+
+```cs
+public virtual Blog Blog { get; set; }
+public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+```
+
+В некоторых случаях может потребоваться настроить связи через Fluent API. В этом случае _conventions_ (соглашения) не используются:
+
+```cs
+modelBuilder.Entity<Post>()
+    .HasOne(p => p.Blog)
+    .WithMany(b => b.Posts)
+    .HasForeignKey(p => p.BlogId)
+    .OnDelete(DeleteBehavior.Cascade);
+```
